@@ -1,0 +1,16 @@
+#!/usr/bin/env pwsh
+@{
+Title='GCC, the GNU Compiler Collection'
+Description=@'
+GCC is the GNU Compiler Collection. It provides compiler front-ends for several languages,
+including C, C++, Objective-C, Fortran, Java, Ada, and Go. It also includes runtime support
+libraries for these languages.
+'@
+
+Name='gcc'
+Version='8.1.0'
+
+Home=@("https://www.gnu.org/software/gcc/")
+BuildDeps=@("isl", "gmp", "mpfr", "mpc", "zlib")
+Upstream='https://ftpmirror.gnu.org/gnu/gcc/$Name-$Version/$Name-$Version.tar.xz'
+}

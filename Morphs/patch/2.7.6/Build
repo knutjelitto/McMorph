@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+case "${1,,}" in
+        ./configure --prefix=/usr
+        make install
+        ;;
+    -make)
+        make
+        ;;
+    -install)
+        make install
+        ;;
+    *) exit 127 ;;
+esac

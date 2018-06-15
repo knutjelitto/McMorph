@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+case "${1,,}" in
+    -configure) 
+        ./configure \
+            --prefix=/usr   \
+            --disable-nls   \
+            --libexecdir=/usr/lib \
+            --enable-no-install-program=kill,uptime
+        ;;
+    -make)
+        make
+        ;;
+    -install)
+        make install
+        mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
+        sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8
+        ;;
+    *) exit 127 ;;
+esac
