@@ -1,39 +1,21 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace McMorph.Recipes
 {
-    public class Line
+    public class Line : IEnumerable<Token>
     {
-        private readonly Lines lines;
-        public readonly int index;
-        private int offset;
+        private readonly int lineNo;
         private readonly string text;
+        private int offset;
 
-        internal Line(Lines lines, int index)
+        internal Line(int no, string text)
         {
-            this.lines = lines;
-            this.index = index;
+            this.lineNo = no;
+            this.text = text;
             this.offset = 0;
-            this.text = this.lines.Text(this.index);
-            Parse();
         }
-
-        public Line Next
-        {
-            get => this.lines.Next(this);
-        }
-
-        public bool IsRelative { get; private set; }
-
-        public List<string> Tags { get; private set; }
-
-        public string Value { get; private set; }
-
-        public bool IsTag => Tags != null;
-        public bool IsValue => Value != null;
-        public bool IsTagValue => IsTag && IsValue;
-        public bool IsComment => Tags == null && Value != null && Value.StartsWith('#');
 
         private bool Has => this.offset < this.text.Length;
         private char Char => this.offset < this.text.Length ? this.text[this.offset] : '\uFFFF';
@@ -55,7 +37,7 @@ namespace McMorph.Recipes
             }
         }
 
-        private string ParseTag()
+        private string ParsePart()
         {
             SkipWhitespace();
             int start = this.offset;
@@ -71,50 +53,65 @@ namespace McMorph.Recipes
             return null;
         }
 
-        private void Parse()
+        public IEnumerator<Token> GetEnumerator()
         {
-            int dotcount = 0;
             SkipComment();
             if (!Has)
             {
-                Value = string.Empty;
-                return;
+                yield break;
             }
             if (Char == '[')
             {
                 offset++;
+                SkipWhitespace();
+                Tag tag;
                 if (Has && Char == '.')
                 {
-                    dotcount++;
+                    tag = new RelTag(this.lineNo);
                     offset++;
-                    this.IsRelative = true;
                 }
-                this.Tags = new List<string>();
+                else
+                {
+                    tag = new AbsTag(this.lineNo);
+                }
+                var dot = false;
                 while (Has)
                 {
-                    var tag = ParseTag();
-                    if (tag == null)
+                    var part = ParsePart();
+                    if (part == null)
                     {
+                        if (dot)
+                        {
+                            yield return new ErrTok(this.lineNo, $"superfluous dot in tag");
+                            yield break;
+                        }
                         break;
                     }
-                    this.Tags.Add(tag);
+                    dot = false;
+                    tag.Parts.Add(part);
+                    SkipWhitespace();
                     if (Has && Char == '.')
                     {
-                        dotcount++;
                         offset++;
+                        SkipWhitespace();
+                        dot = true;
                         continue;
                     }
                     break;
                 }
-                if (!Has ||
-                    Char != ']' ||
-                    (this.IsRelative && this.Tags.Count != dotcount) ||
-                    (!this.IsRelative && this.Tags.Count != dotcount + 1))
+                SkipWhitespace();
+                if (!Has || Char != ']')
                 {
-                    Debug.Assert(false);
-                    return;
+                    yield return new ErrTok(this.lineNo, $"missing tag closer");
                 }
                 offset++;
+                if (tag.Parts.Count == 0)
+                {
+                    yield return new ErrTok(this.lineNo, $"empty tag");
+                    yield break;
+                }
+                yield return tag;
+
                 SkipWhitespace();
                 if (Has)
                 {
@@ -124,13 +121,21 @@ namespace McMorph.Recipes
                     {
                     }
                     var length = offset - start + 1;
-                    Value = text.Substring(start, length);
+                    if (length > 0)
+                    {
+                        yield return new Value(this.lineNo, text.Substring(start, length));
+                    }
                 }
             }
             else
             {
-                Value = text;
+                yield return new Value(this.lineNo, text);
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

@@ -5,18 +5,19 @@ Bash is the shell, or command-line interpreter, of the GNU system. It is compati
 Shell, but it also integrates useful features from the Korn Shell and the C Shell and new
 improvements of its own. It allows command-line editing, unlimited command history, shell functions
 and aliases, and job control while still allowing most sh scripts to be run without modification.
-
-[Name]      bash
-[Version]   4.4.18
-
 [Home]
 https://www.gnu.org/software/bash/
 https://tiswww.case.edu/php/chet/bash/bashtop.html
-[Deps]
-readline libiconv gettext ncurses
+
+[Name]
+bash
+[Version]
+4.4.18
+
 [Upstream]
-https://ftpmirror.gnu.org/gnu/@Name/@Name-@Version.tar.gz
+https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
 [Assets]
+[Deps] readline libiconv gettext ncurses
 
 [Build.Bash]
 [.Configure]
@@ -32,3 +33,5 @@ https://ftpmirror.gnu.org/gnu/@Name/@Name-@Version.tar.gz
 [.Install]
     make install
     ln -vfs bash /usr/bin/sh
+
+

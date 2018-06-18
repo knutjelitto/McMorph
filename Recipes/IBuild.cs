@@ -1,10 +1,11 @@
+using System.Collections.Generic;
+
 namespace McMorph.Recipes
 {
-    public interface IBuild
+    public interface IBuild : IBase
     {
-         void Configure();
-         void Make();
-         void Install();
-
+         List<string> Configure { get; }
+         List<string> Make { get; }
+         List<string> Install { get; }
     }
 }

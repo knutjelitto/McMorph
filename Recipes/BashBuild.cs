@@ -1,20 +1,20 @@
+using System.Collections.Generic;
+using System.IO;
+
 namespace McMorph.Recipes
 {
-    public class Bash : IBuild
+    public class BuildBash : Base, IBuild
     {
-        public void Configure()
-        {
-            throw new System.NotImplementedException();
-        }
+        public List<string> Configure { get; } = new List<string>();
+        public List<string> Make { get; } = new List<string>();
+        public List<string> Install { get; } = new List<string>();
 
-        public void Install()
+        public override void Dump(TextWriter writer)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Make()
-        {
-            throw new System.NotImplementedException();
+            writer.WriteLine("[Build.Bash]");            
+            Multi(writer, ".Configure", Configure);
+            Multi(writer, ".Make", Make);
+            Multi(writer, ".Install", Install);
         }
     }
 }

@@ -12,7 +12,7 @@ library for working with executable and object formats is also included.
 [Home]      https://www.gnu.org/software/binutils/
 [Deps]      glibc
 
-[Upstream]  https://ftpmirror.gnu.org/gnu/@Name/@Name-@Version.tar.gz
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
 
 [Build.Bash]
 [.Configure]
