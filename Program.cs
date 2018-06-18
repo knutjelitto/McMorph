@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace McMorph
 {
@@ -6,7 +7,9 @@ namespace McMorph
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("PWD: {0}", Environment.CurrentDirectory);
+
+            Recipes.RecipeParser.Parse(Path.Combine(Environment.CurrentDirectory, "Morphs", "bash"));
         }
     }
 }
