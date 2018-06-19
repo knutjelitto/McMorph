@@ -1,9 +1,11 @@
 [Title]
 GNU core utilies
+
 [Description]
 GNU Coreutils includes all of the basic command-line tools that are expected in a POSIX system.
 These provide the basic file, shell and text manipulation functions of the GNU system. Most of
 these tools offer extended functionality beyond that which is outlined in the POSIX standard.
+
 [Home]
 https://www.gnu.org/software/coreutils/
 

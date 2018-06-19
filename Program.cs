@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using System.Configuration;
 
 using McMorph.Results;
 using McMorph.Recipes;
@@ -13,23 +14,42 @@ namespace McMorph
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("PWD: {0}", Environment.CurrentDirectory);
+            var watch = new Stopwatch();
+            watch.Start();
+            var morphs = ReadMorphs();
+            watch.Stop();
+            Console.WriteLine("elapsed: {0}", watch.Elapsed);
 
-            var morphDir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Morphs"));
-
-            foreach (var file in morphDir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
-            {
-                var recipe = Recipes.RecipeParser.Parse(file.FullName);
-                //recipe.Dump(Console.Out);
-
-                var task =  Handle(recipe);
-
-                task.Wait();
-            }
-
+            Download(morphs.Values);
 
             Console.Write("any key ...");
             Console.ReadKey();
+        }
+
+        static Dictionary<string, Recipe> ReadMorphs()
+        {
+            var morphDir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Morphs"));
+            var morphs = new Dictionary<string, Recipe>();
+
+            foreach (var file in morphDir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
+            {
+                Console.WriteLine("reading {0}", file.FullName);
+                var recipe = Recipes.RecipeParser.Parse(file.FullName);
+                recipe.Dump(Console.Out);
+                morphs.Add(recipe.Name, recipe);
+            }
+
+            return morphs;
+        }
+
+        static void Download(IEnumerable<Recipe> morphs)
+        {
+            foreach (var morph in morphs)
+            {
+                var task = Handle(morph);
+
+                task.Wait();
+            }
         }
 
         static async Task Handle(Recipe recipe)

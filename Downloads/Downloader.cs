@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -10,13 +11,15 @@ namespace McMorph.Downloads
         {
             var client = new WebClient();
 
+            var basename = Path.GetFileName(address);
+
             client.DownloadDataCompleted += (s, e) =>
             {
                 Console.WriteLine("\x1B[G\x1B[K");
             };
             client.DownloadProgressChanged += (s, e) =>
             {
-                Bar(address, e.BytesReceived, e.TotalBytesToReceive);
+                Bar(basename, e.BytesReceived, e.TotalBytesToReceive);
             };
             return client.DownloadDataTaskAsync(address);
         }
@@ -32,8 +35,15 @@ namespace McMorph.Downloads
             multi = true;
             var prefix = 1 * Console.WindowWidth / 6 - 2;
             var barLength = Console.WindowWidth - prefix - 22;
-
-            var chars = (int)(barLength * received / total);
+            int chars;
+            if (total > 0)
+            {
+                chars = (int)(barLength * received / total);
+            }
+            else
+            {
+                chars = 0;
+            }
 
             var bar = new string('=', chars) + ">" + new string('.', barLength - chars);
             //var bar = $"{chars}>{barLength - chars}";
@@ -46,10 +56,9 @@ namespace McMorph.Downloads
             }
             else
             {
-                head = new string(' ', prefix - address.Length) + prefix;
+                head = new string(' ', prefix - address.Length) + address;
             }
 
-            //Console.CursorLeft = 0;
             Console.Write("\x1B[G{0}: [{1}]", head, bar);
             multi = false;
         }
