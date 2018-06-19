@@ -12,12 +12,11 @@ namespace McMorph
             this.Path = path;
         }
 
-        public static McPath EnsureDirectory()
+        public McPath EnsureDirectory
         {
             get
             {
-                new McPath.EnsureDirectory(Path.GetDirectoryName(this.path));
-                McPath.
+                return this;
             }
         }
     }

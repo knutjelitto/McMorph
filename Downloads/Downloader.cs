@@ -15,7 +15,18 @@ namespace McMorph.Downloads
 
             client.DownloadDataCompleted += (s, e) =>
             {
-                Console.WriteLine("\x1B[G\x1B[K");
+                //Console.Write("\x1B[G\x1B[K");
+                Host.LineClear();
+                if (e.Error != null)
+                {
+                    //Console.WriteLine("couldn't download {0} ({1})", basename, e.Error.Message);
+                    Host.WriteLine($"couldn't download {basename} ({e.Error.Message})");
+                }
+                else
+                {
+                    //Console.WriteLine("downloaded {0}", basename);
+                    Host.WriteLine("downloaded ", basename);
+                }
             };
             client.DownloadProgressChanged += (s, e) =>
             {
@@ -33,33 +44,36 @@ namespace McMorph.Downloads
                 return;
             }
             multi = true;
-            var prefix = 1 * Console.WindowWidth / 6 - 2;
-            var barLength = Console.WindowWidth - prefix - 22;
+            var width = Console.WindowWidth - 1;
+            var prefix = width / 4;
+            prefix = Math.Min(address.Length, prefix);
+            var inner = (width - prefix) - 5; // account for ': [' + '] '
             int chars;
             if (total > 0)
             {
-                chars = (int)(barLength * received / total);
+                chars = (int)(inner * received / total);
             }
             else
             {
                 chars = 0;
             }
 
-            var bar = new string('=', chars) + ">" + new string('.', barLength - chars);
-            //var bar = $"{chars}>{barLength - chars}";
+            var bar = new string('=', chars) + ">" + new string('.', inner - chars);
 
             string head;
 
-            if (address.Length >= prefix)
+            if (address.Length > prefix)
             {
                 head = "..." + address.Substring(address.Length - prefix - 3);
             }
             else
             {
-                head = new string(' ', prefix - address.Length) + address;
+                head = address + new string(' ', prefix - address.Length);
             }
 
-            Console.Write("\x1B[G{0}: [{1}]", head, bar);
+            //Console.Write("\x1B[G{0}: [{1}]", head, bar);
+            Host.LineHome();
+            Host.Write(head, ": [", bar, "]");
             multi = false;
         }
     }

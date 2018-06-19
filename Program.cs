@@ -20,7 +20,9 @@ namespace McMorph
             watch.Stop();
             Console.WriteLine("elapsed: {0}", watch.Elapsed);
 
-            Download(morphs.Values);
+            Exec.Bash();
+
+            //Download(morphs.Values);
 
             Console.Write("any key ...");
             Console.ReadKey();
@@ -44,21 +46,25 @@ namespace McMorph
 
         static void Download(IEnumerable<Recipe> morphs)
         {
+            var downloader = new Downloader();
+
             foreach (var morph in morphs)
             {
-                var task = Handle(morph);
+                foreach (var upstream in morph.Upstream)
+                {
+                    try
+                    {
+                        var task =  downloader.GetBytes(upstream);
 
-                task.Wait();
-            }
-        }
-
-        static async Task Handle(Recipe recipe)
-        {
-            foreach (var upstream in recipe.Upstream)
-            {
-                var downloader = new Downloader();
-
-                var bytes = await downloader.GetBytes(upstream);
+                        var bytes = task.Result;
+                    }
+                    catch
+                    {                        
+                    }
+                    finally
+                    {
+                    }
+                }
             }
         }
     }
