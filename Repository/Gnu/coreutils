@@ -1,5 +1,4 @@
-[Title]
-GNU core utilies
+[Title]     GNU Coreutils
 
 [Description]
 GNU Coreutils includes all of the basic command-line tools that are expected in a POSIX system.

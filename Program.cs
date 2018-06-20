@@ -8,19 +8,22 @@ using McMorph.Results;
 using McMorph.Recipes;
 using McMorph.Downloads;
 
+using Mono.Unix;
+using Mono.Unix.Native;
+
 namespace McMorph
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var watch = new Stopwatch();
-            watch.Start();
-            var morphs = ReadMorphs();
-            watch.Stop();
-            Console.WriteLine("elapsed: {0}", watch.Elapsed);
+            var morphs = ReadRecipes();
 
-            Exec.Bash();
+            //Syscall.chroot(Pogo.DataArchives);
+
+            FindFiles();
+
+            //Exec.Bash();
 
             Download(morphs.Values);
 
@@ -28,20 +31,22 @@ namespace McMorph
             Console.ReadKey();
         }
 
-        static Dictionary<string, Recipe> ReadMorphs()
+        static Dictionary<string, Recipe> ReadRecipes()
         {
-            var morphDir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Morphs"));
-            var morphs = new Dictionary<string, Recipe>();
+            var dataDir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Repository"));
+            var recipes = new Dictionary<string, Recipe>();
 
-            foreach (var file in morphDir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
+            foreach (var dir in dataDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
             {
-                Console.WriteLine("reading {0}", file.FullName);
-                var recipe = Recipes.RecipeParser.Parse(file.FullName);
-                recipe.Dump(Console.Out);
-                morphs.Add(recipe.Name, recipe);
+                foreach (var file in dir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
+                {
+                    var recipe = Recipes.RecipeParser.Parse(file.FullName);
+                    recipes.Add(recipe.Name, recipe);
+                    Host.WriteLine(recipe.Name, "-", recipe.Version);
+                }
             }
 
-            return morphs;
+            return recipes;
         }
 
         static void Download(IEnumerable<Recipe> morphs)
@@ -52,19 +57,30 @@ namespace McMorph
             {
                 foreach (var upstream in morph.Upstream)
                 {
-                    try
+                    var filepath = Pogo.ArchivesPath(new Uri(upstream));
+                    
+                    if (!File.Exists(filepath))
                     {
-                        var task =  downloader.GetBytes(upstream);
+                        try
+                        {
+                            var task =  downloader.GetBytes(upstream);
 
-                        var bytes = task.Result;
-                    }
-                    catch
-                    {                        
-                    }
-                    finally
-                    {
+                            var bytes = task.Result;
+
+                            Directory.CreateDirectory(Path.GetDirectoryName(filepath));
+                            File.WriteAllBytes(filepath, bytes);
+                        }
+                        catch {}
                     }
                 }
+            }
+        }
+
+        static void FindFiles()
+        {
+            foreach (var drive in UnixDriveInfo.GetDrives())
+            {
+                Host.WriteLine("DRIVE: ", drive.Name);
             }
         }
     }

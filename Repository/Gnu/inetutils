@@ -1,0 +1,30 @@
+[Title]     GNU Inetutils
+
+[Description]
+Inetutils is a collection of common network programs, such as an ftp client and server, a telnet
+client and server, and an rsh client and server.
+
+[Home]      https://www.gnu.org/software/inetutils/
+
+[Name]      inetutils
+[Version]   1.9.4
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]
+
+[Build.Bash]
+[.Configure]
+    ./configure \
+        --prefix=/usr        \
+        --localstatedir=/var \
+        --disable-logger     \
+        --disable-whois      \
+        --disable-rcp        \
+        --disable-rexec      \
+        --disable-rlogin     \
+        --disable-rsh        \
+        --disable-servers
+[.Make]
+    make
+[.Install]
+    make install

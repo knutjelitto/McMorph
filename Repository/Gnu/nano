@@ -1,0 +1,15 @@
+[Title]     GNU nano
+
+[Description]
+GNU nano is a small and simple text editor for use in a terminal. Besides basic editing, it
+supports: undo/redo, syntax highlighting, spell checking, justifying, auto-indentation, bracket
+matching, interactive search-and-replace (with regular expressions), and the editing of multiple
+files.
+
+[Home]      https://www.gnu.org/software/nano/
+
+[Name]      nano
+[Version]   2.9.8
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
+[Deps]

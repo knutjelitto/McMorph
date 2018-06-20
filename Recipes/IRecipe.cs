@@ -5,14 +5,14 @@ namespace McMorph.Recipes
 {
     public interface IRecipe : IBase
     {
-        string Title { get; set; }
-        List<string> Description { get; set; }
+        string Title { get; }
+        List<string> Description { get; }
         List<string> Home { get; }
-        string Name { get; set; }
-        string Version { get; set; }
+        string Name { get; }
+        string Version { get; }
         List<string> Upstream { get; }
         List<string> Assets { get; }
         List<string> Deps { get; }
-        IBuild Build { get; set; }
+        IBuild Build { get; }
     }
 }

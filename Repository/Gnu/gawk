@@ -1,0 +1,14 @@
+[Title]     GNU Awk
+
+[Description]
+Gawk is the GNU implementation of Awk, a specialized programming language for the easy manipulation
+of formatted text, such as tables of data. Gawk features many extensions beyond the traditional
+implementation, including network access, sorting, and large libraries.
+
+[Home]      https://www.gnu.org/software/gawk/
+
+[Name]      gawk
+[Version]   4.2.1
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]      

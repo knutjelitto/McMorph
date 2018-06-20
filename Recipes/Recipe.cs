@@ -5,17 +5,17 @@ using System.Text;
 
 namespace McMorph.Recipes
 {
-    public class Recipe : Base
+    public class Recipe : Base, IRecipe
     {
-        public string Title { get; internal set; }
+        public string Title { get; set; }
 
         public List<string> Description { get; } = new List<string>();
 
         public List<string> Home { get; } = new List<string>();
 
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
-        public string Version { get; internal set; }
+        public string Version { get; set; }
 
         public List<string> Upstream { get; } = new List<string>();
 
@@ -23,7 +23,7 @@ namespace McMorph.Recipes
 
         public List<string> Deps { get; } = new List<string>();
         
-        public IBuild Build { get; internal set; }
+        public IBuild Build { get; set; }
 
         public override void Dump(TextWriter writer)
         {

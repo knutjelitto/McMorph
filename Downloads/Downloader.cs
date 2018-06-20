@@ -15,16 +15,13 @@ namespace McMorph.Downloads
 
             client.DownloadDataCompleted += (s, e) =>
             {
-                //Console.Write("\x1B[G\x1B[K");
                 Host.LineClear();
                 if (e.Error != null)
                 {
-                    //Console.WriteLine("couldn't download {0} ({1})", basename, e.Error.Message);
                     Host.WriteLine($"couldn't download {basename} ({e.Error.Message})");
                 }
                 else
                 {
-                    //Console.WriteLine("downloaded {0}", basename);
                     Host.WriteLine("downloaded ", basename);
                 }
             };
@@ -36,15 +33,8 @@ namespace McMorph.Downloads
             return client.DownloadDataTaskAsync(address);
         }
 
-        private static bool multi = false;
-
         private static void Bar(string address, long received, long total)
         {
-            if (multi)
-            {
-                return;
-            }
-            multi = true;
             var width = Console.WindowWidth - 12;
             var prefix = width / 4;
             prefix = Math.Min(address.Length, prefix);
@@ -74,10 +64,7 @@ namespace McMorph.Downloads
             }
             head = "download " + head;
 
-            //Console.Write("\x1B[G{0}: [{1}]", head, bar);
-            Host.LineHome();
-            Host.Write(head, ": [", bar, "]");
-            multi = false;
+            Host.Write("\r", head, ": [", bar, "]");
         }
     }
 }

@@ -1,0 +1,15 @@
+[Title]     GNU GnuDOS
+
+[Description]
+GnuDOS is a set of programs designed to help new users of the GNU system in growing accustomed to
+the system, particularly users who might be coming from a DOS background. It consists of a file
+manager, a text editor and a form designer for the console as well as a core library for building
+similar utilities.
+
+[Home]      https://www.gnu.org/software/gnudos/
+
+[Name]      gnudos
+[Version]   1.11.4
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

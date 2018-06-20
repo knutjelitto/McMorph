@@ -1,0 +1,14 @@
+[Title]     GNU Bc
+
+[Description]
+Bc is an arbitrary precision numeric processing language. It includes an interactive environment
+for evaluating mathematical statements. Its syntax is similar to that of C, so basic usage is
+familiar. It also includes dc, a reverse-polish calculator.
+
+[Home]      https://www.gnu.org/software/bc/
+
+[Name]      bc
+[Version]   1.07
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]      ed

@@ -1,0 +1,14 @@
+[Title]     GNU Libtool
+
+[Description]
+GNU Libtool helps in the creation and use of shared libraries, by presenting a single consistent,
+portable interface that hides the usual complexity of working with shared libraries across
+platforms.
+
+[Home]      https://www.gnu.org/software/libtool/
+
+[Name]      libtool
+[Version]   2.4.6
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
+[Deps]

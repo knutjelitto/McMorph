@@ -1,22 +1,20 @@
-[Title]
-The GNU Bourne-Again SHell
+[Title] The GNU Bourne-Again SHell
+
 [Description]
 Bash is the shell, or command-line interpreter, of the GNU system. It is compatible with the Bourne
 Shell, but it also integrates useful features from the Korn Shell and the C Shell and new
 improvements of its own. It allows command-line editing, unlimited command history, shell functions
 and aliases, and job control while still allowing most sh scripts to be run without modification.
+
 [Home]
 https://www.gnu.org/software/bash/
 https://tiswww.case.edu/php/chet/bash/bashtop.html
 
-[Name]
-bash
-[Version]
-4.4.18
+[Name]      bash
+[Version]   4.4.18
 
 [Upstream]
 https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
-[Assets]
 [Deps] readline libiconv gettext ncurses
 
 [Build.Bash]
