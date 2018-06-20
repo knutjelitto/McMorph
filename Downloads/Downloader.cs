@@ -32,6 +32,7 @@ namespace McMorph.Downloads
             {
                 Bar(basename, e.BytesReceived, e.TotalBytesToReceive);
             };
+            Host.Write("download ", basename);
             return client.DownloadDataTaskAsync(address);
         }
 
@@ -44,10 +45,11 @@ namespace McMorph.Downloads
                 return;
             }
             multi = true;
-            var width = Console.WindowWidth - 1;
+            var width = Console.WindowWidth - 12;
             var prefix = width / 4;
             prefix = Math.Min(address.Length, prefix);
             var inner = (width - prefix) - 5; // account for ': [' + '] '
+            inner = inner - "download ".Length;
             int chars;
             if (total > 0)
             {
@@ -70,6 +72,7 @@ namespace McMorph.Downloads
             {
                 head = address + new string(' ', prefix - address.Length);
             }
+            head = "download " + head;
 
             //Console.Write("\x1B[G{0}: [{1}]", head, bar);
             Host.LineHome();

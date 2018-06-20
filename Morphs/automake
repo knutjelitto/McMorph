@@ -1,0 +1,14 @@
+[Title]     Automake
+
+[Description]
+Automake the part of the GNU build system for producing standards-compliant Makefiles. Build
+requirements are entered in an intuitive format and then Automake works with Autoconf to produce a
+robust Makefile, simplifying the entire process for the developer.
+
+[Home]      https://www.gnu.org/software/automake/
+
+[Name]      automake
+[Version]   1.16
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
+[Deps]

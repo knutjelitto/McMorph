@@ -22,7 +22,7 @@ namespace McMorph
 
             Exec.Bash();
 
-            //Download(morphs.Values);
+            Download(morphs.Values);
 
             Console.Write("any key ...");
             Console.ReadKey();
