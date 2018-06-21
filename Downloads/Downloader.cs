@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
+using McMorph.Actors;
+
 namespace McMorph.Downloads
 {
     public class Downloader
@@ -11,60 +13,107 @@ namespace McMorph.Downloads
         {
             var client = new WebClient();
 
+            var tcs = new TaskCompletionSource<byte[]>();
+
             var basename = Path.GetFileName(address);
+
+            var progress = new ActionActor();
 
             client.DownloadDataCompleted += (s, e) =>
             {
-                Host.LineClear();
+                progress.Done();
+                Terminal.ClearLine();
                 if (e.Error != null)
                 {
-                    Host.WriteLine($"couldn't download {basename} ({e.Error.Message})");
+                    Terminal.WriteLine($"couldn't download {basename} ({e.Error.Message})");
+                    tcs.SetException(e.Error);
                 }
                 else
                 {
-                    Host.WriteLine("downloaded ", basename);
+                    Terminal.WriteLine("downloaded ", basename);
+                    tcs.SetResult(e.Result);
                 }
+
             };
+
             client.DownloadProgressChanged += (s, e) =>
             {
-                Bar(basename, e.BytesReceived, e.TotalBytesToReceive);
+                progress.Send(() => Definite(basename, e.BytesReceived, e.TotalBytesToReceive));
+                //progress.Send(() => Indefinite(basename, e.BytesReceived));
             };
-            Host.Write("download ", basename);
-            return client.DownloadDataTaskAsync(address);
+
+            Terminal.Write("download ", basename);
+
+            client.DownloadDataTaskAsync(new Uri(address));
+
+            return tcs.Task;
         }
 
-        private static void Bar(string address, long received, long total)
+        private static string DBar(long received, long total, int width)
         {
-            var width = Console.WindowWidth - 12;
-            var prefix = width / 4;
-            prefix = Math.Min(address.Length, prefix);
-            var inner = (width - prefix) - 5; // account for ': [' + '] '
-            inner = inner - "download ".Length;
-            int chars;
-            if (total > 0)
-            {
-                chars = (int)(inner * received / total);
-            }
-            else
-            {
-                chars = 0;
-            }
+            int chars = (int)(width * received / total);
 
-            var bar = new string('=', chars) + ">" + new string('.', inner - chars);
+            var bar = new string('=', chars) + ">" + new string('.', width - chars);
 
-            string head;
+            return bar;
+        }
 
-            if (address.Length > prefix)
+        private static string IBar(long total, int width)
+        {
+            const string boat = "<==>";
+
+            int offset = ((int)(total / (256 * 1024))) % (width - boat.Length);
+
+            var bar = new string('.', offset) + boat + new string('.', width - offset - boat.Length);
+
+            return bar;
+        }
+
+        private static string Start(string prefix)
+        {
+            return "download " + prefix + ": [";
+        }
+
+        private static string End()
+        {
+            return "]";
+        }
+
+        private static int Inner(string start, string end)
+        {
+            return Terminal.Width - start.Length - end.Length - 10;
+        }
+
+        private static void Indefinite(string prefix, long received)
+        {
+            var start = Start(prefix);
+            var end = End();
+            
+            var width = Math.Min(20, Inner(start, end));
+
+            if (width >= 10)
             {
-                head = "..." + address.Substring(address.Length - prefix - 3);
-            }
-            else
-            {
-                head = address + new string(' ', prefix - address.Length);
-            }
-            head = "download " + head;
+                var bar = IBar(received, width);
 
-            Host.Write("\r", head, ": [", bar, "]");
+                Terminal.GotoLineHome();
+                Terminal.Write(start, bar, end);
+            }
+        }
+
+        private static void Definite(string prefix, long received, long total)
+        {
+            var start = Start(prefix);
+            var end = End();
+            
+            var width = Math.Min(20, Inner(start, end));
+
+            if (width >= 10)
+            {
+                var bar = DBar(received, total, width);
+
+                Terminal.GotoLineHome();
+                Terminal.Write(start, bar, end);
+            }
         }
     }
 }

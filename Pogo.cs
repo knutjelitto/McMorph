@@ -3,19 +3,28 @@ using System.IO;
 
 namespace McMorph
 {
-    public static class Pogo
+    public class Pogo
     {
-        public static string Root => "/McMorph";
+        public Pogo() : this("/McMorph")
+        {
+        }
 
-        public static string Data => Path.Combine(Root, "Data");
+        public Pogo(string root)
+        {
+            Root = root;
+        }
 
-        public static string Compile => Path.Combine(Data, "Compile");
+        public string Root { get; }
 
-        public static string Archives => Path.Combine(Data, "Archives");
+        public string Data => Path.Combine(Root, "Data");
 
-        public static string Index => Path.Combine(Root, "Index");
+        public string Compile => Path.Combine(Data, "Compile");
 
-        public static string ArchivesPath(Uri uri)
+        public string Archives => Path.Combine(Data, "Archives");
+
+        public string Index => Path.Combine(Root, "Index");
+
+        public string ArchivesPath(Uri uri)
         {
             return Path.Combine(Archives, uri.Host + uri.LocalPath);
         }
