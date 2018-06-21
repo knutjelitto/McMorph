@@ -15,7 +15,7 @@ https://tiswww.case.edu/php/chet/bash/bashtop.html
 
 [Upstream]
 https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
-[Deps] readline libiconv gettext ncurses
+[Deps] readline gettext ncurses
 
 [Build.Bash]
 [.Configure]
