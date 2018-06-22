@@ -1,0 +1,16 @@
+[Title]     GNU Autoconf
+
+[Description]
+Autoconf offers the developer a robust set of M4 macros which expand into shell code to test the
+features of Unix-like systems and to adapt automatically their software package to these systems.
+The resulting shell scripts are self-contained and portable, freeing the user from needing to know
+anything about Autoconf or M4.
+
+[Home]      https://www.gnu.org/software/autoconf/
+
+[Class]     Core |Gnu | Optional
+[Name]      autoconf
+[Version]   2.69
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
+[Deps]

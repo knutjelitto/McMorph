@@ -17,11 +17,13 @@ namespace McMorph.Recipes
 
         public string Version { get; set; }
 
-        public List<string> Upstream { get; } = new List<string>();
+        public string Upstream { get; set; }
 
         public List<string> Assets { get; } = new List<string>();
 
         public List<string> Deps { get; } = new List<string>();
+
+        public RecipeClass Class { get; set; } = RecipeClass.None;
         
         public IBuild Build { get; set; }
 
@@ -32,7 +34,7 @@ namespace McMorph.Recipes
             Multi(writer, "Home", Home);
             Single(writer, "Name", Name);
             Single(writer, "Version", Version);
-            Multi(writer, "Upstream", Upstream);
+            Single(writer, "Upstream", Upstream);
             Multi(writer, "Assets", Assets);
             Multi(writer, "Deps", Deps);
             if (Build != null)

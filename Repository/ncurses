@@ -1,0 +1,16 @@
+[Title]     GNU Ncurses
+
+[Description]
+GNU Ncurses is a library which provides capabilities to write text to a terminal in a 
+terminal-independent manner. It supports pads and color as well as multiple highlights and forms
+characters. It is typically used to implement user interfaces for command-line applications. The
+accompanying ncursesw library provides wide character support.
+
+[Home]      https://www.gnu.org/software/ncurses/
+
+[Class]     Core | Gnu
+[Name]      ncurses
+[Version]   6.1
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

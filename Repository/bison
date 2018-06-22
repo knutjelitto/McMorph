@@ -1,0 +1,15 @@
+[Title]     GNU Bison
+
+[Description]
+GNU Bison is a general-purpose parser generator. It can build a deterministic or generalized LR
+parser from an annotated, context-free grammar. It is versatile enough to have many applications,
+from parsers for simple tools through complex programming languages.
+
+[Home]      https://www.gnu.org/software/bison/
+
+[Class]     Core | Gnu
+[Name]      bison
+[Version]   3.0.5
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]      

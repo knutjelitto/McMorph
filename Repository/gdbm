@@ -1,0 +1,14 @@
+[Title]     GNU Gdbm
+
+[Description]
+GDBM is a library for manipulating hashed databases. It is used to store key/value pairs in a file
+in a manner similar to the Unix dbm library and provides interfaces to the traditional file format.
+
+[Home]      https://www.gnu.org/software/gdbm/
+
+[Class]     Core | Gnu | Optional
+[Name]      gdbm
+[Version]   1.15
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

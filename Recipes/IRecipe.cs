@@ -10,7 +10,7 @@ namespace McMorph.Recipes
         List<string> Home { get; }
         string Name { get; }
         string Version { get; }
-        List<string> Upstream { get; }
+        string Upstream { get; }
         List<string> Assets { get; }
         List<string> Deps { get; }
         IBuild Build { get; }

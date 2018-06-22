@@ -1,0 +1,16 @@
+[Title]     GNU readline
+
+[Description]
+The GNU readline library allows users to edit command lines as they are typed in. It can maintain a
+searchable history of previously entered commands, letting you easily recall, edit and re-enter
+past commands. It features both Emacs-like and vi-like keybindings, making its usage comfortable
+for anyone.
+
+[Home]      https://www.gnu.org/software/readline/
+
+[Class]     Core | Gnu
+[Name]      readline
+[Version]   7.0
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

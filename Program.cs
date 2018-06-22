@@ -24,7 +24,7 @@ namespace McMorph
 
             Pogo = new Pogo();
 
-            var morphs = MorphCollection.Populate();
+            var morphs = MorphCollection.Populate(Pogo);
             
             //if (false)
             //{
@@ -41,34 +41,11 @@ namespace McMorph
             //    Console.CursorVisible = true;
             //}
 
-            Download(morphs.Upstreams).Wait();
+            morphs.Download().Wait();
 
             Console.Write("any key ...");
             Console.ReadKey(true);
             Console.WriteLine();
-        }
-
-
-        static async Task Download(IEnumerable<string> upstreams)
-        {
-            var downloader = new Downloader();
-
-            foreach (var upstream in upstreams)
-            {
-                var filepath = Pogo.ArchivesPath(new Uri(upstream));
-                
-                if (!File.Exists(filepath))
-                {
-                    try
-                    {
-                        var bytes = await downloader.GetBytes(upstream);
-
-                        Directory.CreateDirectory(Path.GetDirectoryName(filepath));
-                        File.WriteAllBytes(filepath, bytes);
-                    }
-                    catch {}
-                }
-            }
         }
     }
 }

@@ -1,0 +1,14 @@
+[Title]     GNU MPC
+
+[Description]
+GNU MPC is a C library for performing arithmetic on complex numbers. It supports arbitrarily high
+precision and it correctly rounds the results.
+
+[Home]      https://www.gnu.org/software/mpc/
+
+[Class]     Core | Gnu
+[Name]      mpc
+[Version]   1.1.0
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

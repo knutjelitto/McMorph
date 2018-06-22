@@ -1,0 +1,34 @@
+[Title]     GNU Binutils
+
+[Description]
+GNU Binutils is a collection of tools for working with binary files. Perhaps the most notable are
+ld, a linker, and as, an assembler. Other tools include programs to display binary profiling
+information, list the strings in a binary file, and utilities for working with archives. The bfd
+library for working with executable and object formats is also included.
+
+[Home]      https://www.gnu.org/software/binutils/
+
+[Class]     Core | Gnu
+[Name]      binutils
+[Version]   2.30
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]      glibc zlib
+
+[Build.Bash]
+[.Configure]
+    ../configure \
+        --prefix=/usr       \
+        --disable-nls       \
+        --enable-gold       \
+        --enable-ld=default \
+        --enable-plugins    \
+        --enable-shared     \
+        --disable-static    \
+        --disable-werror    \
+        --enable-64-bit-bfd \
+        --with-system-zlib
+[.Make]
+    make tooldir=/usr
+[.Install]
+    make tooldir=/usr install

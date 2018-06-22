@@ -1,0 +1,17 @@
+[Title]     GNU Grep
+
+[Description]
+Grep is a tool for finding text inside files. Text is found by matching a pattern provided by the
+user in one or many files. The pattern may be provided as a basic or extended regular expression,
+or as fixed strings. By default, the matching text is simply printed to the screen, however the
+output can be greatly customized to include, for example, line numbers. GNU grep offers many
+extensions over the standard utility, including, for example, recursive directory searching.
+
+[Home]      https://www.gnu.org/software/grep/
+
+[Class]     Core | Gnu
+[Name]      grep
+[Version]   3.1
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
+[Deps]

@@ -1,13 +1,17 @@
+using System.Collections.Generic;
+
 using McMorph.Recipes;
 
 namespace McMorph.Morphs
 {
     public class Morph
     {
-        public readonly Recipe Recipe;
+        private readonly Pogo pogo;
+        private readonly Recipe Recipe;
 
-        public Morph(Recipe recipe)
+        public Morph(Pogo pogo, Recipe recipe)
         {
+            this.pogo = pogo;
             this.Recipe = recipe;
         }
 
@@ -17,5 +21,8 @@ namespace McMorph.Morphs
 
         public string Tag => Name + "-" + Version;
 
+        public Upstream Upstream => new Upstream(this.pogo, this);
+
+        public string UpstreamValue => Recipe.Upstream;
     }
 }

@@ -81,7 +81,7 @@ namespace McMorph.Downloads
 
         private static int Inner(string start, string end)
         {
-            return Terminal.Width - start.Length - end.Length - 10;
+            return Math.Min(30, Terminal.Width - start.Length - end.Length - 10);
         }
 
         private static void Indefinite(string prefix, long received)
@@ -89,7 +89,7 @@ namespace McMorph.Downloads
             var start = Start(prefix);
             var end = End();
             
-            var width = Math.Min(20, Inner(start, end));
+            var width = Inner(start, end);
 
             if (width >= 10)
             {
@@ -105,7 +105,7 @@ namespace McMorph.Downloads
             var start = Start(prefix);
             var end = End();
             
-            var width = Math.Min(20, Inner(start, end));
+            var width = Inner(start, end);
 
             if (width >= 10)
             {

@@ -39,7 +39,14 @@ namespace McMorph.Recipes
                         setter = value => recipe.Version = value;
                         break;
                     case  "upstream":
-                        setter = value => recipe.Upstream.Add(value);
+                        setter = value =>
+                        {
+                            if (!string.IsNullOrWhiteSpace(recipe.Upstream))
+                            {
+                                throw new ArgumentException("already set", nameof(recipe.Upstream));
+                            }
+                            recipe.Upstream = value;
+                        };
                         break;
                     case  "assets":
                         setter = value => recipe.Assets.Add(value);
@@ -47,6 +54,17 @@ namespace McMorph.Recipes
                     case  "deps":
                     {
                         setter = value => recipe.Deps.AddRange(value.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+                        break;
+                    }
+                    case "class":
+                    {
+                        setter = value => 
+                        {
+                            
+                            var options = string.Join(", ", value.Split(' ', '|').Where(s => !string.IsNullOrWhiteSpace(s)));
+                            var add = (RecipeClass)Enum.Parse(typeof(RecipeClass), options, true);
+                            recipe.Class = recipe.Class | add;
+                        };
                         break;
                     }
                     case "build.bash":
@@ -104,10 +122,7 @@ namespace McMorph.Recipes
                 }
             }
 
-            for (var i = 0; i < recipe.Upstream.Count; ++i)
-            {
-                recipe.Upstream[i] = recipe.Upstream[i].Replace("@[Name]", recipe.Name).Replace("@[Version]", recipe.Version);
-            }
+            recipe.Upstream = recipe.Upstream.Replace("@[Name]", recipe.Name).Replace("@[Version]", recipe.Version);
 
             return recipe;
         }

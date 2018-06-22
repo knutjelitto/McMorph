@@ -1,0 +1,15 @@
+[Title]     GNU Groff
+
+[Description]
+Groff is a typesetting package that reads plain text and produces formatted output based on
+formatting commands contained within the text. It is usually the formatter of man documentation
+pages.
+
+[Home]      https://www.gnu.org/software/groff/
+
+[Class]     Core | Gnu | Optional
+[Name]      groff
+[Version]   1.22.3
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

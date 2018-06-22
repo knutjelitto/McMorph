@@ -1,0 +1,16 @@
+[Title]     GNU Less
+
+[Description]
+GNU less is a pager, a program that allows you to view large amounts of text in page-sized chunks.
+Unlike traditional pagers, it allows both backwards and forwards movement through the document. It
+also does not have to read the entire input file before starting, so it starts faster than most
+text editors.
+
+[Home]      https://www.gnu.org/software/less/
+
+[Class]     Core | Gnu
+[Name]      less
+[Version]   530
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]

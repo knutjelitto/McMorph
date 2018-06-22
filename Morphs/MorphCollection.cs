@@ -1,14 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.IO;
 
 namespace McMorph.Morphs
 {
     public class MorphCollection : IReadOnlyList<Morph>, IReadOnlyDictionary<string, Morph>
     {
-        private List<Morph> list = new List<Morph>();
-        private Dictionary<string, Morph> lookup = new Dictionary<string, Morph>();
+        private readonly Pogo pogo;
+        private readonly List<Morph> list = new List<Morph>();
+        private readonly Dictionary<string, Morph> lookup = new Dictionary<string, Morph>();
+
+        public MorphCollection(Pogo pogo)
+        {
+            this.pogo = pogo;
+        }
 
         public void Add(Morph morph)
         {
@@ -16,35 +23,32 @@ namespace McMorph.Morphs
             this.list.Add(morph);
         }
 
-        public static MorphCollection Populate()
+        public static MorphCollection Populate(Pogo pogo)
         {
             var dataDir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Repository"));
-            var morphs  = new MorphCollection();
+            var morphs = new MorphCollection(pogo);
 
-            foreach (var dir in dataDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+            foreach (var file in dataDir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
             {
-                foreach (var file in dir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
-                {
-                    var recipe = Recipes.RecipeParser.Parse(file.FullName);
-                    var morph = new Morph(recipe);
-                    morphs.Add(morph);
-                    Terminal.WriteLine("added ", morph.Tag);
-                }
+                if (file.Name.StartsWith("."))
+                    continue;
+
+                var recipe = Recipes.RecipeParser.Parse(file.FullName);
+                var morph = new Morph(pogo, recipe);
+                morphs.Add(morph);
+                Terminal.WriteLine("added ", morph.Tag);
             }
 
             return morphs;
         }
 
-        public IEnumerable<string> Upstreams
+        public IEnumerable<Upstream> Upstreams
         {
             get
             {
                 foreach (var morph in this)
                 {
-                    foreach (var upstream in morph.Recipe.Upstream)
-                    {
-                        yield return upstream;
-                    }
+                        yield return morph.Upstream;
                 }
             }
         }
@@ -58,6 +62,14 @@ namespace McMorph.Morphs
         public IEnumerable<string> Keys => this.lookup.Keys;
 
         public IEnumerable<Morph> Values => this.lookup.Values;
+
+        public async Task Download()
+        {
+            foreach (var morph in this)
+            {
+                await morph.Upstream.Download();
+            }
+        }
 
         public bool ContainsKey(string key)
         {

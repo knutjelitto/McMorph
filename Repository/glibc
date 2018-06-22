@@ -1,0 +1,16 @@
+[Title]     GNU C Library
+
+[Description]
+The GNU C Library is the standard C library of the GNU system. It defines the system calls and
+other basic functionality necessary to write programs in the C language. It handles low-level
+functionality that communicates with the kernel, such as process and file management, as well as
+higher-level functionality such as string manipulation or command-line argument handling.
+
+[Home]      https://www.gnu.org/software/glibc/
+
+[Class]     Core | Gnu
+[Name]      glibc
+[Version]   2.27
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
+[Deps]      headers

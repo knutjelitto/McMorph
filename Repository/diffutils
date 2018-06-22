@@ -1,0 +1,16 @@
+[Title]     GNU Diffutils
+
+[Description]
+GNU Diffutils is a package containing tools for finding the differences between files. The diff
+command is used to show how two files differ, while cmp shows the offsets and line numbers where
+they differ. diff3 allows you to compare three files. Finally, sdiff offers an interactive means to
+merge two files.
+
+[Home]      https://www.gnu.org/software/diffutils/
+
+[Class]     Core | Gnu
+[Name]      diffutils
+[Version]   3.6
+
+[Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
+[Deps]      
