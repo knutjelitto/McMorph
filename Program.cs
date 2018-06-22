@@ -41,7 +41,8 @@ namespace McMorph
             //    Console.CursorVisible = true;
             //}
 
-            morphs.Download().Wait();
+            morphs.Extract().Wait();
+            morphs.Download();
 
             Console.Write("any key ...");
             Console.ReadKey(true);

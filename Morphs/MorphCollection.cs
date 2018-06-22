@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.IO;
+
+using McMorph.FS;
 
 namespace McMorph.Morphs
 {
@@ -25,10 +26,10 @@ namespace McMorph.Morphs
 
         public static MorphCollection Populate(Pogo pogo)
         {
-            var dataDir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Repository"));
+            var dataDir = (UPath)Environment.CurrentDirectory / "Repository";
             var morphs = new MorphCollection(pogo);
 
-            foreach (var file in dataDir.EnumerateFiles("*", SearchOption.TopDirectoryOnly))
+            foreach (var file in dataDir.AsDirectory.EnumerateFiles("*"))
             {
                 if (file.Name.StartsWith("."))
                     continue;
@@ -63,12 +64,30 @@ namespace McMorph.Morphs
 
         public IEnumerable<Morph> Values => this.lookup.Values;
 
-        public async Task Download()
+        public bool Download()
         {
             foreach (var morph in this)
             {
-                await morph.Upstream.Download();
+                var result = morph.Upstream.Download();
+                if (!result)
+                {
+                    return false;
+                }
             }
+            return true;
+        }
+
+        public async Task<bool> Extract()
+        {
+            foreach (var morph in this)
+            {
+                var result = await morph.Upstream.Extract();
+                if (!result)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool ContainsKey(string key)

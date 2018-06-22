@@ -1,17 +1,17 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
 using McMorph.Results;
+using McMorph.FS;
 
 namespace McMorph.Recipes
 {
     public class RecipeParser
     {
-        public static Recipe Parse(string filename)
+        public static Recipe Parse(UPath filepath)
         {
-            var lines = new Lines(File.ReadAllLines(filename));
+            var lines = new Lines(filepath.AsFile.ReadAllLines());
 
             var recipe = new Recipe();
 
@@ -41,11 +41,11 @@ namespace McMorph.Recipes
                     case  "upstream":
                         setter = value =>
                         {
-                            if (!string.IsNullOrWhiteSpace(recipe.Upstream))
+                            if (recipe.Upstream != null)
                             {
                                 throw new ArgumentException("already set", nameof(recipe.Upstream));
                             }
-                            recipe.Upstream = value;
+                            recipe.Upstream = new Uri(value);
                         };
                         break;
                     case  "assets":
@@ -74,7 +74,7 @@ namespace McMorph.Recipes
                         break;
                     }
                     default:
-                        Error.Throw($"{filename}({tag.LineNo}): unknown tag [{tag}]");
+                        Error.Throw($"{filepath}({tag.LineNo}): unknown tag [{tag}]");
                         break;
                 }
             }
@@ -96,7 +96,7 @@ namespace McMorph.Recipes
                     default:
                         if (text.StartsWith("."))
                         {
-                            Error.Throw($"{filename}({tag.LineNo}): unknown tag [{tag}]");
+                            Error.Throw($"{filepath}({tag.LineNo}): unknown tag [{tag}]");
                         }
                         context = RootContext;
                         RootContext(tag);
@@ -118,11 +118,11 @@ namespace McMorph.Recipes
                 {
                     var err = (ErrTok)token;
 
-                    Error.Throw($"{filename}({token.LineNo}): {err.Message}");
+                    Error.Throw($"{filepath}({token.LineNo}): {err.Message}");
                 }
             }
 
-            recipe.Upstream = recipe.Upstream.Replace("@[Name]", recipe.Name).Replace("@[Version]", recipe.Version);
+            recipe.Upstream = new Uri(recipe.Upstream.ToString().Replace("@[Name]", recipe.Name).Replace("@[Version]", recipe.Version));
 
             return recipe;
         }

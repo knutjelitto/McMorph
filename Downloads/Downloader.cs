@@ -1,40 +1,21 @@
 using System;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
 using McMorph.Actors;
+using McMorph.FS;
 
 namespace McMorph.Downloads
 {
     public class Downloader
     {
-        public Task<byte[]> GetBytes(string address)
+        public byte[] GetBytes(Uri uri)
         {
             var client = new WebClient();
 
-            var tcs = new TaskCompletionSource<byte[]>();
-
-            var basename = Path.GetFileName(address);
+            var basename = ((UPath)uri.LocalPath).GetName();
 
             var progress = new ActionActor();
-
-            client.DownloadDataCompleted += (s, e) =>
-            {
-                progress.Done();
-                Terminal.ClearLine();
-                if (e.Error != null)
-                {
-                    Terminal.WriteLine($"couldn't download {basename} ({e.Error.Message})");
-                    tcs.SetException(e.Error);
-                }
-                else
-                {
-                    Terminal.WriteLine("downloaded ", basename);
-                    tcs.SetResult(e.Result);
-                }
-
-            };
 
             client.DownloadProgressChanged += (s, e) =>
             {
@@ -44,9 +25,25 @@ namespace McMorph.Downloads
 
             Terminal.Write("download ", basename);
 
-            client.DownloadDataTaskAsync(new Uri(address));
+            try
+            {
+                var bytes = client.DownloadDataTaskAsync(uri).Result;
 
-            return tcs.Task;
+                progress.Done();
+                Terminal.ClearLine();
+                Terminal.WriteLine("downloaded ", basename);
+
+                return bytes;
+            }
+            catch (Exception exception)
+            {
+                progress.Done();
+                Terminal.ClearLine();
+
+                Terminal.WriteLine($"couldn't download {basename} ({exception.Message})");
+
+                return null;
+            }
         }
 
         private static string DBar(long received, long total, int width)

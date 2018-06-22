@@ -1,39 +1,65 @@
 using System;
-using System.IO;
+using System.Text.RegularExpressions;
 
 using McMorph.Morphs;
+using McMorph.FS;
 
 namespace McMorph
 {
     public class Pogo
     {
-        public Pogo() : this("/McMorph")
+        public Pogo() : this("/Pogo")
         {
         }
 
-        public Pogo(string root)
+        public Pogo(UPath root)
         {
+            root.AssertAbsolute();
             Root = root;
         }
 
-        public string Root { get; }
+        private UPath Root { get; }
 
-        public string Data => Path.Combine(Root, "Data");
-        public string Compile => Path.Combine(Data, "Compile");
-        public string Archives => Path.Combine(Data, "Archives");
-        public string Sources => Path.Combine(Data, "Sources");
-        public string Index => Path.Combine(Root, "Index");
+        public UPath Data => Root / "Data";
+        public UPath Compile => Data / "Compile";
+        public UPath Archives => Data / "Archives";
+        public UPath Sources => Data / "Sources";
 
-        public string ArchivesPath(Upstream upstream)
+        public UPath System => Root / "System";
+        public UPath Index => System / "Index";
+
+        public UPath ArchivesPath(Uri uri)
         {
-            var uri = new Uri(upstream.Morph.UpstreamValue);
-            return Path.Combine(Archives, uri.Host + uri.LocalPath);
+            return Archives / (uri.Host + uri.LocalPath);
+        }
+        
+        public UPath SourcesPath(Uri uri)
+        {
+            if (TryGetArchiveStem(uri, out var stem))
+            {
+                var source = Sources / stem;
+                return source;
+            }
+
+            throw new ApplicationException($"don't know how to prepare '{uri}': unknown archive type");
         }
 
-        public string SourcesPath(Upstream upstream)
+        private Regex archiveRegex = new Regex(
+            @".*(?<ex>\.((tar\.(gz|xz|lz|bz2))|(tzg)))$",
+            RegexOptions.Compiled|RegexOptions.IgnoreCase|RegexOptions.ExplicitCapture);
+
+        private bool TryGetArchiveStem(Uri uri, out string stem)
         {
-            var source = Path.Combine(Sources, upstream.Morph.Tag);
-            return source;
+            var name = ((UPath)uri.LocalPath).GetName();
+            var match = archiveRegex.Match(name);
+            if (match.Success)
+            {
+                var ex = match.Groups["ex"];
+                stem = name.Substring(0, name.Length - ex.Length);
+                return true;
+            }
+            stem = null;
+            return false;
         }
     }
 }

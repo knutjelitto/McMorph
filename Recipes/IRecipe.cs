@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace McMorph.Recipes
 {
@@ -10,7 +10,7 @@ namespace McMorph.Recipes
         List<string> Home { get; }
         string Name { get; }
         string Version { get; }
-        string Upstream { get; }
+        Uri Upstream { get; }
         List<string> Assets { get; }
         List<string> Deps { get; }
         IBuild Build { get; }

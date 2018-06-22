@@ -17,7 +17,7 @@ namespace McMorph.Recipes
 
         public string Version { get; set; }
 
-        public string Upstream { get; set; }
+        public Uri Upstream { get; set; }
 
         public List<string> Assets { get; } = new List<string>();
 
@@ -34,7 +34,7 @@ namespace McMorph.Recipes
             Multi(writer, "Home", Home);
             Single(writer, "Name", Name);
             Single(writer, "Version", Version);
-            Single(writer, "Upstream", Upstream);
+            Single(writer, "Upstream", Upstream.ToString());
             Multi(writer, "Assets", Assets);
             Multi(writer, "Deps", Deps);
             if (Build != null)

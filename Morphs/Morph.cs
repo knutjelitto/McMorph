@@ -6,23 +6,21 @@ namespace McMorph.Morphs
 {
     public class Morph
     {
-        private readonly Pogo pogo;
-        private readonly Recipe Recipe;
-
         public Morph(Pogo pogo, Recipe recipe)
         {
-            this.pogo = pogo;
+            this.Pogo = pogo;
             this.Recipe = recipe;
         }
+
+        public Pogo Pogo { get; }
+        public Recipe Recipe { get; }
 
         public string Name => this.Recipe.Name;
 
         public string Version => this.Recipe.Version;
 
-        public string Tag => Name + "-" + Version;
+        public string Tag => this.Name + "-" + this.Version;
 
-        public Upstream Upstream => new Upstream(this.pogo, this);
-
-        public string UpstreamValue => Recipe.Upstream;
+        public Upstream Upstream => new Upstream(this, this.Recipe.Upstream);
     }
 }
