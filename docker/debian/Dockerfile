@@ -1,0 +1,22 @@
+FROM microsoft/dotnet:2.1.300-sdk
+
+RUN apt-get update -y && apt-get install -y \
+    apt-transport-https \
+    xz-utils \
+    less \
+    tree \
+    man \
+    manpages \
+    dirmngr \
+    bzr \
+    lzip \
+    autoconf \
+    build-essential \
+ && apt-get -q -y autoremove  && rm -rvf /var/lib/apt/lists/*
+
+ENV TERM=xterm
+ENV PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/LiFo/bin
+
+WORKDIR /root
+
+CMD [ "bash",  "-l" ]

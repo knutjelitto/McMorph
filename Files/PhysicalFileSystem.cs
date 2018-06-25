@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using static McMorph.FS.FileSystemExceptionHelper;
+using static McMorph.Files.FileSystemExceptionHelper;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// Provides a <see cref="IFileSystem"/> for the physical filesystem.

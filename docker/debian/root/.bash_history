@@ -268,40 +268,105 @@ cd Pogo/
 cd ..
 ll
 morph
+rm bash-4.4.18.tar.gz* gcc-8.1.0.tar.xz* patch-2.7.6.tar.gz* xxx
+cd coreutils-8.29.tar.xz*
+rm coreutils-8.29.tar.xz*
+cd /
 cd Pogo/
+dotnet dev-certs https --trust
 morph
-env
-cd 
-cd LiFo/
+cd /etc
+cd ca-certificates
+dir
+cd update.d/
+ll
+cd /usr/share/
+cd ca-certificates/
+cdmo
+cd mozilla/
+ls -la
+ls -la | less
 cd ..
-cd McMorph/
-ll
-cd McMorph/
-apk update
-apk upgrade
-apk add lzip
-cd /Pogo/Data/Archives/
-ll
-find . -name "*.lz"
-which tar
-ls -l `which tar`
-apk add tar
-find . -name "*.lz" -exec tar tvf {} \;
-man
-apk add man-pages
-apk add man-doc
-apk add tar doc
-apk add tar-doc
-man tar
-morph
-man tar
-du -s /
-du -sh /
-apk update
-apk upgrade
-morph
-cd /McMo
+cd update.d/
+cd /usr/share/
+cd ca-certificates/
+cdmo
+cd mozilla/
+ls -la
+ls -la | less
+dotnet
+dotnet --info
 cd ./McMorph/
 dotnet restore
+cd /etc/apt/
+less sources.list
+cd sources.list.d/
+cd trusted.gpg.d/
+cd ..
+cd 
+apt-get update
+apt-get upgrade
+morph
+/usr/lib/ssl/
+cd /usr/lib/ssl/
+cd certs
+ll | less
+cd /usr/share/ca-certificates/mozilla/
+ll
+find / -name ssltest
+cd
+find /usr -name ssltest
+ssltest
+cd ca-certificates/
+cdmo
+cd mozilla/
+ls -la | less
+cd update.d/
+cd /usr/share/
+cd ca-certificates/
+cdmo
+cd mozilla/
+ls -la | less
+dotnet
 dotnet --info
+cd ./McMorph/
+dotnet restore
+cd /etc/apt/
+less sources.list
+cd sources.list.d/
+cd trusted.gpg.d/
+cd 
+apt-get update
+apt-get upgrade
+/usr/lib/ssl/
+cd /usr/lib/ssl/
+cd certs
+ll | less
+cd /usr/share/ca-certificates/mozilla/
+find / -name ssltest
+find /usr -name ssltest
+ssltest
+pwd
+which pwd
+d /Pogo/Data/Sources/less-530.tmp/
+cd /Pogo/Data/Sources/less-530.tmp/
+ls -lka
+ls -la
+ls -lA
+man tra
+man tar
+du
+du -sh *
+man rm
+cd /Pogo/Data/Sources/
+cd which-2.21.tmp/
+rm -rv *
+cd -
+cd autoconf-2.69/
+cd tests/
+mount
+cd ..
+ll
+cd
+which env
 morph

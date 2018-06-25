@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk-alpine
+FROM microsoft/dotnet:2.1.300-sdk-alpine
 
 RUN apk update && apk upgrade && apk add --no-cache \
     man man-pages \

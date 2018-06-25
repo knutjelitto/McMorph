@@ -13,4 +13,4 @@ files.
 [Version]   2.9.8
 
 [Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
-[Deps]
+[Deps]      ncurses

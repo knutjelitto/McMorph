@@ -4,7 +4,7 @@
 
 using System.IO;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     internal static class FileSystemExceptionHelper
     {

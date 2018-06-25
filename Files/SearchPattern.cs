@@ -6,7 +6,7 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// Search pattern compiler used for custom <see cref="IFileSystem.EnumeratePaths"/> implementations.
@@ -49,7 +49,7 @@ namespace McMorph.FS
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="searchPattern">The search pattern.</param>
-        /// <returns>An instance of <see cref="SearchPattern"/> in order to use <see cref="Match(McMorph.FS.UPath)"/> on a path.</returns>
+        /// <returns>An instance of <see cref="SearchPattern"/> in order to use <see cref="Match(McMorph.Files.UPath)"/> on a path.</returns>
         public static SearchPattern Parse(ref UPath path, ref string searchPattern)
         {
             return new SearchPattern(ref path, ref searchPattern);

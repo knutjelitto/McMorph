@@ -32,5 +32,15 @@ namespace McMorph
             Console.Write(new string(' ', Console.BufferWidth));
             Console.SetCursorPosition(0, top);
         }
+
+        public static (int col, int row) GetPosition()
+        {
+            return (Console.CursorLeft, Console.CursorTop);
+        }
+
+        public static void SetPosition ((int col, int row) pos)
+        {
+            Console.SetCursorPosition(pos.col, pos.row);
+        }
     }
 }

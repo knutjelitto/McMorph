@@ -13,4 +13,4 @@ for anyone.
 [Version]   7.0
 
 [Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
-[Deps]
+[Deps]      ncurses

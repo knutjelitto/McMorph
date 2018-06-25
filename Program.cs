@@ -9,7 +9,6 @@ using McMorph.Recipes;
 using McMorph.Downloads;
 using McMorph.Processes;
 using McMorph.Morphs;
-using McMorph.Tools;
 
 using Mono.Unix;
 using Mono.Unix.Native;
@@ -43,10 +42,9 @@ namespace McMorph
             //}
 
             morphs.Download();
-            //morphs.Extract();
+            morphs.Extract();
 
-            var less = morphs["less"];
-            less.Upstream.Extract();
+            Bash.Checker();
 
             Console.Write("any key ...");
             Console.ReadKey(true);

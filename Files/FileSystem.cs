@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using static McMorph.FS.FileSystemExceptionHelper;
+using static McMorph.Files.FileSystemExceptionHelper;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// Abstract class for a <see cref="IFileSystem"/>. Provides default arguments safety checking and redirecting to safe implementation.
@@ -432,7 +432,7 @@ namespace McMorph.FS
 
         /// <summary>
         /// Implementation for <see cref="ConvertPathToInternal"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
-        /// Converts the specified path to the underlying path used by this <see cref="IFileSystem"/>. In case of a <see cref="McMorph.FS.FileSystems.PhysicalFileSystem"/>, it 
+        /// Converts the specified path to the underlying path used by this <see cref="IFileSystem"/>. In case of a <see cref="McMorph.Files.FileSystems.PhysicalFileSystem"/>, it 
         /// would represent the actual path on the disk.
         /// </summary>
         /// <param name="path">The path.</param>

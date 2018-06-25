@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// A uniform unix like path.
@@ -524,6 +524,8 @@ namespace McMorph.FS
         {
             return provider.DirectoryExists(this);
         }
+
+        public bool Exists => provider.FileExists(this) || provider.DirectoryExists(this);
 
         public FileEntry AsFile => new FileEntry(provider, this);
 

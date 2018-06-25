@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static McMorph.FS.FileSystemExceptionHelper;
+using static McMorph.Files.FileSystemExceptionHelper;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     ///     Extension methods for <see cref="IFileSystem" />

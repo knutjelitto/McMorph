@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
 
     /// <summary>

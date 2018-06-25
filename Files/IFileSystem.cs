@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// Interface of a FileSystem.
@@ -175,7 +175,7 @@ namespace McMorph.FS
         // ----------------------------------------------
 
         /// <summary>
-        /// Converts the specified path to the underlying path used by this <see cref="IFileSystem"/>. In case of a <see cref="McMorph.FS.FileSystems.PhysicalFileSystem"/>, it 
+        /// Converts the specified path to the underlying path used by this <see cref="IFileSystem"/>. In case of a <see cref="McMorph.Files.FileSystems.PhysicalFileSystem"/>, it 
         /// would represent the actual path on the disk.
         /// </summary>
         /// <param name="path">The path.</param>

@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// Similar to <see cref="FileInfo"/> but to use with <see cref="IFileSystem"/>, provides properties and instance methods 

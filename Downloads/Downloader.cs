@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 
 using McMorph.Actors;
-using McMorph.FS;
+using McMorph.Files;
 
 namespace McMorph.Downloads
 {
@@ -11,6 +11,8 @@ namespace McMorph.Downloads
     {
         public byte[] GetBytes(Uri uri)
         {
+            // wget https://ftpmirror.gnu.org/gnu/hello/hello-2.10.tar.gz
+
             var client = new WebClient();
 
             var basename = ((UPath)uri.LocalPath).GetName();

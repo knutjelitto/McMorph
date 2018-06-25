@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace McMorph.FS
+namespace McMorph.Files
 {
     /// <summary>
     /// Similar to <see cref="FileSystemInfo"/> but to use with <see cref="IFileSystem"/>, provides the base class
