@@ -9,12 +9,12 @@ namespace McMorph
         public static int Width => Console.WindowWidth;
         public static int Height => Console.WindowHeight;
         
-        public static void Write(params string[] texts)
+        public static void Write(params object[] texts)
         {
             Console.Write(string.Join("", texts));
         }
 
-        public static void WriteLine(params string[] texts)
+        public static void WriteLine(params object[] texts)
         {
             Console.WriteLine(string.Join("", texts));
         }

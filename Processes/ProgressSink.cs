@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace McMorph.Processes
 {
@@ -31,6 +32,7 @@ namespace McMorph.Processes
             this.sink.PutLine(line);
             Console.Write(this.gimmik[this.state]);
             this.state = (this.state + 1) % this.gimmik.Length;
+            Task.Delay(100).Wait();
         }
     }
 }

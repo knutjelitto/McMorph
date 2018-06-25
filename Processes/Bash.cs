@@ -17,6 +17,8 @@ namespace McMorph.Processes
         {
         }
 
+        public int ExitCode => this.process.ExitCode;
+
         public Bash Command(string command)
         {
             this.command = command;
@@ -54,54 +56,53 @@ namespace McMorph.Processes
             startInfo.RedirectStandardOutput = this.stdOut != null;
             startInfo.RedirectStandardError = this.stdErr != null;
 
-            using (this.process = new Process() { StartInfo = startInfo })
+            this.process = new Process() { StartInfo = startInfo };
+
+            if (startInfo.RedirectStandardOutput)
             {
-                if (startInfo.RedirectStandardOutput)
+                process.OutputDataReceived += (s, e) =>
                 {
-                    process.OutputDataReceived += (s, e) =>
+                    if (e.Data != null)
                     {
-                        if (e.Data != null)
-                        {
-                            this.stdOut.PutLine(e.Data);
-                        }
-                    };
-                    process.EnableRaisingEvents = true;
-                }
-
-                if (startInfo.RedirectStandardError)
-                {
-                    process.ErrorDataReceived += (s, e) =>
-                    {
-                        if (e.Data != null)
-                        {
-                            this.stdErr.PutLine(e.Data);
-                        }
-                    };
-                    process.EnableRaisingEvents = true;
-                }
-
-                process.Start();
-
-                if (startInfo.RedirectStandardOutput)
-                {
-                    process.BeginOutputReadLine();
-                }
-                if (startInfo.RedirectStandardError)
-                {
-                    process.BeginErrorReadLine();
-                }
-                if (startInfo.RedirectStandardInput)
-                {
-                    string line;
-                    while ((line = this.stdIn.GetLine()) != null)
-                    {
-                        process.StandardInput.WriteLine(line);
-                        process.StandardInput.Flush();
+                        this.stdOut.PutLine(e.Data);
                     }
-                }
-
-                process.WaitForExit();
+                };
+                process.EnableRaisingEvents = true;
             }
+
+            if (startInfo.RedirectStandardError)
+            {
+                process.ErrorDataReceived += (s, e) =>
+                {
+                    if (e.Data != null)
+                    {
+                        this.stdErr.PutLine(e.Data);
+                    }
+                };
+                process.EnableRaisingEvents = true;
+            }
+
+            process.Start();
+
+            if (startInfo.RedirectStandardOutput)
+            {
+                process.BeginOutputReadLine();
+            }
+            if (startInfo.RedirectStandardError)
+            {
+                process.BeginErrorReadLine();
+            }
+            if (startInfo.RedirectStandardInput)
+            {
+                string line;
+                while ((line = this.stdIn.GetLine()) != null)
+                {
+                    process.StandardInput.WriteLine(line);
+                    process.StandardInput.Flush();
+                }
+            }
+
+            process.WaitForExit();
 
             return this;
         }

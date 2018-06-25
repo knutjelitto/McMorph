@@ -77,11 +77,11 @@ namespace McMorph.Morphs
             return true;
         }
 
-        public async Task<bool> Extract()
+        public bool Extract()
         {
             foreach (var morph in this)
             {
-                var result = await morph.Upstream.Extract();
+                var result = morph.Upstream.Extract();
                 if (!result)
                 {
                     return false;

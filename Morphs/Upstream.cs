@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using McMorph.Downloads;
 using McMorph.Recipes;
 using McMorph.FS;
+using McMorph.Tools;
 
 namespace McMorph.Morphs
 {
@@ -22,10 +23,22 @@ namespace McMorph.Morphs
         public Morph Morph => this.morph;
 
 
-        public Task<bool> Extract()
+        public bool Extract()
         {
-            Terminal.WriteLine("extracting to ", this.Pogo.SourcesPath(this.uri).ToString());
-            return Task.FromResult(true);
+            var archivePath = Pogo.ArchivesPath(this.uri);
+            var extractPath = Pogo.SourcesPath(this.uri);
+            if (!archivePath.AsFile.Exists)
+            {
+                throw new ApplicationException($"can't extract '{archivePath}': doesn't exists");
+            }
+            if (extractPath.AsDirectory.Exists)
+            {
+                return true;
+            }
+            Terminal.WriteLine("extracting ", archivePath, " to ", extractPath);
+            var xtract = new Extract();
+
+            return xtract.Run(archivePath, extractPath);
         }
 
         public bool Download()

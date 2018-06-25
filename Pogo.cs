@@ -45,7 +45,7 @@ namespace McMorph
         }
 
         private Regex archiveRegex = new Regex(
-            @".*(?<ex>\.((tar\.(gz|xz|lz|bz2))|(tzg)))$",
+            @".*(?<extension>\.((tar\.(gz|xz|lz|bz2))|(tzg)))$",
             RegexOptions.Compiled|RegexOptions.IgnoreCase|RegexOptions.ExplicitCapture);
 
         private bool TryGetArchiveStem(Uri uri, out string stem)
@@ -54,7 +54,7 @@ namespace McMorph
             var match = archiveRegex.Match(name);
             if (match.Success)
             {
-                var ex = match.Groups["ex"];
+                var ex = match.Groups["extension"];
                 stem = name.Substring(0, name.Length - ex.Length);
                 return true;
             }
