@@ -62,28 +62,6 @@ namespace McMorph.Files
         /// <inheritdoc />
         protected override void MoveDirectoryImpl(UPath srcPath, UPath destPath)
         {
-            if (IsOnWindows)
-            {
-                if (IsWithinSpecialDirectory(srcPath))
-                {
-                    if (!SpecialDirectoryExists(srcPath))
-                    {
-                        throw NewDirectoryNotFoundException(srcPath);
-                    }
-
-                    throw new UnauthorizedAccessException($"Cannot move the special directory `{srcPath}`");
-                }
-
-                if (IsWithinSpecialDirectory(destPath))
-                {
-                    if (!SpecialDirectoryExists(destPath))
-                    {
-                        throw NewDirectoryNotFoundException(destPath);
-                    }
-                    throw new UnauthorizedAccessException($"Cannot move to the special directory `{destPath}`");
-                }
-            }
-
             var systemSrcPath = ConvertPathToInternal(srcPath);
             var systemDestPath = ConvertPathToInternal(destPath);
 

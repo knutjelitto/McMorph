@@ -18,9 +18,8 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path to the file or directory.</param>
         /// <exception cref="System.ArgumentNullException">fileSystem</exception>
-        protected FileSystemEntry(IFileSystem fileSystem, UPath path)
+        protected FileSystemEntry(UPath path)
         {
-            FileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             path.AssertAbsolute();
             Path = path;
         }
@@ -30,10 +29,6 @@ namespace McMorph.Files
         /// </summary>
         public UPath Path { get; }
 
-        /// <summary>
-        /// Gets the file system used by this entry.
-        /// </summary>
-        public IFileSystem FileSystem { get; }
 
         /// <summary>
         /// Gets the full path of the directory or file.
@@ -60,8 +55,8 @@ namespace McMorph.Files
         /// </summary>
         public FileAttributes Attributes
         {
-            get => FileSystem.GetAttributes(Path);
-            set => FileSystem.SetAttributes(Path, value);
+            get => FileSystem.Implementation.GetAttributes(Path);
+            set => FileSystem.Implementation.SetAttributes(Path, value);
         }
 
         /// <summary>
@@ -75,8 +70,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime CreationTime
         {
-            get => FileSystem.GetCreationTime(Path);
-            set => FileSystem.SetCreationTime(Path, value);
+            get => FileSystem.Implementation.GetCreationTime(Path);
+            set => FileSystem.Implementation.SetCreationTime(Path, value);
         }
 
         /// <summary>
@@ -84,8 +79,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime LastAccessTime
         {
-            get => FileSystem.GetLastAccessTime(Path);
-            set => FileSystem.SetLastAccessTime(Path, value);
+            get => FileSystem.Implementation.GetLastAccessTime(Path);
+            set => FileSystem.Implementation.SetLastAccessTime(Path, value);
         }
 
         /// <summary>
@@ -93,8 +88,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime LastWriteTime
         {
-            get => FileSystem.GetLastWriteTime(Path);
-            set => FileSystem.SetLastWriteTime(Path, value);
+            get => FileSystem.Implementation.GetLastWriteTime(Path);
+            set => FileSystem.Implementation.SetLastWriteTime(Path, value);
         }
 
         /// <summary>Gets an instance of the parent directory.</summary>
@@ -103,7 +98,7 @@ namespace McMorph.Files
         ///     The specified path is invalid, such as being on an unmapped
         ///     drive.
         /// </exception>
-        public DirectoryEntry Parent => Path == UPath.Root ? null : new DirectoryEntry(FileSystem, Path / "..");
+        public DirectoryEntry Parent => Path == UPath.Root ? null : new DirectoryEntry(Path / "..");
 
         /// <summary>
         /// Deletes a file or directory.
@@ -124,7 +119,7 @@ namespace McMorph.Files
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Path.Equals(other.Path) && FileSystem.Equals(other.FileSystem);
+            return Path.Equals(other.Path);
         }
 
         /// <inheritdoc />
@@ -139,10 +134,7 @@ namespace McMorph.Files
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (Path.GetHashCode() * 397) ^ FileSystem.GetHashCode();
-            }
+            return Path.GetHashCode();
         }
 
         public static bool operator ==(FileSystemEntry left, FileSystemEntry right)

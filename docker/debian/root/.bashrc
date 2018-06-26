@@ -5,7 +5,7 @@ umask 022
 export HISTCONTROL=ignorespace:ignoredups:erasedups
 
 export POGO_ENV="pogo.net"
-export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/LiFo/bin
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/McMorph/tools
 export TERM=xterm
 export LANG=C.UTF-8
 export LANGUAGE=C.UTF-8

@@ -370,3 +370,29 @@ ll
 cd
 which env
 morph
+cd tests/
+mount
+cd ..
+cd
+which env
+cd ./McMorph/
+dotnet bin/Debug/netcoreapp2.0/McMorph.dll
+runmorph 
+morph
+remorph 
+cd /Pogo/Data/
+ll
+rm -rv *
+morph 
+remorph
+cd /Pogo/Data/
+rm -rv *
+morph 
+time morph
+morph
+remorph
+mount
+cd /Pogo/Data/box/R
+cd /Pogo/Data/box/Root/
+ll
+ll /

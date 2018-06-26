@@ -20,7 +20,7 @@ namespace McMorph.Files
         /// </summary>
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The file path.</param>
-        public FileEntry(IFileSystem fileSystem, UPath path) : base(fileSystem, path)
+        public FileEntry(UPath path) : base(path)
         {
         }
 
@@ -47,7 +47,7 @@ namespace McMorph.Files
         ///     The user does not have write permission, but attempted to set this
         ///     property to false.
         /// </exception>
-        public bool IsReadOnly => (FileSystem.GetAttributes(Path) & FileAttributes.ReadOnly) != 0;
+        public bool IsReadOnly => (FileSystem.Implementation.GetAttributes(Path) & FileAttributes.ReadOnly) != 0;
 
         /// <summary>Gets the size, in bytes, of the current file.</summary>
         /// <returns>The size of the current file in bytes.</returns>
@@ -58,7 +58,7 @@ namespace McMorph.Files
         ///     The file does not exist.-or- The Length property is called for a
         ///     directory.
         /// </exception>
-        public long Length => FileSystem.GetFileLength(Path);
+        public long Length => FileSystem.Implementation.GetFileLength(Path);
 
         /// <summary>Copies an existing file to a new file, allowing the overwriting of an existing file.</summary>
         /// <returns>
@@ -96,8 +96,8 @@ namespace McMorph.Files
         /// </exception>
         public FileEntry CopyTo(UPath destFileName, bool overwrite)
         {
-            FileSystem.CopyFile(Path, destFileName, overwrite);
-            return new FileEntry(FileSystem, destFileName);
+            FileSystem.Implementation.CopyFile(Path, destFileName, overwrite);
+            return new FileEntry(destFileName);
         }
 
         /// <summary>Copies an existing file to a new file on another <see cref="IFileSystem"/>, allowing the overwriting of an existing file.</summary>
@@ -134,7 +134,7 @@ namespace McMorph.Files
         public FileEntry CopyTo(FileEntry destFile, bool overwrite)
         {
             if (destFile == null) throw new ArgumentNullException(nameof(destFile));
-            FileSystem.CopyFileCross(destFile.FileSystem, Path, destFile.Path, overwrite);
+            FileSystemExtensions.CopyFileCross(Path, destFile.Path, overwrite);
             return destFile;
         }
 
@@ -142,7 +142,7 @@ namespace McMorph.Files
         /// <returns>A new file.</returns>
         public Stream Create()
         {
-            return FileSystem.CreateFile(Path);
+            return FileSystemExtensions.CreateFile(Path);
         }
 
         /// <summary>Moves a specified file to a new location, providing the option to specify a new file name.</summary>
@@ -176,7 +176,7 @@ namespace McMorph.Files
         /// </exception>
         public void MoveTo(UPath destFileName)
         {
-            FileSystem.MoveFile(Path, destFileName);
+            FileSystem.Implementation.MoveFile(Path, destFileName);
         }
 
         /// <summary>Opens a file in the specified mode with read, write, or read/write access and the specified sharing option.</summary>
@@ -205,7 +205,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.IOException">The file is already open. </exception>
         public Stream Open(FileMode mode, FileAccess access, FileShare share = FileShare.None)
         {
-            return FileSystem.OpenFile(Path, mode, access, share);
+            return FileSystem.Implementation.OpenFile(Path, mode, access, share);
         }
 
 
@@ -219,7 +219,7 @@ namespace McMorph.Files
         /// </remarks>
         public string ReadAllText()
         {
-            return FileSystem.ReadAllText(Path);
+            return FileSystemExtensions.ReadAllText(Path);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace McMorph.Files
         /// <returns>A string containing all lines of the file.</returns>
         public string ReadAllText(Encoding encoding)
         {
-            return FileSystem.ReadAllText(Path, encoding);
+            return FileSystemExtensions.ReadAllText(Path, encoding);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace McMorph.Files
         /// </remarks>
         public void WriteAllText(string content)
         {
-            FileSystem.WriteAllText(Path, content);
+            FileSystemExtensions.WriteAllText(Path, content);
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace McMorph.Files
         /// </remarks>
         public void WriteAllText(string content, Encoding encoding)
         {
-            FileSystem.WriteAllText(Path, content, encoding);
+            FileSystemExtensions.WriteAllText(Path, content, encoding);
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace McMorph.Files
         /// </remarks>
         public void AppendAllText(string content)
         {
-            FileSystem.AppendAllText(Path, content);
+            FileSystemExtensions.AppendAllText(Path, content);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace McMorph.Files
         /// </remarks>
         public void AppendAllText(string content, Encoding encoding)
         {
-            FileSystem.AppendAllText(Path, content, encoding);
+            FileSystemExtensions.AppendAllText(Path, content, encoding);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace McMorph.Files
         /// <returns>An array of strings containing all lines of the file.</returns>
         public string[] ReadAllLines()
         {
-            return FileSystem.ReadAllLines(Path);
+            return FileSystemExtensions.ReadAllLines(Path);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace McMorph.Files
         /// <returns>An array of strings containing all lines of the file.</returns>
         public string[] ReadAllLines(Encoding encoding)
         {
-            return FileSystem.ReadAllLines(Path, encoding);
+            return FileSystemExtensions.ReadAllLines(Path, encoding);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace McMorph.Files
         /// <returns>A byte array containing the contents of the file.</returns>
         public byte[] ReadAllBytes()
         {
-            return FileSystem.ReadAllBytes(Path);
+            return FileSystemExtensions.ReadAllBytes(Path);
         }
 
         /// <summary>
@@ -344,16 +344,16 @@ namespace McMorph.Files
         /// </remarks>
         public void WriteAllBytes(byte[] content)
         {
-            FileSystem.WriteAllBytes(Path, content);
+            FileSystemExtensions.WriteAllBytes(Path, content);
         }
 
         /// <inheritdoc />
-        public override bool Exists => FileSystem.FileExists(Path);
+        public override bool Exists => FileSystem.Implementation.FileExists(Path);
 
         /// <inheritdoc />
         public override void Delete()
         {
-            FileSystem.DeleteFile(Path);
+            FileSystem.Implementation.DeleteFile(Path);
         }
     }
 }

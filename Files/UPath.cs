@@ -16,8 +16,6 @@ namespace McMorph.Files
     {
         [ThreadStatic] private static InternalHelper _internalHelperTls;
 
-        public static readonly IFileSystem provider = new PhysicalFileSystem();
-
         /// <summary>
         /// An empty path.
         /// </summary>
@@ -517,18 +515,18 @@ namespace McMorph.Files
 
         public bool FileExists()
         {
-            return provider.FileExists(this);
+            return FileSystem.Implementation.FileExists(this);
         }
 
         public bool DirectoryExists()
         {
-            return provider.DirectoryExists(this);
+            return FileSystem.Implementation.DirectoryExists(this);
         }
 
-        public bool Exists => provider.FileExists(this) || provider.DirectoryExists(this);
+        public bool Exists => FileSystem.Implementation.FileExists(this) || FileSystem.Implementation.DirectoryExists(this);
 
-        public FileEntry AsFile => new FileEntry(provider, this);
+        public FileEntry AsFile => new FileEntry(this);
 
-        public DirectoryEntry AsDirectory => new DirectoryEntry(provider, this);
+        public DirectoryEntry AsDirectory => new DirectoryEntry(this);
     }
 }

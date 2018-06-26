@@ -14,9 +14,11 @@ namespace McMorph.Processes
         private List<Output> output;
         private string command = null;
         private UPath directory;
-        private Dictionary<string, string> environment;
+        private IReadOnlyDictionary<string, string> environment;
         private Action<IDictionary<string, string>> environmentSetup;
+        private bool newEnvironment;
         private Progress progress = null;
+        private bool loud = false;
 
         private TextReader input;
         public Bash()
@@ -45,27 +47,39 @@ namespace McMorph.Processes
             return this;
         }
 
-        public Bash WithEnviroment(IReadOnlyDictionary<string, string> environment, bool merge = false)
+        public Bash Loud()
+        {
+            this.loud = true;
+            return this;
+        }
+
+        public Bash WithEnviroment(IReadOnlyDictionary<string, string> environment)
         {
             this.environmentSetup = null;
-            this.environment = new Dictionary<string, string>();
-            if (merge)
-            {
-                foreach (string key in Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process).Keys)
-                {
-                    this.environment[key] = Environment.GetEnvironmentVariable(key, EnvironmentVariableTarget.Process);
-                }
-            }
-            foreach (var kv in environment)
-            {
-                this.environment[kv.Key] = kv.Value;
-            }
+            this.environment = environment;
+            this.newEnvironment = false;
+            return this;
+        }
+
+        public Bash WithNewEnviroment(IReadOnlyDictionary<string, string> environment)
+        {
+            this.environmentSetup = null;
+            this.environment = environment;
+            this.newEnvironment = true;
             return this;
         }
 
         public Bash WithEnviroment(Action<IDictionary<string, string>> environmentSetup)
         {
             this.environment = null;
+            this.environmentSetup = environmentSetup;
+            return this;
+        }
+
+        public Bash WithNewEnviroment(Action<IDictionary<string, string>> environmentSetup)
+        {
+            this.environment = null;
+            this.newEnvironment = true;
             this.environmentSetup = environmentSetup;
             return this;
         }
@@ -91,7 +105,10 @@ namespace McMorph.Processes
 
             if (this.environment != null)
             {
-                startInfo.Environment.Clear();
+                if (this.newEnvironment)
+                {
+                    startInfo.Environment.Clear();
+                }
                 foreach (var kv in this.environment)
                 {
                     startInfo.Environment.Add(kv);
@@ -99,6 +116,10 @@ namespace McMorph.Processes
             }
             else if (this.environmentSetup != null)
             {
+                if (this.newEnvironment)
+                {
+                    startInfo.Environment.Clear();
+                }
                 this.environmentSetup(startInfo.Environment);
             }
 
@@ -145,6 +166,10 @@ namespace McMorph.Processes
         private void AddOutput(Output output)
         {
             this.output.Add(output);
+            if (this.loud)
+            {
+                Terminal.WriteLine(output);
+            }
             if (this.progress != null)
             {
                 this.progress.Advance();

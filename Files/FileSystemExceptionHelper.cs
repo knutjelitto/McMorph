@@ -8,11 +8,6 @@ namespace McMorph.Files
 {
     internal static class FileSystemExceptionHelper
     {
-        public static FileNotFoundException NewFileNotFoundException(UPath path)
-        {
-            return new FileNotFoundException($"Could not find file `{path}`.");
-        }
-
         public static DirectoryNotFoundException NewDirectoryNotFoundException(UPath path)
         {
             return new DirectoryNotFoundException($"Could not find a part of the path `{path}`.");

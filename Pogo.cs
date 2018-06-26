@@ -16,6 +16,8 @@ namespace McMorph
         {
             root.AssertAbsolute();
             Root = root;
+
+            LazyBox = new Lazy<TheBox>(() => new TheBox(Data / "box"));
         }
 
         private UPath Root { get; }
@@ -25,15 +27,32 @@ namespace McMorph
         public UPath Archives => Data / "Archives";
         public UPath Sources => Data / "Sources";
 
+        private Lazy<TheBox> LazyBox;
+        public TheBox Box => this.LazyBox.Value;
+
         public UPath System => Root / "System";
         public UPath Index => System / "Index";
 
-        public UPath ArchivesPath(Uri uri)
+        public class TheBox
+        {
+            private readonly UPath root;
+
+            public TheBox(UPath root)
+            {
+                this.root = root;
+            }
+            public UPath Changes => this.root / "Changes";
+            public UPath Work => this.root / "Work";
+            public UPath Residuum => this.root / "Residuum";
+            public UPath Root => this.root / "Root";
+        }
+
+        public UPath ArchivePath(Uri uri)
         {
             return Archives / (uri.Host + uri.LocalPath);
         }
         
-        public UPath SourcesPath(Uri uri)
+        public UPath SourcePath(Uri uri)
         {
             if (TryGetArchiveStem(uri, out var stem))
             {

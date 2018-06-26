@@ -7,6 +7,7 @@ using McMorph.Downloads;
 using McMorph.Recipes;
 using McMorph.Files;
 using McMorph.Processes;
+using McMorph.Results;
 
 namespace McMorph.Morphs
 {
@@ -27,8 +28,8 @@ namespace McMorph.Morphs
 
         public bool Extract()
         {
-            var archivePath = Pogo.ArchivesPath(this.uri);
-            var extractPath = Pogo.SourcesPath(this.uri);
+            var archivePath = Pogo.ArchivePath(this.uri);
+            var extractPath = Pogo.SourcePath(this.uri);
             if (!archivePath.AsFile.Exists)
             {
                 throw new ApplicationException($"can't extract '{archivePath}': doesn't exists");
@@ -83,9 +84,14 @@ namespace McMorph.Morphs
         {
             var downloader = new Downloader();
 
-            var filepath = this.Pogo.ArchivesPath(this.uri);
+            var filepath = this.Pogo.ArchivePath(this.uri);
 
             var file = filepath.AsFile;
+
+            if (filepath.Exists && !file.Exists)
+            {
+                throw Error.ExistsButIsNotFile(filepath);
+            }
 
             if (!file.Exists)
             {

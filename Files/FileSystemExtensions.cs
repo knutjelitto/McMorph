@@ -8,6 +8,8 @@ using System.IO;
 using System.Text;
 using static McMorph.Files.FileSystemExceptionHelper;
 
+using McMorph.Results;
+
 namespace McMorph.Files
 {
     /// <summary>
@@ -23,69 +25,9 @@ namespace McMorph.Files
         /// <param name="srcPath">The source path of the file to copy from the source filesystem</param>
         /// <param name="destPath">The destination path of the file in the destination filesystem</param>
         /// <param name="overwrite"><c>true</c> to overwrite an existing destination file</param>
-        public static void CopyFileCross(this IFileSystem fs, IFileSystem destFileSystem, UPath srcPath, UPath destPath, bool overwrite)
+        public static void CopyFileCross(UPath srcPath, UPath destPath, bool overwrite)
         {
-            if (destFileSystem == null) throw new ArgumentNullException(nameof(destFileSystem));
-
-            // If this is the same filesystem, use the file system directly to perform the action
-            if (fs == destFileSystem)
-            {
-                fs.CopyFile(srcPath, destPath, overwrite);
-                return;
-            }
-
-            srcPath.AssertAbsolute(nameof(srcPath));
-            if (!fs.FileExists(srcPath))
-            {
-                throw NewFileNotFoundException(srcPath);
-            }
-
-            destPath.AssertAbsolute(nameof(destPath));
-            var destDirectory = destPath.GetDirectory();
-            if (!destFileSystem.DirectoryExists(destDirectory))
-            {
-                throw NewDirectoryNotFoundException(destDirectory);
-            }
-
-            if (destFileSystem.FileExists(destPath) && !overwrite)
-            {
-                throw new IOException($"The destination file path `{destPath}` already exist and overwrite is false");
-            }
-
-            using (var sourceStream = fs.OpenFile(srcPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                var copied = false;
-                try
-                {
-                    using (var destStream = destFileSystem.OpenFile(destPath, FileMode.Create, FileAccess.Write, FileShare.Read))
-                    {
-                        sourceStream.CopyTo(destStream);
-                    }
-
-                    // NOTE: For some reasons, we can sometimes get an Unauthorized access if we try to set the LastWriteTime after the SetAttributes
-                    // So we setup it here.
-                    destFileSystem.SetLastWriteTime(destPath, fs.GetLastWriteTime(srcPath));
-
-                    // Preserve attributes and LastWriteTime as a regular File.Copy
-                    destFileSystem.SetAttributes(destPath, fs.GetAttributes(srcPath));
-
-                    copied = true;
-                }
-                finally
-                {
-                    if (!copied)
-                    {
-                        try
-                        {
-                            destFileSystem.DeleteFile(destPath);
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                }
-            }
+            FileSystem.Implementation.CopyFile(srcPath, destPath, overwrite);
         }
 
         /// <summary>
@@ -95,95 +37,9 @@ namespace McMorph.Files
         /// <param name="destFileSystem">The destination filesystem</param>
         /// <param name="srcPath">The source path of the file to move from the source filesystem</param>
         /// <param name="destPath">The destination path of the file in the destination filesystem</param>
-        public static void MoveFileCross(this IFileSystem fs, IFileSystem destFileSystem, UPath srcPath, UPath destPath)
+        public static void MoveFileCross(UPath srcPath, UPath destPath)
         {
-            if (destFileSystem == null) throw new ArgumentNullException(nameof(destFileSystem));
-
-            // If this is the same filesystem, use the file system directly to perform the action
-            if (fs == destFileSystem)
-            {
-                fs.MoveFile(srcPath, destPath);
-                return;
-            }
-
-            // Check source
-            srcPath.AssertAbsolute(nameof(srcPath));
-            if (!fs.FileExists(srcPath))
-            {
-                throw NewFileNotFoundException(srcPath);
-            }
-
-            // Check destination
-            destPath.AssertAbsolute(nameof(destPath));
-            var destDirectory = destPath.GetDirectory();
-            if (!destFileSystem.DirectoryExists(destDirectory))
-            {
-                throw NewDirectoryNotFoundException(destPath);
-            }
-
-            if (destFileSystem.DirectoryExists(destPath))
-            {
-                throw NewDestinationDirectoryExistException(destPath);
-            }
-
-            if (destFileSystem.FileExists(destPath))
-            {
-                throw NewDestinationFileExistException(destPath);
-            }
-
-            using (var sourceStream = fs.OpenFile(srcPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                var copied = false;
-                try
-                {
-                    using (var destStream = destFileSystem.OpenFile(destPath, FileMode.Create, FileAccess.Write, FileShare.Read))
-                    {
-                        sourceStream.CopyTo(destStream);
-                    }
-
-                    // Preserve all attributes and times
-                    destFileSystem.SetAttributes(destPath, fs.GetAttributes(srcPath));
-                    destFileSystem.SetCreationTime(destPath, fs.GetCreationTime(srcPath));
-                    destFileSystem.SetLastAccessTime(destPath, fs.GetLastAccessTime(srcPath));
-                    destFileSystem.SetLastWriteTime(destPath, fs.GetLastWriteTime(srcPath));
-                    copied = true;
-                }
-                finally
-                {
-                    if (!copied)
-                    {
-                        try
-                        {
-                            destFileSystem.DeleteFile(destPath);
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                }
-            }
-
-            var deleted = false;
-            try
-            {
-                fs.DeleteFile(srcPath);
-                deleted = true;
-            }
-            finally
-            {
-                if (!deleted)
-                {
-                    try
-                    {
-                        destFileSystem.DeleteFile(destPath);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-            }
+            FileSystem.Implementation.MoveFile(srcPath, destPath);
         }
 
         /// <summary>
@@ -192,10 +48,10 @@ namespace McMorph.Files
         /// <param name="fs">The filesystem.</param>
         /// <param name="path">The path of the file to open for reading.</param>
         /// <returns>A byte array containing the contents of the file.</returns>
-        public static byte[] ReadAllBytes(this IFileSystem fs, UPath path)
+        public static byte[] ReadAllBytes(UPath path)
         {
             var memstream = new MemoryStream();
-            using (var stream = fs.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 stream.CopyTo(memstream);
             }
@@ -212,9 +68,9 @@ namespace McMorph.Files
         ///     This method attempts to automatically detect the encoding of a file based on the presence of byte order marks.
         ///     Encoding formats UTF-8 and UTF-32 (both big-endian and little-endian) can be detected.
         /// </remarks>
-        public static string ReadAllText(this IFileSystem fs, UPath path)
+        public static string ReadAllText(UPath path)
         {
-            var stream = fs.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -230,10 +86,10 @@ namespace McMorph.Files
         /// <param name="path">The path of the file to open for reading.</param>
         /// <param name="encoding">The encoding to use to decode the text from <paramref name="path" />.</param>
         /// <returns>A string containing all lines of the file.</returns>
-        public static string ReadAllText(this IFileSystem fs, UPath path, Encoding encoding)
+        public static string ReadAllText(UPath path, Encoding encoding)
         {
             if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            var stream = fs.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream, encoding))
                 {
@@ -254,10 +110,10 @@ namespace McMorph.Files
         ///     Given a byte array and a file path, this method opens the specified file, writes the
         ///     contents of the byte array to the file, and then closes the file.
         /// </remarks>
-        public static void WriteAllBytes(this IFileSystem fs, UPath path, byte[] content)
+        public static void WriteAllBytes(UPath path, byte[] content)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-            using (var stream = fs.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read))
+            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            using (var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 stream.Write(content, 0, content.Length);
             }
@@ -269,9 +125,9 @@ namespace McMorph.Files
         /// <param name="fs">The filesystem.</param>
         /// <param name="path">The path of the file to open for reading.</param>
         /// <returns>An array of strings containing all lines of the file.</returns>
-        public static string[] ReadAllLines(this IFileSystem fs, UPath path)
+        public static string[] ReadAllLines(UPath path)
         {
-            var stream = fs.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -297,10 +153,10 @@ namespace McMorph.Files
         ///     Encoding formats UTF-8 and UTF-32 (both big-endian and little-endian) can be detected.
         /// </remarks>
         /// <returns>An array of strings containing all lines of the file.</returns>
-        public static string[] ReadAllLines(this IFileSystem fs, UPath path, Encoding encoding)
+        public static string[] ReadAllLines(UPath path, Encoding encoding)
         {
-            if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            var stream = fs.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Assert.ThrowIfArgumentNotNull(encoding, nameof(encoding));
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream, encoding))
                 {
@@ -329,10 +185,10 @@ namespace McMorph.Files
         ///     If it is necessary to include a UTF-8 identifier, such as a byte order mark, at the beginning of a file,
         ///     use the <see cref="WriteAllText(Zio.IFileSystem,Zio.UPath,string, Encoding)" /> method overload with UTF8 encoding.
         /// </remarks>
-        public static void WriteAllText(this IFileSystem fs, UPath path, string content)
+        public static void WriteAllText(UPath path, string content)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-            var stream = fs.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream))
                 {
@@ -356,11 +212,11 @@ namespace McMorph.Files
         ///     specified encoding, and then closes the file.
         ///     The file handle is guaranteed to be closed by this method, even if exceptions are raised.
         /// </remarks>
-        public static void WriteAllText(this IFileSystem fs, UPath path, string content, Encoding encoding)
+        public static void WriteAllText(UPath path, string content, Encoding encoding)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-            if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            var stream = fs.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            Assert.ThrowIfArgumentNotNull(encoding, nameof(encoding));
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream, encoding))
                 {
@@ -384,10 +240,10 @@ namespace McMorph.Files
         ///     The method creates the file if it doesn’t exist, but it doesn't create new directories. Therefore, the value of the
         ///     path parameter must contain existing directories.
         /// </remarks>
-        public static void AppendAllText(this IFileSystem fs, UPath path, string content)
+        public static void AppendAllText(UPath path, string content)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-            var stream = fs.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
+            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream))
                 {
@@ -411,11 +267,11 @@ namespace McMorph.Files
         ///     The method creates the file if it doesn’t exist, but it doesn't create new directories. Therefore, the value of the
         ///     path parameter must contain existing directories.
         /// </remarks>
-        public static void AppendAllText(this IFileSystem fs, UPath path, string content, Encoding encoding)
+        public static void AppendAllText(UPath path, string content, Encoding encoding)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-            if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            var stream = fs.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
+            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            Assert.ThrowIfArgumentNotNull(encoding, nameof(encoding));
+            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream, encoding))
                 {
@@ -431,10 +287,10 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path and name of the file to create.</param>
         /// <returns>A stream that provides read/write access to the file specified in path.</returns>
-        public static Stream CreateFile(this IFileSystem fileSystem, UPath path)
+        public static Stream CreateFile(UPath path)
         {
             path.AssertAbsolute();
-            return fileSystem.OpenFile(path, FileMode.Create, FileAccess.ReadWrite);
+            return FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.ReadWrite);
         }
 
         /// <summary>
@@ -443,9 +299,9 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path of the directory to look for directories.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the directories in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumerateDirectories(this IFileSystem fileSystem, UPath path)
+        public static IEnumerable<UPath> EnumerateDirectories(UPath path)
         {
-            return EnumerateDirectories(fileSystem, path, "*");
+            return EnumerateDirectories(path, "*");
         }
 
         /// <summary>
@@ -456,10 +312,10 @@ namespace McMorph.Files
         /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
         /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the directories in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumerateDirectories(this IFileSystem fileSystem, UPath path, string searchPattern)
+        public static IEnumerable<UPath> EnumerateDirectories(UPath path, string searchPattern)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumerateDirectories(fileSystem, path, searchPattern, SearchOption.TopDirectoryOnly);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            return EnumerateDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
@@ -473,10 +329,11 @@ namespace McMorph.Files
         /// or should include all subdirectories.
         /// The default value is TopDirectoryOnly.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the directories in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumerateDirectories(this IFileSystem fileSystem, UPath path, string searchPattern, SearchOption searchOption)
+        public static IEnumerable<UPath> EnumerateDirectories(UPath path, string searchPattern, SearchOption searchOption)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            foreach (var subPath in fileSystem.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Directory))
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNotNull(searchOption, nameof(searchOption));
+            foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Directory))
                 yield return subPath;
         }
 
@@ -486,9 +343,9 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path of the directory to look for files.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumerateFiles(this IFileSystem fileSystem, UPath path)
+        public static IEnumerable<UPath> EnumerateFiles(UPath path)
         {
-            return EnumerateFiles(fileSystem, path, "*");
+            return FileSystemExtensions.EnumerateFiles(path, "*");
         }
 
         /// <summary>
@@ -499,10 +356,10 @@ namespace McMorph.Files
         /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
         /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumerateFiles(this IFileSystem fileSystem, UPath path, string searchPattern)
+        public static IEnumerable<UPath> EnumerateFiles(UPath path, string searchPattern)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumerateFiles(fileSystem, path, searchPattern, SearchOption.TopDirectoryOnly);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            return EnumerateFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
@@ -516,10 +373,11 @@ namespace McMorph.Files
         /// or should include all subdirectories.
         /// The default value is TopDirectoryOnly.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumerateFiles(this IFileSystem fileSystem, UPath path, string searchPattern, SearchOption searchOption)
+        public static IEnumerable<UPath> EnumerateFiles(UPath path, string searchPattern, SearchOption searchOption)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            foreach (var subPath in fileSystem.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.File))
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNotNull(searchOption, nameof(searchOption));
+            foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.File))
                 yield return subPath;
         }
 
@@ -529,9 +387,9 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path of the directory to look for files or directories.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the files and directories in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumeratePaths(this IFileSystem fileSystem, UPath path)
+        public static IEnumerable<UPath> EnumeratePaths(UPath path)
         {
-            return EnumeratePaths(fileSystem, path, "*");
+            return EnumeratePaths(path, "*");
         }
 
         /// <summary>
@@ -542,10 +400,10 @@ namespace McMorph.Files
         /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
         /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the files and directories in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumeratePaths(this IFileSystem fileSystem, UPath path, string searchPattern)
+        public static IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumeratePaths(fileSystem, path, searchPattern, SearchOption.TopDirectoryOnly);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            return EnumeratePaths(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
@@ -559,10 +417,11 @@ namespace McMorph.Files
         /// or should include all subdirectories.
         /// The default value is TopDirectoryOnly.</param>
         /// <returns>An enumerable collection of the full names (including paths) for the files and directories in the directory specified by path.</returns>
-        public static IEnumerable<UPath> EnumeratePaths(this IFileSystem fileSystem, UPath path, string searchPattern, SearchOption searchOption)
+        public static IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern, SearchOption searchOption)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return fileSystem.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Both);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNotNull(searchOption, nameof(searchOption));
+            return FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Both);
         }
 
         /// <summary>
@@ -571,9 +430,9 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path of the directory to look for files.</param>
         /// <returns>An enumerable collection of <see cref="FileEntry"/> from the specified path.</returns>
-        public static IEnumerable<FileEntry> EnumerateFileEntries(this IFileSystem fileSystem, UPath path)
+        public static IEnumerable<FileEntry> EnumerateFileEntries(UPath path)
         {
-            return EnumerateFileEntries(fileSystem, path, "*");
+            return EnumerateFileEntries(path, "*");
         }
 
         /// <summary>
@@ -584,10 +443,10 @@ namespace McMorph.Files
         /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
         /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
         /// <returns>An enumerable collection of <see cref="FileEntry"/> from the specified path.</returns>
-        public static IEnumerable<FileEntry> EnumerateFileEntries(this IFileSystem fileSystem, UPath path, string searchPattern)
+        public static IEnumerable<FileEntry> EnumerateFileEntries(UPath path, string searchPattern)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumerateFileEntries(fileSystem, path, searchPattern, SearchOption.TopDirectoryOnly);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            return EnumerateFileEntries(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
@@ -601,12 +460,12 @@ namespace McMorph.Files
         /// or should include all subdirectories.
         /// The default value is TopDirectoryOnly.</param>
         /// <returns>An enumerable collection of <see cref="FileEntry"/> from the specified path.</returns>
-        public static IEnumerable<FileEntry> EnumerateFileEntries(this IFileSystem fileSystem, UPath path, string searchPattern, SearchOption searchOption)
+        public static IEnumerable<FileEntry> EnumerateFileEntries(UPath path, string searchPattern, SearchOption searchOption)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            foreach (var subPath in EnumerateFiles(fileSystem, path, searchPattern, searchOption))
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            foreach (var subPath in EnumerateFiles(path, searchPattern, searchOption))
             {
-                yield return new FileEntry(fileSystem, subPath);
+                yield return new FileEntry(subPath);
             }
         }
 
@@ -616,9 +475,9 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path of the directory to look for directories.</param>
         /// <returns>An enumerable collection of <see cref="DirectoryEntry"/> from the specified path.</returns>
-        public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(this IFileSystem fileSystem, UPath path)
+        public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(UPath path)
         {
-            return EnumerateDirectoryEntries(fileSystem, path, "*");
+            return EnumerateDirectoryEntries(path, "*");
         }
 
         /// <summary>
@@ -629,10 +488,10 @@ namespace McMorph.Files
         /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
         /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
         /// <returns>An enumerable collection of <see cref="DirectoryEntry"/> from the specified path.</returns>
-        public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(this IFileSystem fileSystem, UPath path, string searchPattern)
+        public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(UPath path, string searchPattern)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumerateDirectoryEntries(fileSystem, path, searchPattern, SearchOption.TopDirectoryOnly);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            return EnumerateDirectoryEntries(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
@@ -646,12 +505,12 @@ namespace McMorph.Files
         /// or should include all subdirectories.
         /// The default value is TopDirectoryOnly.</param>
         /// <returns>An enumerable collection of <see cref="DirectoryEntry"/> from the specified path.</returns>
-        public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(this IFileSystem fileSystem, UPath path, string searchPattern, SearchOption searchOption)
+        public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(UPath path, string searchPattern, SearchOption searchOption)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            foreach (var subPath in EnumerateDirectories(fileSystem, path, searchPattern, searchOption))
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            foreach (var subPath in FileSystemExtensions.EnumerateDirectories(path, searchPattern, searchOption))
             {
-                yield return new DirectoryEntry(fileSystem, subPath);
+                yield return new DirectoryEntry(subPath);
             }
         }
 
@@ -661,9 +520,9 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The path of the directory to look for files and directories.</param>
         /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
-        public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(this IFileSystem fileSystem, UPath path)
+        public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(UPath path)
         {
-            return EnumerateFileSystemEntries(fileSystem, path, "*");
+            return EnumerateFileSystemEntries(path, "*");
         }
 
         /// <summary>
@@ -674,10 +533,10 @@ namespace McMorph.Files
         /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
         /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
         /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
-        public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(this IFileSystem fileSystem, UPath path, string searchPattern)
+        public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(UPath path, string searchPattern)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumerateFileSystemEntries(fileSystem, path, searchPattern, SearchOption.TopDirectoryOnly);
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            return EnumerateFileSystemEntries(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
@@ -692,12 +551,12 @@ namespace McMorph.Files
         /// The default value is TopDirectoryOnly.</param>
         /// <param name="searchTarget">The search target either <see cref="SearchTarget.Both"/> or only <see cref="SearchTarget.Directory"/> or <see cref="SearchTarget.File"/>. Default is <see cref="SearchTarget.Both"/></param>
         /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
-        public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(this IFileSystem fileSystem, UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget = SearchTarget.Both)
+        public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget = SearchTarget.Both)
         {
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            foreach (var subPath in fileSystem.EnumeratePaths(path, searchPattern, searchOption, searchTarget))
+            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, searchTarget))
             {
-                yield return fileSystem.DirectoryExists(subPath) ? (FileSystemEntry) new DirectoryEntry(fileSystem, subPath) : new FileEntry(fileSystem, subPath);
+                yield return subPath.DirectoryExists() ? (FileSystemEntry) new DirectoryEntry(subPath) : new FileEntry(subPath);
             }
         }
 
@@ -707,20 +566,20 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The file or directory path.</param>
         /// <returns>A new <see cref="FileSystemEntry"/> from the specified path.</returns>
-        public static FileSystemEntry GetFileSystemEntry(this IFileSystem fileSystem, UPath path)
+        public static FileSystemEntry GetFileSystemEntry(UPath path)
         {
-            var fileExists = fileSystem.FileExists(path);
+            var fileExists = FileSystem.Implementation.FileExists(path);
             if (fileExists)
             {
-                return new FileEntry(fileSystem, path);
+                return new FileEntry(path);
             }
-            var directoryExists = fileSystem.DirectoryExists(path);
+            var directoryExists = FileSystem.Implementation.DirectoryExists(path);
             if (directoryExists)
             {
-                return new DirectoryEntry(fileSystem, path);
+                return new DirectoryEntry(path);
             }
 
-            throw NewFileNotFoundException(path);
+            throw Error.NewEntryDoesntExists(path);
         }
 
         /// <summary>
@@ -729,17 +588,17 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="path">The file or directory path.</param>
         /// <returns>A new <see cref="FileSystemEntry"/> from the specified path.</returns>
-        public static FileSystemEntry TryGetFileSystemEntry(this IFileSystem fileSystem, UPath path)
+        public static FileSystemEntry TryGetFileSystemEntry(UPath path)
         {
-            var fileExists = fileSystem.FileExists(path);
+            var fileExists = FileSystem.Implementation.FileExists(path);
             if (fileExists)
             {
-                return new FileEntry(fileSystem, path);
+                return new FileEntry(path);
             }
-            var directoryExists = fileSystem.DirectoryExists(path);
+            var directoryExists = FileSystem.Implementation.DirectoryExists(path);
             if (directoryExists)
             {
-                return new DirectoryEntry(fileSystem, path);
+                return new DirectoryEntry(path);
             }
 
             return null;
@@ -751,13 +610,13 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="filePath">The file path.</param>
         /// <returns>A new <see cref="FileEntry"/> from the specified path.</returns>
-        public static FileEntry GetFileEntry(this IFileSystem fileSystem, UPath filePath)
+        public static FileEntry GetFileEntry(UPath filePath)
         {
-            if (!fileSystem.FileExists(filePath))
+            if (!FileSystem.Implementation.FileExists(filePath))
             {
-                throw NewFileNotFoundException(filePath);
+                throw Error.NewFileNotFoundException(filePath);
             }
-            return new FileEntry(fileSystem, filePath);
+            return new FileEntry(filePath);
         }
 
         /// <summary>
@@ -766,13 +625,13 @@ namespace McMorph.Files
         /// <param name="fileSystem">The file system.</param>
         /// <param name="directoryPath">The directory path.</param>
         /// <returns>A new <see cref="DirectoryEntry"/> from the specified path.</returns>
-        public static DirectoryEntry GetDirectoryEntry(this IFileSystem fileSystem, UPath directoryPath)
+        public static DirectoryEntry GetDirectoryEntry(UPath directoryPath)
         {
-            if (!fileSystem.DirectoryExists(directoryPath))
+            if (!FileSystem.Implementation.DirectoryExists(directoryPath))
             {
-                throw NewDirectoryNotFoundException(directoryPath);
+                throw Error.NewDirectoryNotFoundException(directoryPath);
             }
-            return new DirectoryEntry(fileSystem, directoryPath);
+            return new DirectoryEntry(directoryPath);
         }
     }
 }

@@ -9,6 +9,7 @@ using McMorph.Recipes;
 using McMorph.Downloads;
 using McMorph.Processes;
 using McMorph.Morphs;
+using McMorph.Files;
 
 using Mono.Unix;
 using Mono.Unix.Native;
@@ -25,30 +26,17 @@ namespace McMorph
             Pogo = new Pogo();
 
             var morphs = MorphCollection.Populate(Pogo);
+            Terminal.ClearLine();
+            Terminal.WriteLine("reading OK");
             
-            //if (false)
-            //{
-            //    Console.Write("Find ALL: ");
-            //    Console.CursorVisible = false;
-            //    //var find = new Bash().Command("find / -type f").Run();;
-            //    var log = new CollectSink();
-            //    var errors = new CollectSink();
-            //    var find = new Bash()
-            //        .Command("find /Pogo/Data/Archives -type f")
-            //        .StdOut(new ProgressSink(log))
-            //        .StdErr(new TeeSink(log, errors))
-            //        .Run();
-            //    Console.CursorVisible = true;
-            //}
-
             morphs.Download();
             morphs.Extract();
 
-            Bash.Checker();
+            Bash.MountOverlay(Pogo.Box);
 
-            Console.Write("any key ...");
-            Console.ReadKey(true);
-            Console.WriteLine();
+            //Console.Write("any key ...");
+            //Console.ReadKey(true);
+            //Console.WriteLine();
         }
     }
 }

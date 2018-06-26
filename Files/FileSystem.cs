@@ -20,6 +20,8 @@ namespace McMorph.Files
         /// </summary>
         public static readonly DateTime DefaultFileTime = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
+        public static readonly FileSystem Implementation = new PhysicalFileSystem();
+
 
         /// <summary>
         /// Finalizes an instance of the <see cref="FileSystem"/> class.

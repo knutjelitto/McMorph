@@ -9,15 +9,11 @@ namespace McMorph.Processes
     {
         public static Bash Checker()
         {
-            var envx = new Dictionary<string, string>()
-            {
-                { "AAA", "XXX" },
-            };
-
             var bash = new Bash()
                 .Command($"env")
                 .WithEnviroment(env =>
                 {
+                    env["PATH"] = "/bin:/usr/bin:/root/LiFo/bin";
                     env.Remove("PROMPT_COMMAND");
                     env.Remove("PS1");
                 })
