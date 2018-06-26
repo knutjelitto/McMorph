@@ -50,9 +50,9 @@ namespace McMorph.Files
             }
 
             // Check that path is not null and relative
-            var subPath = new DirectoryEntry(Path / path);
-            subPath.Create();
-            return subPath;
+            var subDirectory = new DirectoryEntry(Path / path);
+            subDirectory.Create();
+            return subDirectory;
         }
 
         /// <summary>Deletes this instance of a <see cref="T:System.IO.DirectoryInfo" />, specifying whether to delete subdirectories and files.</summary>

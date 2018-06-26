@@ -396,3 +396,58 @@ cd /Pogo/Data/box/R
 cd /Pogo/Data/box/Root/
 ll
 ll /
+cd ./McMorph/
+dotnet bin/Debug/netcoreapp2.0/McMorph.dll
+runmorph 
+remorph 
+cd /Pogo/Data/
+ll
+rm -rv *
+morph 
+cd /Pogo/Data/
+rm -rv *
+morph 
+time morph
+cd /Pogo/Data/box/R
+cd /Pogo/Data/box/Root/
+ll
+ll /
+umount /Pogo/Data/box/Root/
+mount
+mount -l
+mount 
+man mount
+findmnt 
+man findmnt 
+findmnt -l
+findmnt --help
+findmnt -l -o TARGET
+findmnt --list -o TARGET
+findmnt --list --option TARGET
+findmnt --list --output TARGET
+man findmnt
+findmnt --list --output TARGET --noheadings /dev
+findmnt --list --output TARGET --noheadings /sys
+findmnt --list --output TARGET --noheadings /sys/*
+findmnt --list --output TARGET --noheadings '/sys/*'
+findmnt --list --output TARGET --noheadings
+findmnt --list --output TARGET --noheadings | grep /Pogo
+findmnt --list --output TARGET --noheadings | grep /Pogo/
+ls -l /Pogo/
+ls -l /Pogo/Data/
+rm -rv /Pogo/Data/box/
+findmnt --list --output TARGET --noheadingsx
+clear
+morph
+remorph
+findmnt --list --output TARGET --noheadings
+findmnt --list --output TARGET --noheadings | grep /Pogo
+findmnt --list --output TARGET --noheadings | grep /Pogo/
+ls -l /Pogo/
+ls -l /Pogo/Data/
+rm -rv /Pogo/Data/box/
+findmnt --list --output TARGET --noheadingsx
+clear
+rm -rv /Pogo/Data/Archives/*
+remorph
+morph

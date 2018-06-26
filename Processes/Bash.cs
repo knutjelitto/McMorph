@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -101,7 +102,11 @@ namespace McMorph.Processes
             startInfo.RedirectStandardInput = this.input != null;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
-            startInfo.WorkingDirectory = this.directory != null ? (string)this.directory : string.Empty;
+            
+            if (this.directory != null)
+            {
+                startInfo.WorkingDirectory = (string)this.directory;
+            }
 
             if (this.environment != null)
             {
@@ -162,6 +167,9 @@ namespace McMorph.Processes
         }
 
         public IEnumerable<Output> Outputs => this.output;
+        public IEnumerable<string> AllLines => this.output.Select(o => o.Line);
+        public IEnumerable<string> ErrLines => this.output.Where(o => o is StdErr).Select(o => o.Line);
+        public IEnumerable<string> OutLines => this.output.Where(o => o is StdOut).Select(o => o.Line);
 
         private void AddOutput(Output output)
         {
@@ -170,10 +178,7 @@ namespace McMorph.Processes
             {
                 Terminal.WriteLine(output);
             }
-            if (this.progress != null)
-            {
-                this.progress.Advance();
-            }
+            this.progress?.Advance();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace McMorph
             root.AssertAbsolute();
             Root = root;
 
-            LazyBox = new Lazy<TheBox>(() => new TheBox(Data / "box"));
+            LazyBox = new Lazy<ChrootBox>(() => new ChrootBox(Data / "Box"));
         }
 
         private UPath Root { get; }
@@ -27,24 +27,21 @@ namespace McMorph
         public UPath Archives => Data / "Archives";
         public UPath Sources => Data / "Sources";
 
-        private Lazy<TheBox> LazyBox;
-        public TheBox Box => this.LazyBox.Value;
+        private Lazy<ChrootBox> LazyBox;
+        public ChrootBox Box => this.LazyBox.Value;
 
         public UPath System => Root / "System";
         public UPath Index => System / "Index";
 
-        public class TheBox
+        public void Dump()
         {
-            private readonly UPath root;
-
-            public TheBox(UPath root)
-            {
-                this.root = root;
-            }
-            public UPath Changes => this.root / "Changes";
-            public UPath Work => this.root / "Work";
-            public UPath Residuum => this.root / "Residuum";
-            public UPath Root => this.root / "Root";
+            Terminal.WriteLine("Pogo", ".Root:", Root);
+            Terminal.WriteLine("Pogo", ".Data:", Data);
+            Terminal.WriteLine("Pogo", ".Compile:", Compile);
+            Terminal.WriteLine("Pogo", ".Archives:", Archives);
+            Terminal.WriteLine("Pogo", ".Sources:", Sources);
+            Terminal.WriteLine("Pogo", ".System:", System);
+            Terminal.WriteLine("Pogo", ".Index:", Index);
         }
 
         public UPath ArchivePath(Uri uri)
@@ -79,6 +76,20 @@ namespace McMorph
             }
             stem = null;
             return false;
+        }
+
+        public class ChrootBox
+        {
+            public ChrootBox(UPath root)
+            {
+                this.Root = root;
+            }
+
+            public UPath Root { get; }
+            public UPath Changes => this.Root / "Changes";
+            public UPath Work => this.Root / "Work";
+            public UPath Bed => this.Root / "Bed";
+            public UPath Merged => this.Root / "Merged";
         }
     }
 }

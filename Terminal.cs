@@ -26,7 +26,7 @@ namespace McMorph
 
         public static void ClearLine()
         {
-            var left = Console.CursorLeft;
+            var pos = GetPosition();
             var top = Console.CursorTop;
             Console.SetCursorPosition(0, top);
             Console.Write(new string(' ', Console.BufferWidth));

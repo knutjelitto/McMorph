@@ -65,24 +65,19 @@ namespace McMorph.Morphs
 
         public IEnumerable<Morph> Values => this.lookup.Values;
 
-        public bool Download()
+        public void Download(bool force)
         {
             foreach (var morph in this)
             {
-                var result = morph.Upstream.Download();
-                if (!result)
-                {
-                    return false;
-                }
+                morph.Upstream.Download(force);
             }
-            return true;
         }
 
-        public bool Extract()
+        public bool Extract(bool force)
         {
             foreach (var morph in this)
             {
-                var result = morph.Upstream.Extract();
+                var result = morph.Upstream.Extract(force);
                 if (!result)
                 {
                     return false;

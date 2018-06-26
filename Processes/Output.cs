@@ -2,16 +2,16 @@ namespace McMorph.Processes
 {
     public class Output
     {
-        private readonly string line;
+        public readonly string Line;
 
         public Output(string line)
         {
-            this.line = line;
+            this.Line = line;
         }
 
         public override string ToString()
         {
-            return this.line;
+            return this.Line;
         }
     }
 }

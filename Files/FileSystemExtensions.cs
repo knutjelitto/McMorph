@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static McMorph.Files.FileSystemExceptionHelper;
 
 using McMorph.Results;
 
@@ -112,7 +111,7 @@ namespace McMorph.Files
         /// </remarks>
         public static void WriteAllBytes(UPath path, byte[] content)
         {
-            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            Assert.ThrowIfArgumentNull(content, nameof(content));
             using (var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 stream.Write(content, 0, content.Length);
@@ -155,7 +154,7 @@ namespace McMorph.Files
         /// <returns>An array of strings containing all lines of the file.</returns>
         public static string[] ReadAllLines(UPath path, Encoding encoding)
         {
-            Assert.ThrowIfArgumentNotNull(encoding, nameof(encoding));
+            Assert.ThrowIfArgumentNull(encoding, nameof(encoding));
             var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream, encoding))
@@ -187,7 +186,7 @@ namespace McMorph.Files
         /// </remarks>
         public static void WriteAllText(UPath path, string content)
         {
-            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            Assert.ThrowIfArgumentNull(content, nameof(content));
             var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream))
@@ -214,8 +213,8 @@ namespace McMorph.Files
         /// </remarks>
         public static void WriteAllText(UPath path, string content, Encoding encoding)
         {
-            Assert.ThrowIfArgumentNotNull(content, nameof(content));
-            Assert.ThrowIfArgumentNotNull(encoding, nameof(encoding));
+            Assert.ThrowIfArgumentNull(content, nameof(content));
+            Assert.ThrowIfArgumentNull(encoding, nameof(encoding));
             var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream, encoding))
@@ -242,7 +241,7 @@ namespace McMorph.Files
         /// </remarks>
         public static void AppendAllText(UPath path, string content)
         {
-            Assert.ThrowIfArgumentNotNull(content, nameof(content));
+            Assert.ThrowIfArgumentNull(content, nameof(content));
             var stream = FileSystem.Implementation.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream))
@@ -269,8 +268,8 @@ namespace McMorph.Files
         /// </remarks>
         public static void AppendAllText(UPath path, string content, Encoding encoding)
         {
-            Assert.ThrowIfArgumentNotNull(content, nameof(content));
-            Assert.ThrowIfArgumentNotNull(encoding, nameof(encoding));
+            Assert.ThrowIfArgumentNull(content, nameof(content));
+            Assert.ThrowIfArgumentNull(encoding, nameof(encoding));
             var stream = FileSystem.Implementation.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream, encoding))
@@ -314,7 +313,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of the full names (including paths) for the directories in the directory specified by path.</returns>
         public static IEnumerable<UPath> EnumerateDirectories(UPath path, string searchPattern)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             return EnumerateDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -331,8 +330,8 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of the full names (including paths) for the directories in the directory specified by path.</returns>
         public static IEnumerable<UPath> EnumerateDirectories(UPath path, string searchPattern, SearchOption searchOption)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
-            Assert.ThrowIfArgumentNotNull(searchOption, nameof(searchOption));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchOption, nameof(searchOption));
             foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Directory))
                 yield return subPath;
         }
@@ -358,7 +357,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by path.</returns>
         public static IEnumerable<UPath> EnumerateFiles(UPath path, string searchPattern)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             return EnumerateFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -375,10 +374,11 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by path.</returns>
         public static IEnumerable<UPath> EnumerateFiles(UPath path, string searchPattern, SearchOption searchOption)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
-            Assert.ThrowIfArgumentNotNull(searchOption, nameof(searchOption));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.File))
+            {
                 yield return subPath;
+            }
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of the full names (including paths) for the files and directories in the directory specified by path.</returns>
         public static IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             return EnumeratePaths(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -419,8 +419,8 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of the full names (including paths) for the files and directories in the directory specified by path.</returns>
         public static IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern, SearchOption searchOption)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
-            Assert.ThrowIfArgumentNotNull(searchOption, nameof(searchOption));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchOption, nameof(searchOption));
             return FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Both);
         }
 
@@ -445,7 +445,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="FileEntry"/> from the specified path.</returns>
         public static IEnumerable<FileEntry> EnumerateFileEntries(UPath path, string searchPattern)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             return EnumerateFileEntries(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -462,7 +462,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="FileEntry"/> from the specified path.</returns>
         public static IEnumerable<FileEntry> EnumerateFileEntries(UPath path, string searchPattern, SearchOption searchOption)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             foreach (var subPath in EnumerateFiles(path, searchPattern, searchOption))
             {
                 yield return new FileEntry(subPath);
@@ -490,7 +490,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="DirectoryEntry"/> from the specified path.</returns>
         public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(UPath path, string searchPattern)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             return EnumerateDirectoryEntries(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -507,7 +507,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="DirectoryEntry"/> from the specified path.</returns>
         public static IEnumerable<DirectoryEntry> EnumerateDirectoryEntries(UPath path, string searchPattern, SearchOption searchOption)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             foreach (var subPath in FileSystemExtensions.EnumerateDirectories(path, searchPattern, searchOption))
             {
                 yield return new DirectoryEntry(subPath);
@@ -535,7 +535,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
         public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(UPath path, string searchPattern)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             return EnumerateFileSystemEntries(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -553,7 +553,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
         public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget = SearchTarget.Both)
         {
-            Assert.ThrowIfArgumentNotNull(searchPattern, nameof(searchPattern));
+            Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, searchTarget))
             {
                 yield return subPath.DirectoryExists() ? (FileSystemEntry) new DirectoryEntry(subPath) : new FileEntry(subPath);

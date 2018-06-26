@@ -26,33 +26,43 @@ namespace McMorph.Morphs
         public Morph Morph => this.morph;
 
 
-        public bool Extract()
+        public bool Extract(bool force)
         {
             var archivePath = Pogo.ArchivePath(this.uri);
             var extractPath = Pogo.SourcePath(this.uri);
-            if (!archivePath.AsFile.Exists)
+            if (!archivePath.Exists)
             {
-                throw new ApplicationException($"can't extract '{archivePath}': doesn't exists");
+                if (!archivePath.AsFile.Exists)
+                {
+                    throw Error.NewFileNotFoundException(archivePath);
+                }
+                throw Error.NewExistsButIsNotFile(archivePath);
             }
             if (extractPath.AsDirectory.Exists)
             {
-                return true;
+                if (!force)
+                {
+                    return true;
+                }
+                Terminal.Write("clean ", extractPath.GetName(), ": ");
+                FileSystemTools.RemoveDirectory(extractPath);
+                Terminal.ClearLine();
             }
             if (extractPath.Exists)
             {
-                throw new ApplicationException($"'{extractPath}' already exists but isn't a directory");
+                throw Error.NewExistsButIsNotDirectory(extractPath);
             }
             var extractPathTmp = (UPath)(extractPath.FullName + ".tmp");
 
             if (extractPathTmp.AsDirectory.Exists)
             {
                 Terminal.Write("clean ", extractPathTmp.GetName(), ": ");
-                var remove = Bash.RemoveDirectory(extractPathTmp);
+                FileSystemTools.RemoveDirectory(extractPathTmp);
                 Terminal.ClearLine();
             }
             if (extractPathTmp.Exists)
             {
-                throw new ApplicationException($"'{extractPathTmp}' already exists but isn't a directory");
+                throw Error.NewExistsButIsNotDirectory(extractPathTmp);
             }
 
             extractPathTmp.AsDirectory.Create();
@@ -80,7 +90,7 @@ namespace McMorph.Morphs
             return xtract.Ok;
         }
 
-        public bool Download()
+        public void Download(bool force)
         {
             var downloader = new Downloader();
 
@@ -88,9 +98,21 @@ namespace McMorph.Morphs
 
             var file = filepath.AsFile;
 
+            if (force)
+            {
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+                else if (filepath.AsDirectory.Exists)
+                {
+                    FileSystemTools.RemoveDirectory(filepath);
+                }
+            }
+
             if (filepath.Exists && !file.Exists)
             {
-                throw Error.ExistsButIsNotFile(filepath);
+                throw Error.NewExistsButIsNotFile(filepath);
             }
 
             if (!file.Exists)
@@ -101,13 +123,8 @@ namespace McMorph.Morphs
                 {
                     file.Parent.Create();
                     file.WriteAllBytes(bytes);
-
-                    return true;
                 }
-
-                return false;
             }
-            return true;
         }
     }
 }

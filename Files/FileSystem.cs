@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using static McMorph.Files.FileSystemExceptionHelper;
+using System.Runtime.InteropServices;
 
 namespace McMorph.Files
 {
@@ -20,8 +20,7 @@ namespace McMorph.Files
         /// </summary>
         public static readonly DateTime DefaultFileTime = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
 
-        public static readonly FileSystem Implementation = new PhysicalFileSystem();
-
+        public static readonly IFileSystem Implementation = new FileSystemImpl();
 
         /// <summary>
         /// Finalizes an instance of the <see cref="FileSystem"/> class.

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace McMorph.Processes
 {
-    public class Progress
+    public class Progress : IDisposable
     {
         private const int width = 30;
         private const int milliSeconds = 150;
@@ -39,6 +39,12 @@ namespace McMorph.Processes
             builder.Length = width;
 
             return builder.ToString();
+        }
+
+        public void Dispose()
+        {
+            Terminal.GotoLineHome();
+            Terminal.ClearLine();
         }
     }
 }

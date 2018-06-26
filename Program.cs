@@ -25,18 +25,23 @@ namespace McMorph
 
             Pogo = new Pogo();
 
+            Pogo.Dump();
+
             var morphs = MorphCollection.Populate(Pogo);
             Terminal.ClearLine();
             Terminal.WriteLine("reading OK");
             
-            morphs.Download();
-            morphs.Extract();
+            morphs.Download(false);
+            morphs.Extract(false);
+#if false
 
-            Bash.MountOverlay(Pogo.Box);
+            //Bash.MountOverlay(Pogo.Box);
+            //Bash.UmountAll(Pogo.Box);
 
             //Console.Write("any key ...");
             //Console.ReadKey(true);
             //Console.WriteLine();
+#endif
         }
     }
 }

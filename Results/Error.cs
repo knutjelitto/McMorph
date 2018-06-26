@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 using McMorph.Files;
 
@@ -19,7 +21,7 @@ namespace McMorph.Results
 
     public static class Assert
     {
-        public static void ThrowIfArgumentNotNull(object argument, string argumentName)
+        public static void ThrowIfArgumentNull(object argument, string argumentName)
         {
             if (argument == null)
             {
@@ -32,22 +34,41 @@ namespace McMorph.Results
     {
         public static FileNotFoundException NewFileNotFoundException(UPath path)
         {
-            return new FileNotFoundException($"expected file '{path}', but doesn't exists");
+            return new FileNotFoundException($"expected file '{path}', but it doesn't exists");
         }
 
         public static DirectoryNotFoundException NewDirectoryNotFoundException(UPath path)
         {
-            return new DirectoryNotFoundException($"expected directory '{path}', but doesn't exists");
+            return new DirectoryNotFoundException($"expected directory '{path}', but it doesn't exists");
         }
 
-        public static Exception ExistsButIsNotFile(UPath path)
+        public static FileNotFoundException NewExistsButIsNotFile(UPath path)
         {
             return new FileNotFoundException($"'{path}' exists, but isn't a file as expected");
         }
 
-        public static Exception NewEntryDoesntExists(UPath path)
+        public static FileNotFoundException NewExistsButIsNotDirectory(UPath path)
+        {
+            return new FileNotFoundException($"'{path}' exists, but isn't a directory as expected");
+        }
+
+        public static FileNotFoundException NewEntryDoesntExists(UPath path)
         {
             return new FileNotFoundException($"'{path}' doesn't exists as expected");
+        }
+
+        public static Exception NewProcessError(string command, List<string> errors, int exitCode)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"error executing '{command}'");
+            builder.AppendLine($"exit code is: {exitCode}");
+            builder.AppendLine($"message is:");
+            foreach (var error in errors)
+            {
+                builder.AppendLine(error);
+            }
+
+            return new ErrorException(builder.ToString());
         }
 
         public static void Throw(string message)
