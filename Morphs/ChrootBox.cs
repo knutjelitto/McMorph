@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+
 using McMorph.Files;
+using McMorph.Processes;
 
 namespace McMorph.Morphs
 {
@@ -35,6 +38,8 @@ namespace McMorph.Morphs
             var directories = new string[]
             {
                 "root",
+                "root/Pogo",
+                "root/McMorph",
                 "bin",
                 "sbin",
                 "lib",
@@ -76,6 +81,35 @@ namespace McMorph.Morphs
 
             // links
             (Base / "bin/sh").SymbolicLinkTo("bash", true);
+        }
+
+        public void Mount()
+        {
+            var mountPoints = new Stack<MountPoint>();
+
+            MountOverlay(mountPoints);
+            MountCommons(mountPoints);
+            Self.Exec();    
+
+            Bash.UnMountAll(this, mountPoints);
+        }
+
+        private void MountOverlay(Stack<MountPoint> mountPoints)
+        {
+            Bash.MountOverlay(this, mountPoints);
+        }
+
+        private void MountCommons(Stack<MountPoint> mountPoints)
+        {
+            Bash.BindMount("/root/Pogo", Merged / "root/Pogo", mountPoints);
+            Bash.BindMount("/root/McMorph", Merged / "root/McMorph", mountPoints);
+            Bash.RecursiveBindMount("/dev", Merged / "dev", mountPoints);
+            Bash.SysfsMount(Merged / "sys", mountPoints);
+            //Bash.RecursiveBindMount("/proc", Merged / "proc", mountPoints);
+            Bash.ProcfsMount(Merged / "proc", mountPoints);
+            Bash.BindMount("/etc/hostname", Merged / "etc/hostname", mountPoints);
+            Bash.BindMount("/etc/hosts", Merged / "etc/hosts", mountPoints);
+            Bash.BindMount("/etc/resolv.conf", Merged / "etc/resolv.conf", mountPoints);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace McMorph.Morphs
 {
     public class Pogo
     {
-        public Pogo() : this("/Pogo")
+        public Pogo() : this("/root/Pogo")
         {
         }
 

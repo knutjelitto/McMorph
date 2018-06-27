@@ -27,6 +27,12 @@ namespace McMorph
             foreach (var arg in args)
             {
                 Terminal.WriteLine("argument: ", arg);
+                if (arg == "--do-the-chroot--")
+                {
+                    Terminal.WriteLine("DO-THE-CHROOT");
+                    Bash.DoTheBash();
+                    return 127;
+                }
                 if (arg == "chroot")
                 {
                     Self.Exec();
@@ -53,6 +59,7 @@ namespace McMorph
             morphs.Extract(false);
 
             Pogo.Box.Prepare(true);
+            Pogo.Box.Mount();
 #if false
 
             //Bash.MountOverlay(Pogo.Box);

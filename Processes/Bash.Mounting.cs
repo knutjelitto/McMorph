@@ -34,16 +34,50 @@ namespace McMorph.Processes
             ThrowOnError(mount);
         }
 
-        public static void BindMount(UPath source, UPath target, bool recursive, Stack<MountPoint> mountPoints)
+        public static void SysfsMount(UPath target, Stack<MountPoint> mountPoints)
         {
-            var command = recursive
-                ? $"mount --verbose --rbind {source} {target}"
-                : $"mount -verbose --bind {source} {target}";
-
             var bind = new Bash()
-                .Command(command)
+                .Command($"mount --verbose --types sysfs sysfs {target}")
                 .Loud()
                 .Run();
+
+            mountPoints.Push(new MountPoint(target, false));
+
+            ThrowOnError(bind);
+        }
+
+        public static void ProcfsMount(UPath target, Stack<MountPoint> mountPoints)
+        {
+            var bind = new Bash()
+                .Command($"mount --verbose --types proc proc {target}")
+                .Loud()
+                .Run();
+
+            mountPoints.Push(new MountPoint(target, false));
+
+            ThrowOnError(bind);
+        }
+
+        public static void BindMount(UPath source, UPath target, Stack<MountPoint> mountPoints)
+        {
+            var bind = new Bash()
+                .Command($"mount --verbose --bind {source} {target}")
+                .Loud()
+                .Run();
+
+            mountPoints.Push(new MountPoint(target, false));
+
+            ThrowOnError(bind);
+        }
+
+        public static void RecursiveBindMount(UPath source, UPath target, Stack<MountPoint> mountPoints)
+        {
+            var bind = new Bash()
+                .Command($"mount --verbose --rbind {source} {target}")
+                .Loud()
+                .Run();
+
+            mountPoints.Push(new MountPoint(target, true));
 
             ThrowOnError(bind);
         }

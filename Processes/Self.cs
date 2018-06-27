@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace McMorph.Processes
 {
@@ -9,10 +10,25 @@ namespace McMorph.Processes
         {
             var assembly = Assembly.GetEntryAssembly();
 
-            Terminal.WriteLine("codebase: ", assembly.CodeBase);
-            Terminal.WriteLine("location: ", assembly.Location);
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = "/usr/bin/dotnet",
+                Arguments = $"{assembly.Location} --do-the-chroot--",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardInput = false,
+                RedirectStandardOutput = false,
+                RedirectStandardError = false,
+            };
 
-            return 0;
+            var process = new Process() { StartInfo = startInfo };
+
+            process.Start();
+
+            process.WaitForExit();
+
+            return process.ExitCode;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace McMorph.Processes
         private bool newEnvironment;
         private Progress progress = null;
         private bool loud = false;
+        private bool interactive = false;
 
         private TextReader input;
         public Bash()
@@ -52,6 +53,12 @@ namespace McMorph.Processes
         public Bash Loud()
         {
             this.loud = true;
+            return this;
+        }
+
+        public Bash Interactive()
+        {
+            this.interactive = true;
             return this;
         }
 
@@ -101,8 +108,8 @@ namespace McMorph.Processes
             startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardInput = this.input != null;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            startInfo.RedirectStandardOutput = !interactive;
+            startInfo.RedirectStandardError = !interactive ;
             
             if (this.directory != null)
             {
@@ -132,25 +139,31 @@ namespace McMorph.Processes
             this.output = new List<Output>();
             this.process = new Process() { StartInfo = startInfo };
 
-            process.EnableRaisingEvents = true;
-            process.OutputDataReceived += (s, e) =>
+            if (!this.interactive)
             {
-                if (e.Data != null)
+                process.EnableRaisingEvents = !this.interactive;
+                process.OutputDataReceived += (s, e) =>
                 {
-                    AddOutput(new StdOut(e.Data));
-                }
-            };
-            process.ErrorDataReceived += (s, e) =>
-            {
-                if (e.Data != null)
+                    if (e.Data != null)
+                    {
+                        AddOutput(new StdOut(e.Data));
+                    }
+                };
+                process.ErrorDataReceived += (s, e) =>
                 {
-                    AddOutput(new StdErr(e.Data));
-                }
-            };
+                    if (e.Data != null)
+                    {
+                        AddOutput(new StdErr(e.Data));
+                    }
+                };
+            }
 
             process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+            if (!this.interactive)
+            {
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+            }
 
             if (this.input != null)
             {

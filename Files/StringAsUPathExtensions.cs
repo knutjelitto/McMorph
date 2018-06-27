@@ -11,7 +11,7 @@ namespace McMorph.Files
 
         public static void CreateDirectory(this string path)
         {
-            path.AsPath().AsDirectory.Create();
+            FileSystem.Instance.CreateDirectory(path);
         }
 
         public static void Touch(this string path)

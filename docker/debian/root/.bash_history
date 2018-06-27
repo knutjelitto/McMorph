@@ -1,102 +1,3 @@
-cd dpkg/
-less available 
-less diversions
-cd info/
-less tzdata.config 
-less coreutils.list 
-less coreutils.md5sums 
-less coreutils.postinst 
-less coreutils.postrm 
-less xz-utils.list 
-cd /
-cd lib64
-cd /etc/alternatives/
-cd ..
-cd /lib
-cd x86_64-linux-gnu/
-cd /etc/ca-certificates
-cd update.d/
-ll
-cd
-cls
-clrea
-clear
-clrea
-clear
-cd /Morph/
-dir
-cd MedallionShell/
-rm -rv .git
-rm -rv .gitignore 
-dll
-ll
-cat License.txt 
-cd
-morph 
-morph
-ll
-cat License.txt 
-cd
-morph 
-morph >xxx
-cat xxx
-rm -rv /Pogo/McMorph/Data/Archives/*
-morph
-ll
-cat License.txt 
-cd
-morph 
-morph >xxx
-cat xxx
-rm -rv /Pogo/McMorph/Data/Archives/*
-morph
-clear
-rm -rv /Pogo/McMorph/Data/Archives/*
-cat License.txt 
-cd
-morph 
-morph >xxx
-cat xxx
-rm -rv /Pogo/McMorph/Data/Archives/*
-clear
-morph
-cd /Pogo/
-cd Data/
-cd Compile/
-cd Sources/
-du
-du -h
-du -hs *
-cd Build/
-cd bo
-cd Boots/
-du -sh *
-cd ..
-ll
-cat xxx
-rm -rv /Pogo/McMorph/Data/Archives/*
-cat License.txt 
-morph 
-morph >xxx
-cat xxx
-rm -rv /Pogo/McMorph/Data/Archives/*
-clear
-rm -rv /Pogo/McMorph/Data/Archives/*
-cat License.txt 
-morph 
-morph >xxx
-cat xxx
-rm -rv /Pogo/McMorph/Data/Archives/*
-clear
-cd Data/
-cd Compile/
-cd Sources/
-du -h
-du -hs *
-cd Build/
-cd bo
-cd Boots/
-rm -rv /McMorph/Data/Archives/*
 morph
 cd /
 #cd Morph/
@@ -498,3 +399,102 @@ cd
 remorph 
 cd /Pogo/Data/Box/Base/
 find . -ls
+remorph 
+cd /Pogo/Data/Box/
+ll
+cd Base/
+find . -ls
+find . -type f -ls
+cd /
+ls -la
+rm -rv Bed/
+find /usr -type d -ls
+cd /usr/share/
+cd dco
+cd doc
+cd tree
+cd /Pogo/Data/Box/Base/
+cd /Pogo/Data/Box/
+cd Base/
+find . -type f -ls
+ls -la
+remorph 
+cd Pogo/Data/Box/
+find . -ls
+cd ..
+rm -rv Data/
+morph
+cd /
+cd
+ll
+remorph 
+cd Pogo/
+ll
+cd Data/Box/
+find . -ls
+cd
+findmnt
+clear
+clear
+set
+env
+set
+env
+pwd
+cd LiFo/
+cd ..
+rmdir LiFo/
+ll
+remorph 
+ll
+env
+set
+env
+pwd
+cd LiFo/
+cd ..
+rmdir LiFo/
+cd
+cd McMorph/
+dotnet add package CommandLineParser --version 2.2.1
+ll
+cat McMorph.csproj 
+dotnet restore
+morph 
+mount
+mount | wc -l
+remorph 
+findmnt
+morph 
+mount
+mount | wc -l
+remorph 
+cd
+cd Pogo/Data/Box/Base/
+ll
+cd ..
+cd Merged/
+find
+findmnt
+remorph 
+findmnt
+remorph 
+findmnt
+mount
+mount | wc -l
+cd
+cd Pogo/Data/Box/Base/
+ll
+cd ..
+cd Merged/
+find
+man mount
+which docker
+docker
+which dotnet
+morph
+remorph 
+findmnt
+remorph 
+findmnt
+morph

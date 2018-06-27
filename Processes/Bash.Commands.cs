@@ -30,5 +30,17 @@ namespace McMorph.Processes
 
             return bash.Run();
         }
+
+        public static void DoTheBash()
+        {
+            var bash = new Bash()
+                .Command($"bash")
+                .Directory("/root")
+                .Interactive()
+                .Run()
+                ;
+
+            ThrowOnError(bash);
+        }
     }
 }

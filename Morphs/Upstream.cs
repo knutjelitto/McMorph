@@ -65,7 +65,7 @@ namespace McMorph.Morphs
                 throw Error.NewExistsButIsNotDirectory(extractPathTmp);
             }
 
-            extractPathTmp.AsDirectory.Create();
+            extractPathTmp.CreateDirectory();
 
             Terminal.Write("extract ", archivePath.GetName(), ": ");
 
