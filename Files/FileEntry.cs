@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using System.Text;
 
+using McMorph.Results;
+
 namespace McMorph.Files
 {
     /// <summary>
@@ -47,7 +49,7 @@ namespace McMorph.Files
         ///     The user does not have write permission, but attempted to set this
         ///     property to false.
         /// </exception>
-        public bool IsReadOnly => (FileSystem.Instance.GetAttributes(Path) & FileAttributes.ReadOnly) != 0;
+        public bool IsReadOnly => (FS.GetAttributes(Path) & FileAttributes.ReadOnly) != 0;
 
         /// <summary>Gets the size, in bytes, of the current file.</summary>
         /// <returns>The size of the current file in bytes.</returns>
@@ -58,7 +60,7 @@ namespace McMorph.Files
         ///     The file does not exist.-or- The Length property is called for a
         ///     directory.
         /// </exception>
-        public long Length => FileSystem.Instance.GetFileLength(Path);
+        public long Length => FS.GetFileLength(Path);
 
         /// <summary>Copies an existing file to a new file, allowing the overwriting of an existing file.</summary>
         /// <returns>
@@ -96,7 +98,7 @@ namespace McMorph.Files
         /// </exception>
         public FileEntry CopyTo(UPath destFileName, bool overwrite)
         {
-            FileSystem.Instance.CopyFile(Path, destFileName, overwrite);
+            FS.CopyFile(Path, destFileName, overwrite);
             return new FileEntry(destFileName);
         }
 
@@ -133,7 +135,7 @@ namespace McMorph.Files
         /// </exception>
         public FileEntry CopyTo(FileEntry destFile, bool overwrite)
         {
-            if (destFile == null) throw new ArgumentNullException(nameof(destFile));
+            Assert.ThrowIfArgumentNull(destFile, nameof(destFile));
             FileSystemExtensions.CopyFileCross(Path, destFile.Path, overwrite);
             return destFile;
         }
@@ -176,7 +178,7 @@ namespace McMorph.Files
         /// </exception>
         public void MoveTo(UPath destFileName)
         {
-            FileSystem.Instance.MoveFile(Path, destFileName);
+            FS.MoveFile(Path, destFileName);
         }
 
         /// <summary>Opens a file in the specified mode with read, write, or read/write access and the specified sharing option.</summary>
@@ -205,7 +207,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.IOException">The file is already open. </exception>
         public Stream Open(FileMode mode, FileAccess access, FileShare share = FileShare.None)
         {
-            return FileSystem.Instance.OpenFile(Path, mode, access, share);
+            return FS.OpenFile(Path, mode, access, share);
         }
 
 
@@ -348,12 +350,12 @@ namespace McMorph.Files
         }
 
         /// <inheritdoc />
-        public override bool Exists => FileSystem.Instance.FileExists(Path);
+        public override bool Exists => FS.FileExists(Path);
 
         /// <inheritdoc />
         public override void Delete()
         {
-            FileSystem.Instance.DeleteFile(Path);
+            FS.DeleteFile(Path);
         }
     }
 }

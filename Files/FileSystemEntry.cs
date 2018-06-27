@@ -23,6 +23,9 @@ namespace McMorph.Files
             path.AssertAbsolute();
             Path = path;
         }
+        
+        protected FileSystem FS => FileSystem.Instance;
+
 
         /// <summary>
         /// Gets the path of this entry.
@@ -54,8 +57,8 @@ namespace McMorph.Files
         /// </summary>
         public FileAttributes Attributes
         {
-            get => FileSystem.Instance.GetAttributes(Path);
-            set => FileSystem.Instance.SetAttributes(Path, value);
+            get => FS.GetAttributes(Path);
+            set => FS.SetAttributes(Path, value);
         }
 
         /// <summary>
@@ -69,8 +72,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime CreationTime
         {
-            get => FileSystem.Instance.GetCreationTime(Path);
-            set => FileSystem.Instance.SetCreationTime(Path, value);
+            get => FS.GetCreationTime(Path);
+            set => FS.SetCreationTime(Path, value);
         }
 
         /// <summary>
@@ -78,8 +81,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime LastAccessTime
         {
-            get => FileSystem.Instance.GetLastAccessTime(Path);
-            set => FileSystem.Instance.SetLastAccessTime(Path, value);
+            get => FS.GetLastAccessTime(Path);
+            set => FS.SetLastAccessTime(Path, value);
         }
 
         /// <summary>
@@ -87,8 +90,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime LastWriteTime
         {
-            get => FileSystem.Instance.GetLastWriteTime(Path);
-            set => FileSystem.Instance.SetLastWriteTime(Path, value);
+            get => FS.GetLastWriteTime(Path);
+            set => FS.SetLastWriteTime(Path, value);
         }
 
         /// <summary>Gets an instance of the parent directory.</summary>

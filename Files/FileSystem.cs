@@ -16,36 +16,12 @@ namespace McMorph.Files
     /// </summary>
     public class FileSystem
     {
-        public static readonly FileSystem Instance = new FileSystem();
+        public static readonly FileSystem Instance = 
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new FileSystem() : new UnixFileSystem();
 
-        private FileSystem()
+        protected FileSystem()
         {
         }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="FileSystem"/> class.
-        /// </summary>
-        ~FileSystem()
-        {
-            DisposeInternal(false);
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            DisposeInternal(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// <c>true</c> if this instance if being disposed.
-        /// </summary>
-        protected bool IsDisposing { get; private set; }
-
-        /// <summary>
-        /// <c>true</c> if this instance if being disposed.
-        /// </summary>
-        protected bool IsDisposed { get; private set; }
 
         // ----------------------------------------------
         // Directory API
@@ -57,7 +33,6 @@ namespace McMorph.Files
         /// <param name="path">The directory to create.</param>
         public void CreateDirectory(UPath path)
         {
-            AssertNotDisposed();
             if (path == UPath.Root)
             {
                 throw new UnauthorizedAccessException("Cannot create root directory `/`");
@@ -73,8 +48,6 @@ namespace McMorph.Files
         /// <returns><c>true</c> if the given path refers to an existing directory on disk, <c>false</c> otherwise.</returns>
         public bool DirectoryExists(UPath path)
         {
-            AssertNotDisposed();
-
             // With FileExists, case where a null path is allowed
             if (path.IsNull)
             {
@@ -91,7 +64,6 @@ namespace McMorph.Files
         /// <param name="destPath">The path to the new location for <paramref name="srcPath"/></param>
         public void MoveDirectory(UPath srcPath, UPath destPath)
         {
-            AssertNotDisposed();
             if (srcPath == UPath.Root)
             {
                 throw new UnauthorizedAccessException("Cannot move from the source root directory `/`");
@@ -124,16 +96,15 @@ namespace McMorph.Files
         /// Deletes the specified directory and, if indicated, any subdirectories and files in the directory. 
         /// </summary>
         /// <param name="path">The path of the directory to remove.</param>
-        /// <param name="isRecursive"><c>true</c> to remove directories, subdirectories, and files in path; otherwise, <c>false</c>.</param>
-        public void DeleteDirectory(UPath path, bool isRecursive)
+        /// <param name="recursive"><c>true</c> to remove directories, subdirectories, and files in path; otherwise, <c>false</c>.</param>
+        public void DeleteDirectory(UPath path, bool recursive)
         {
-            AssertNotDisposed();
             if (path == UPath.Root)
             {
                 throw new UnauthorizedAccessException("Cannot delete root directory `/`");
             }
 
-            Directory.Delete(ValidatePath(path).FullName, isRecursive);
+            Directory.Delete(ValidatePath(path).FullName, recursive);
         }
 
 
@@ -149,7 +120,6 @@ namespace McMorph.Files
         /// <param name="overwrite"><c>true</c> if the destination file can be overwritten; otherwise, <c>false</c>.</param>
         public void CopyFile(UPath srcPath, UPath destPath, bool overwrite)
         {
-            AssertNotDisposed();
             File.Copy(ValidatePath(srcPath, nameof(srcPath)).FullName, ValidatePath(destPath, nameof(destPath)).FullName, overwrite);
         }
 
@@ -160,7 +130,6 @@ namespace McMorph.Files
         /// <returns>The size, in bytes, of the file</returns>
         public long GetFileLength(UPath path)
         {
-            AssertNotDisposed();
             return new FileInfo(ValidatePath(path).FullName).Length;
         }
 
@@ -174,8 +143,6 @@ namespace McMorph.Files
         /// no exception is thrown and the method returns false regardless of the existence of path.</returns>
         public bool FileExists(UPath path)
         {
-            AssertNotDisposed();
-
             // Only case where a null path is allowed
             if (path.IsNull)
             {
@@ -191,7 +158,6 @@ namespace McMorph.Files
         /// <param name="destPath">The new path and name for the file.</param>
         public void MoveFile(UPath srcPath, UPath destPath)
         {
-            AssertNotDisposed();
             File.Move(ValidatePath(srcPath, nameof(srcPath)).FullName, ValidatePath(destPath, nameof(destPath)).FullName);
         }
 
@@ -201,7 +167,6 @@ namespace McMorph.Files
         /// <param name="path">The path of the file to be deleted.</param>
         public void DeleteFile(UPath path)
         {
-            AssertNotDisposed();
             File.Delete(ValidatePath(path).FullName);
         }
 
@@ -215,7 +180,6 @@ namespace McMorph.Files
         /// <returns>A file <see cref="Stream"/> on the specified path, having the specified mode with read, write, or read/write access and the specified sharing option.</returns>
         public Stream OpenFile(UPath path, FileMode mode, FileAccess access, FileShare share = FileShare.None)
         {
-            AssertNotDisposed();
             return File.Open(ValidatePath(path).FullName, mode, access, share);
         }
 
@@ -230,7 +194,6 @@ namespace McMorph.Files
         /// <returns>The <see cref="FileAttributes"/> of the file or directory on the path.</returns>
         public FileAttributes GetAttributes(UPath path)
         {
-            AssertNotDisposed();
             return File.GetAttributes(ValidatePath(path).FullName);
         }
 
@@ -241,7 +204,6 @@ namespace McMorph.Files
         /// <param name="attributes">A bitwise combination of the enumeration values.</param>
         public void SetAttributes(UPath path, FileAttributes attributes)
         {
-            AssertNotDisposed();
             File.SetAttributes(ValidatePath(path).FullName, attributes);
         }
 
@@ -252,7 +214,6 @@ namespace McMorph.Files
         /// <returns>A <see cref="DateTime"/> structure set to the creation date and time for the specified file or directory. This value is expressed in local time.</returns>
         public DateTime GetCreationTime(UPath path)
         {
-            AssertNotDisposed();
             return File.GetCreationTime(ValidatePath(path).FullName);
         }
 
@@ -263,7 +224,6 @@ namespace McMorph.Files
         /// <param name="time">A <see cref="DateTime"/> containing the value to set for the creation date and time of path. This value is expressed in local time.</param>
         public void SetCreationTime(UPath path, DateTime time)
         {
-            AssertNotDisposed();
             File.SetCreationTime(ValidatePath(path).FullName, time);
         }
 
@@ -274,7 +234,6 @@ namespace McMorph.Files
         /// <returns>A <see cref="DateTime"/> structure set to the last access date and time for the specified file or directory. This value is expressed in local time.</returns>
         public DateTime GetLastAccessTime(UPath path)
         {
-            AssertNotDisposed();
             return File.GetLastAccessTime(ValidatePath(path).FullName);
         }
 
@@ -285,7 +244,6 @@ namespace McMorph.Files
         /// <param name="time">A <see cref="DateTime"/> containing the value to set for the last access date and time of path. This value is expressed in local time.</param>
         public void SetLastAccessTime(UPath path, DateTime time)
         {
-            AssertNotDisposed();
             File.SetLastAccessTime(ValidatePath(path).FullName, time);
         }
 
@@ -296,7 +254,6 @@ namespace McMorph.Files
         /// <returns>A <see cref="DateTime"/> structure set to the last write date and time for the specified file or directory. This value is expressed in local time.</returns>
         public DateTime GetLastWriteTime(UPath path)
         {
-            AssertNotDisposed();
             return File.GetLastWriteTime(ValidatePath(path).FullName);
         }
 
@@ -307,7 +264,6 @@ namespace McMorph.Files
         /// <param name="time">A <see cref="DateTime"/> containing the value to set for the last write date and time of path. This value is expressed in local time.</param>
         public void SetLastWriteTime(UPath path, DateTime time)
         {
-            AssertNotDisposed();
             File.SetLastWriteTime(ValidatePath(path).FullName, time);
         }
 
@@ -325,7 +281,6 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of file-system paths in the directory specified by path and that match the specified search pattern, option and target.</returns>
         public IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget)
         {
-            AssertNotDisposed();
             Assert.ThrowIfArgumentNull(searchOption, nameof(searchOption));
 
             IEnumerable<string> results;
@@ -349,38 +304,13 @@ namespace McMorph.Files
 
             foreach (var subPath in results)
             {
-                yield return ConvertPathFromInternal(subPath);
+                yield return subPath;
             }
-
         }
 
         // ----------------------------------------------
         // Path API
         // ----------------------------------------------
-
-        /// <summary>
-        /// Converts the specified path to the underlying path used by this <see cref="IFileSystem"/>. In case of a <see cref="McMorph.Files.FileSystems.PhysicalFileSystem"/>, it 
-        /// would represent the actual path on the disk.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns>The converted system path according to the specified path.</returns>
-        public string ConvertPathToInternal(UPath path)
-        {
-            AssertNotDisposed();
-            return ValidatePath(path).FullName;
-        }
-
-        /// <summary>
-        /// Converts the specified system path to a <see cref="IFileSystem"/> path.
-        /// </summary>
-        /// <param name="systemPath">The system path.</param>
-        /// <returns>The converted path according to the system path.</returns>
-        public UPath ConvertPathFromInternal(string systemPath)
-        {
-            AssertNotDisposed();
-            Assert.ThrowIfArgumentNull(systemPath, nameof(systemPath));
-            return systemPath;
-        }
 
         /// <summary>
         /// Validates the specified path (Check that it is absolute by default)
@@ -389,12 +319,8 @@ namespace McMorph.Files
         /// <param name="argumentName">The name.</param>
         /// <param name="allowNull">if set to <c>true</c> the path is allowed to be null. <c>false</c> otherwise.</param>  
         /// <returns>The path validated</returns>
-        protected UPath ValidatePath(UPath path, string argumentName = "path", bool allowNull = false)
+        protected UPath ValidatePath(UPath path, string argumentName = "path")
         {
-            if (allowNull && path.IsNull)
-            {
-                return path;
-            }
             path.AssertAbsolute(argumentName);
 
             if (path.FullName.IndexOf(':') >= 0)
@@ -404,28 +330,21 @@ namespace McMorph.Files
             return path;
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
+        // ----------------------------------------------
+        // Unix/Linux/Posix API
+        // ----------------------------------------------
+        public virtual void SetSticky(UPath path, bool set)
+        {
+        }
+        public virtual void SetAllPermissions(UPath path)
+        {
+        }
+        public virtual void SetDefaultPermissions(UPath path)
         {
         }
 
-        private void AssertNotDisposed()
+        public virtual void CreateSymbolicLink(UPath source, UPath target, bool force = false)
         {
-            if (IsDisposing || IsDisposed)
-            {
-                throw new ObjectDisposedException($"This instance `{GetType()}` is already disposed.");
-            }
-        }
-
-        private void DisposeInternal(bool disposing)
-        {
-            AssertNotDisposed();
-            IsDisposing = true;
-            Dispose(disposing);
-            IsDisposed = true;
         }
     }
 }

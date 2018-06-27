@@ -1,137 +1,3 @@
-pwd
-pwsh
-r
-pwsh
-r
-pwsh -o XML -C Get-Date
-pwsh -Help
-pwsh -Help | less
-pwsh
-./configure
-OAOR
-[<0;50;42M
-./BinUtils
-pwsh -Help | less
-pwsh -help
-pwsh | less
-pwsh -help | less
-pwsh -version
-pwsh -w Minimized
-pwsh -NoProfile
-apt-get update
-apt-get install mc
-mc
-pwsh
-mc
-apt-get update
-apt-get install man-db
-apt-get install manpages
-man
-man2 chroot
-man 2 chroot
-pwsh
-wnv
-env
-lll
-b
-apt-get update
-apt-get install man-db
-apt-get install manpages
-man
-man2 chroot
-man 2 chroot
-pwsh
-wnv
-env
-lll
-b
-ls -la 
-rm xxx
-rm yyy
-rmdir yyy
-dotnet ./bin/Debug/netcoreapp2.0/McMorph.dll
-cd /McMorph
-cd /Morph/
-dotnet run
-cd /McMorph/Data/Archives/
-cd ftpmirror.gnu.org/gnu/ed/
-tar tvf ed-1.14.2.tar.lz 
-cd /Pogo/
-cd Data/
-l
-cd Compile/Store/
-cd Core/
-cd ..
-cd Tools/
-dir
-cd zlib-1.2.11/
-ll
-less Bom 
-lzip
-cd /McMorph
-dir
-cd Data/Archives/ftpmirror.gnu.org/gnu/ed/
-tar tvf ed-1.14.2.tar.lz 
-cd
-cd /Morph/
-dotnet run
-tar tvf ed-1.14.2.tar.lz 
-cd
-cd /Morph/
-dotnet run
-bzr checkout bzr://bzr.savannah.gnu.org/gsrc/trunk/ gsrc
-env
-rm -rv gsrc/
-gscr
-gsrc
-cd gsrc/
-./bootstrap 
-less INSTALL 
-cd util/
-ll
-cd ..
-cd ..
-cd gsrc/
-./bootstrap 
-./configure
-less INSTALL 
-make help
-cd util/
-./bootstrap 
-./configure
-cd gsrc/
-make pkg-info
-cd pkg/
-dir
-cd gnu
-cd gcc
-cd less
-ll
-less Makefile 
-cd ..
-make gnu/less
-less INSTALL 
-make help
-make -C pkg/gnu/less
-cd util/
-./bootstrap 
-./configure
-cd gsrc/
-make pkg-info
-cd pkg/
-dir
-cd gnu
-cd gcc
-cd less
-less Makefile 
-make gnu/less
-less INSTALL 
-make help
-make -C pkg/gnu/less
-cd /Morph/
-dotnet run
-morph 
-cd /var/lib/
 cd dpkg/
 less available 
 less diversions
@@ -461,3 +327,174 @@ remo
 remorph 
 remorph
 morph
+/usr/lib/ssl/
+cd /usr/lib/ssl/
+cd certs
+ll | less
+cd /usr/share/ca-certificates/mozilla/
+find / -name ssltest
+find /usr -name ssltest
+ssltest
+pwd
+which pwd
+d /Pogo/Data/Sources/less-530.tmp/
+cd /Pogo/Data/Sources/less-530.tmp/
+ls -lka
+ls -lA
+man tra
+man tar
+man rm
+cd /Pogo/Data/Sources/
+cd which-2.21.tmp/
+rm -rv *
+cd -
+cd autoconf-2.69/
+cd tests/
+which env
+cd tests/
+which env
+dotnet bin/Debug/netcoreapp2.0/McMorph.dll
+runmorph 
+cd /Pogo/Data/
+rm -rv *
+morph 
+cd /Pogo/Data/
+rm -rv *
+morph 
+time morph
+cd /Pogo/Data/box/R
+cd /Pogo/Data/box/Root/
+ll /
+dotnet bin/Debug/netcoreapp2.0/McMorph.dll
+runmorph 
+cd /Pogo/Data/
+rm -rv *
+morph 
+cd /Pogo/Data/
+rm -rv *
+morph 
+time morph
+cd /Pogo/Data/box/R
+cd /Pogo/Data/box/Root/
+ll /
+umount /Pogo/Data/box/Root/
+mount -l
+mount 
+man mount
+man findmnt 
+findmnt -l
+findmnt --help
+findmnt -l -o TARGET
+findmnt --list -o TARGET
+findmnt --list --option TARGET
+findmnt --list --output TARGET
+man findmnt
+findmnt --list --output TARGET --noheadings /dev
+findmnt --list --output TARGET --noheadings /sys
+findmnt --list --output TARGET --noheadings /sys/*
+findmnt --list --output TARGET --noheadings '/sys/*'
+findmnt --list --output TARGET --noheadings
+findmnt --list --output TARGET --noheadings | grep /Pogo
+findmnt --list --output TARGET --noheadings | grep /Pogo/
+ls -l /Pogo/
+ls -l /Pogo/Data/
+rm -rv /Pogo/Data/box/
+findmnt --list --output TARGET --noheadingsx
+clear
+findmnt --list --output TARGET --noheadings
+findmnt --list --output TARGET --noheadings | grep /Pogo
+findmnt --list --output TARGET --noheadings | grep /Pogo/
+ls -l /Pogo/
+ls -l /Pogo/Data/
+rm -rv /Pogo/Data/box/
+findmnt --list --output TARGET --noheadingsx
+clear
+rm -rv /Pogo/Data/Archives/*
+clear
+rm -rv /Pogo/Data/Archives/*
+clear
+rm -rv /Pogo/Data/Archives/*
+remo
+dotnet
+dotnet --help
+dotnet run --help
+morph chroot
+morph inchroot
+echo $?
+dotnet file:///root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
+(cd /root/McMorph; dotnet  /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll)
+remorph chroot
+dotnet  /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
+dotnet /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
+dotnet publish
+dotnet publish --help
+remorph touch
+echo "XXXX" > XXXX
+date
+morph touch
+cd /usr/include/
+cd Pogo/
+cd Archives/
+cd McMorph/
+mkdir Tests
+cd Tests
+dotnet new --help
+dotnet new xunit
+dotnet --force new xunit
+dotnet new xunit --force
+dotnet restore
+less Tests.csproj 
+make tests
+dotnet test
+rm -rv Tests
+cd /
+fintmnt
+mount
+findmnt 
+mkdir xxx
+touch xxx
+rm -rv XXXX xxx
+du
+du -h
+du -h *
+cd LiFo/
+cd tools/
+rm GoboLinux-016.01-x86_64.iso 
+du -sh *
+tree
+ls -l /bin/sh
+cd /Pogo/
+cd Data/
+cd Box/
+cd Bed/
+cd bin/
+cd var
+cd bin
+remorph
+cd /Pogo/Data/Box/Bed/bin/
+ls -la
+find / -name "sh'"
+find / -name "sh"
+cd /bin/
+ls -l sh
+find . -name bash
+cd ./McMorph/
+rm bash
+man symlink
+cd Bed/bin/
+rm sh
+morph
+cd ..
+cd /Pogo/Data/Box/
+find
+rm -rv Bed/
+find /usr -type d -ls
+cd /usr/share/
+cd dco
+cd doc
+cd tree
+ll
+cd
+remorph 
+cd /Pogo/Data/Box/Base/
+find . -ls

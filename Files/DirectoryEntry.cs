@@ -26,7 +26,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.IOException">The directory cannot be created. </exception>
         public void Create()
         {
-            FileSystem.Instance.CreateDirectory(Path);
+            FS.CreateDirectory(Path);
         }
 
         /// <summary>Creates a subdirectory or subdirectories on the specified path. The specified path can be relative to this instance of the <see cref="T:System.IO.DirectoryInfo" /> class.</summary>
@@ -63,7 +63,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
         public void Delete(bool recursive)
         {
-            FileSystem.Instance.DeleteDirectory(Path, recursive);
+            FS.DeleteDirectory(Path, recursive);
         }
 
         /// <summary>Returns an enumerable collection of directory information that matches a specified search pattern and search subdirectory option. </summary>
@@ -77,7 +77,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
         public IEnumerable<DirectoryEntry> EnumerateDirectories(string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
-            return FileSystemExtensions.EnumerateDirectoryEntries(Path, searchPattern, searchOption);
+            return Path.EnumerateDirectoryEntries(searchPattern, searchOption);
         }
 
         /// <summary>Returns an enumerable collection of file information that matches a specified search pattern and search subdirectory option.</summary>
@@ -91,7 +91,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
         public IEnumerable<FileEntry> EnumerateFiles(string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
-            return FileSystemExtensions.EnumerateFileEntries(Path, searchPattern, searchOption);
+            return Path.EnumerateFileEntries(searchPattern, searchOption);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace McMorph.Files
         /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
         public IEnumerable<FileSystemEntry> EnumerateEntries(string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly, SearchTarget searchTarget = SearchTarget.Both)
         {
-            return FileSystemExtensions.EnumerateFileSystemEntries(Path, searchPattern, searchOption, searchTarget);
+            return Path.EnumerateFileSystemEntries(searchPattern, searchOption, searchTarget);
         }
 
         /// <summary>Moves a <see cref="T:System.IO.DirectoryInfo" /> instance and its contents to a new path.</summary>
@@ -120,11 +120,11 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.DirectoryNotFoundException">The destination directory cannot be found.</exception>
         public void MoveTo(UPath destDirName)
         {
-            FileSystem.Instance.MoveDirectory(Path, destDirName);
+            FS.MoveDirectory(Path, destDirName);
         }
 
         /// <inheritdoc />
-        public override bool Exists => FileSystem.Instance.DirectoryExists(Path);
+        public override bool Exists => FS.DirectoryExists(Path);
 
         /// <inheritdoc />
         public override void Delete()

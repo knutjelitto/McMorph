@@ -24,9 +24,8 @@ namespace McMorph.Morphs
             this.list.Add(morph);
         }
 
-        public static MorphCollection Populate(Pogo pogo)
+        public static MorphCollection Populate(Pogo pogo, UPath dataDir)
         {
-            var dataDir = (UPath)Environment.CurrentDirectory / "Repository";
             var morphs = new MorphCollection(pogo);
 
             foreach (var file in dataDir.AsDirectory.EnumerateFiles("*"))

@@ -20,28 +20,50 @@ namespace McMorph
     {
         public static Pogo Pogo;
 
-        static void Main(string[] args)
+        public static bool IsLinux => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
+
+        static int Main(string[] args)
         {
+            foreach (var arg in args)
+            {
+                Terminal.WriteLine("argument: ", arg);
+                if (arg == "chroot")
+                {
+                    Self.Exec();
+                    return 1;
+                }
+                if (arg == "touch")
+                {
+                    "/root/XXXX".Touch();
+                    return 1;
+                }
+            }
 
             Pogo = new Pogo();
 
-            Pogo.Dump();
-
-            var morphs = MorphCollection.Populate(Pogo);
+            var morphs = MorphCollection.Populate(
+                Pogo, 
+                IsLinux
+                    ? "/root/McMorph/Repository"
+                    : Environment.CurrentDirectory.AsPath() / "Repository");
             Terminal.ClearLine();
             Terminal.WriteLine("reading OK");
             
             morphs.Download(false);
             morphs.Extract(false);
+
+            Pogo.Box.Prepare(true);
 #if false
 
             //Bash.MountOverlay(Pogo.Box);
-            //Bash.UmountAll(Pogo.Box);
+            //Bash.UnMountAll(Pogo.Box);
 
             //Console.Write("any key ...");
             //Console.ReadKey(true);
             //Console.WriteLine();
 #endif
+
+            return 0;
         }
     }
 }

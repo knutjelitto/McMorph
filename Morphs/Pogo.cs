@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using McMorph.Morphs;
 using McMorph.Files;
 
-namespace McMorph
+namespace McMorph.Morphs
 {
     public class Pogo
     {
@@ -17,7 +17,7 @@ namespace McMorph
             root.AssertAbsolute();
             Root = root;
 
-            LazyBox = new Lazy<ChrootBox>(() => new ChrootBox(Data / "Box"));
+            LazyBox = new Lazy<ChrootBox>(() => new ChrootBox(this, Data / "Box"));
         }
 
         private UPath Root { get; }
@@ -76,20 +76,6 @@ namespace McMorph
             }
             stem = null;
             return false;
-        }
-
-        public class ChrootBox
-        {
-            public ChrootBox(UPath root)
-            {
-                this.Root = root;
-            }
-
-            public UPath Root { get; }
-            public UPath Changes => this.Root / "Changes";
-            public UPath Work => this.Root / "Work";
-            public UPath Bed => this.Root / "Bed";
-            public UPath Merged => this.Root / "Merged";
         }
     }
 }
