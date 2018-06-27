@@ -7,7 +7,7 @@ using System.IO;
 namespace McMorph.Files
 {
     /// <summary>
-    /// Similar to <see cref="FileSystemInfo"/> but to use with <see cref="IFileSystem"/>, provides the base class
+    /// Similar to <see cref="FileSystemInfo"/> but to use with <see cref="FileSystem"/>, provides the base class
     /// for both <see cref="FileEntry"/> and <see cref="DirectoryEntry"/> objects.
     /// </summary>
     public abstract class FileSystemEntry : IEquatable<FileSystemEntry>
@@ -28,7 +28,6 @@ namespace McMorph.Files
         /// Gets the path of this entry.
         /// </summary>
         public UPath Path { get; }
-
 
         /// <summary>
         /// Gets the full path of the directory or file.
@@ -55,8 +54,8 @@ namespace McMorph.Files
         /// </summary>
         public FileAttributes Attributes
         {
-            get => FileSystem.Implementation.GetAttributes(Path);
-            set => FileSystem.Implementation.SetAttributes(Path, value);
+            get => FileSystem.Instance.GetAttributes(Path);
+            set => FileSystem.Instance.SetAttributes(Path, value);
         }
 
         /// <summary>
@@ -70,8 +69,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime CreationTime
         {
-            get => FileSystem.Implementation.GetCreationTime(Path);
-            set => FileSystem.Implementation.SetCreationTime(Path, value);
+            get => FileSystem.Instance.GetCreationTime(Path);
+            set => FileSystem.Instance.SetCreationTime(Path, value);
         }
 
         /// <summary>
@@ -79,8 +78,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime LastAccessTime
         {
-            get => FileSystem.Implementation.GetLastAccessTime(Path);
-            set => FileSystem.Implementation.SetLastAccessTime(Path, value);
+            get => FileSystem.Instance.GetLastAccessTime(Path);
+            set => FileSystem.Instance.SetLastAccessTime(Path, value);
         }
 
         /// <summary>
@@ -88,8 +87,8 @@ namespace McMorph.Files
         /// </summary>
         public DateTime LastWriteTime
         {
-            get => FileSystem.Implementation.GetLastWriteTime(Path);
-            set => FileSystem.Implementation.SetLastWriteTime(Path, value);
+            get => FileSystem.Instance.GetLastWriteTime(Path);
+            set => FileSystem.Instance.SetLastWriteTime(Path, value);
         }
 
         /// <summary>Gets an instance of the parent directory.</summary>

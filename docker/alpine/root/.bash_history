@@ -305,3 +305,4 @@ cd ./McMorph/
 dotnet restore
 dotnet --info
 morph
+remorph

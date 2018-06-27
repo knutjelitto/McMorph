@@ -63,7 +63,7 @@ namespace McMorph.Files
 
             if (fullname == "/")
             {
-                return new UPath();
+                return UPath.Root;
             }
 
             var lastIndex = fullname.LastIndexOf(UPath.DirectorySeparator);
@@ -253,21 +253,16 @@ namespace McMorph.Files
         /// Asserts the specified path is absolute.
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <param name="name">The name of a parameter to include n the <see cref="ArgumentNullException"/>.</param>
+        /// <param name="argumentName">The name of a parameter to include n the <see cref="ArgumentNullException"/>.</param>
         /// <returns>A path not modified.</returns>
-        /// <exception cref="System.ArgumentException">If the path is not absolute using the parameter name from <paramref name="name"/></exception>
-        public static UPath AssertAbsolute(this UPath path, string name = "path")
+        /// <exception cref="System.ArgumentException">If the path is not absolute using the parameter name from <paramref name="argumentName"/></exception>
+        public static UPath AssertAbsolute(this UPath path, string argumentName = "path")
         {
-            AssertNotNull(path, name);
+            AssertNotNull(path, argumentName);
 
             if (!path.IsAbsolute)
-                throw new ArgumentException($"Path `{path}` must be absolute", name);
+                throw new ArgumentException($"Path `{path}` must be absolute", argumentName);
             return path.FullName;
-        }
-
-        public static UPath Combine(this UPath path, UPath path2)
-        {
-            return UPath.Combine(path, path2);
         }
     }
 }

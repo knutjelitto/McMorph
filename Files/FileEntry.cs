@@ -9,7 +9,7 @@ using System.Text;
 namespace McMorph.Files
 {
     /// <summary>
-    /// Similar to <see cref="FileInfo"/> but to use with <see cref="IFileSystem"/>, provides properties and instance methods 
+    /// Similar to <see cref="FileInfo"/> but to use with <see cref="FileSystem"/>, provides properties and instance methods 
     /// for the creation, copying, deletion, moving, and opening of files, and aids in the creation of FileStream objects. 
     /// Note that unlike <see cref="FileInfo"/>, this class doesn't cache any data.
     /// </summary>
@@ -47,7 +47,7 @@ namespace McMorph.Files
         ///     The user does not have write permission, but attempted to set this
         ///     property to false.
         /// </exception>
-        public bool IsReadOnly => (FileSystem.Implementation.GetAttributes(Path) & FileAttributes.ReadOnly) != 0;
+        public bool IsReadOnly => (FileSystem.Instance.GetAttributes(Path) & FileAttributes.ReadOnly) != 0;
 
         /// <summary>Gets the size, in bytes, of the current file.</summary>
         /// <returns>The size of the current file in bytes.</returns>
@@ -58,7 +58,7 @@ namespace McMorph.Files
         ///     The file does not exist.-or- The Length property is called for a
         ///     directory.
         /// </exception>
-        public long Length => FileSystem.Implementation.GetFileLength(Path);
+        public long Length => FileSystem.Instance.GetFileLength(Path);
 
         /// <summary>Copies an existing file to a new file, allowing the overwriting of an existing file.</summary>
         /// <returns>
@@ -96,11 +96,11 @@ namespace McMorph.Files
         /// </exception>
         public FileEntry CopyTo(UPath destFileName, bool overwrite)
         {
-            FileSystem.Implementation.CopyFile(Path, destFileName, overwrite);
+            FileSystem.Instance.CopyFile(Path, destFileName, overwrite);
             return new FileEntry(destFileName);
         }
 
-        /// <summary>Copies an existing file to a new file on another <see cref="IFileSystem"/>, allowing the overwriting of an existing file.</summary>
+        /// <summary>Copies an existing file to a new file, allowing the overwriting of an existing file.</summary>
         /// <returns>
         ///     A new file, or an overwrite of an existing file if <paramref name="overwrite" /> is true. If the file exists
         ///     and <paramref name="overwrite" /> is false, an <see cref="T:System.IO.IOException" /> is thrown.
@@ -176,7 +176,7 @@ namespace McMorph.Files
         /// </exception>
         public void MoveTo(UPath destFileName)
         {
-            FileSystem.Implementation.MoveFile(Path, destFileName);
+            FileSystem.Instance.MoveFile(Path, destFileName);
         }
 
         /// <summary>Opens a file in the specified mode with read, write, or read/write access and the specified sharing option.</summary>
@@ -205,7 +205,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.IOException">The file is already open. </exception>
         public Stream Open(FileMode mode, FileAccess access, FileShare share = FileShare.None)
         {
-            return FileSystem.Implementation.OpenFile(Path, mode, access, share);
+            return FileSystem.Instance.OpenFile(Path, mode, access, share);
         }
 
 
@@ -348,12 +348,12 @@ namespace McMorph.Files
         }
 
         /// <inheritdoc />
-        public override bool Exists => FileSystem.Implementation.FileExists(Path);
+        public override bool Exists => FileSystem.Instance.FileExists(Path);
 
         /// <inheritdoc />
         public override void Delete()
         {
-            FileSystem.Implementation.DeleteFile(Path);
+            FileSystem.Instance.DeleteFile(Path);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.IOException">The directory cannot be created. </exception>
         public void Create()
         {
-            FileSystem.Implementation.CreateDirectory(Path);
+            FileSystem.Instance.CreateDirectory(Path);
         }
 
         /// <summary>Creates a subdirectory or subdirectories on the specified path. The specified path can be relative to this instance of the <see cref="T:System.IO.DirectoryInfo" /> class.</summary>
@@ -63,7 +63,7 @@ namespace McMorph.Files
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
         public void Delete(bool recursive)
         {
-            FileSystem.Implementation.DeleteDirectory(Path, recursive);
+            FileSystem.Instance.DeleteDirectory(Path, recursive);
         }
 
         /// <summary>Returns an enumerable collection of directory information that matches a specified search pattern and search subdirectory option. </summary>
@@ -120,11 +120,11 @@ namespace McMorph.Files
         /// <exception cref="T:System.IO.DirectoryNotFoundException">The destination directory cannot be found.</exception>
         public void MoveTo(UPath destDirName)
         {
-            FileSystem.Implementation.MoveDirectory(Path, destDirName);
+            FileSystem.Instance.MoveDirectory(Path, destDirName);
         }
 
         /// <inheritdoc />
-        public override bool Exists => FileSystem.Implementation.DirectoryExists(Path);
+        public override bool Exists => FileSystem.Instance.DirectoryExists(Path);
 
         /// <inheritdoc />
         public override void Delete()

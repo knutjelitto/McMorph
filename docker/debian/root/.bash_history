@@ -451,3 +451,13 @@ clear
 rm -rv /Pogo/Data/Archives/*
 remorph
 morph
+clear
+rm -rv /Pogo/Data/Archives/*
+morph
+remorph
+clear
+rm -rv /Pogo/Data/Archives/*
+remo
+remorph 
+remorph
+morph

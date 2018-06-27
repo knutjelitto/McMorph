@@ -6,21 +6,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
+using McMorph.Results;
+
 namespace McMorph.Files
 {
     /// <summary>
-    /// Abstract class for a <see cref="IFileSystem"/>. Provides default arguments safety checking and redirecting to safe implementation.
+    /// Provides default arguments safety checking and redirecting to safe implementation.
     /// Implements also the <see cref="IDisposable"/> pattern.
     /// </summary>
-    public abstract class FileSystem : IFileSystem
+    public class FileSystem
     {
-        /// <summary>
-        /// The default file time if the file described in a path parameter does not exist.
-        /// The default file time is 12:00 midnight, January 1, 1601 A.D. (C.E.) Coordinated Universal Time (UTC), adjusted to local time.
-        /// </summary>
-        public static readonly DateTime DefaultFileTime = new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc).ToLocalTime();
+        public static readonly FileSystem Instance = new FileSystem();
 
-        public static readonly IFileSystem Implementation = new FileSystemImpl();
+        private FileSystem()
+        {
+        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="FileSystem"/> class.
@@ -51,7 +51,10 @@ namespace McMorph.Files
         // Directory API
         // ----------------------------------------------
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Creates all directories and subdirectories in the specified path unless they already exist.
+        /// </summary>
+        /// <param name="path">The directory to create.</param>
         public void CreateDirectory(UPath path)
         {
             AssertNotDisposed();
@@ -59,18 +62,15 @@ namespace McMorph.Files
             {
                 throw new UnauthorizedAccessException("Cannot create root directory `/`");
             }
-            CreateDirectoryImpl(ValidatePath(path));
+            Directory.CreateDirectory(path.FullName);
         }
 
-        /// <summary>
-        /// Implementation for <see cref="CreateDirectory"/>, paths is guaranteed to be absolute and not the root path `/`
-        /// and validated through <see cref="ValidatePath"/>.
-        /// Creates all directories and subdirectories in the specified path unless they already exist.
-        /// </summary>
-        /// <param name="path">The directory to create.</param>
-        protected abstract void CreateDirectoryImpl(UPath path);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Determines whether the given path refers to an existing directory on disk.
+        /// </summary>
+        /// <param name="path">The path to test.</param>
+        /// <returns><c>true</c> if the given path refers to an existing directory on disk, <c>false</c> otherwise.</returns>
         public bool DirectoryExists(UPath path)
         {
             AssertNotDisposed();
@@ -80,19 +80,15 @@ namespace McMorph.Files
             {
                 return false;
             }
-
-            return DirectoryExistsImpl(ValidatePath(path));
+            return Directory.Exists(ValidatePath(path).FullName);
         }
 
-        /// <summary>
-        /// Implementation for <see cref="DirectoryExists"/>, paths is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
-        /// Determines whether the given path refers to an existing directory on disk.
-        /// </summary>
-        /// <param name="path">The path to test.</param>
-        /// <returns><c>true</c> if the given path refers to an existing directory on disk, <c>false</c> otherwise.</returns>
-        protected abstract bool DirectoryExistsImpl(UPath path);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Moves a directory and its contents to a new location.
+        /// </summary>
+        /// <param name="srcPath">The path of the directory to move.</param>
+        /// <param name="destPath">The path to the new location for <paramref name="srcPath"/></param>
         public void MoveDirectory(UPath srcPath, UPath destPath)
         {
             AssertNotDisposed();
@@ -110,19 +106,25 @@ namespace McMorph.Files
                 throw new IOException($"The source and destination path are the same `{srcPath}`");
             }
 
-            MoveDirectoryImpl(ValidatePath(srcPath, nameof(srcPath)), ValidatePath(destPath, nameof(destPath)));
+            var systemSrcPath = ValidatePath(srcPath, nameof(srcPath)).FullName;
+            var systemDestPath = ValidatePath(destPath, nameof(destPath)).FullName;
+
+            // If the souce path is a file
+            var fileInfo = new FileInfo(systemSrcPath);
+            if (fileInfo.Exists)
+            {
+                throw new IOException($"The source `{srcPath}` is not a directory");
+            }
+
+            Directory.Move(systemSrcPath, systemDestPath);
         }
 
-        /// <summary>
-        /// Implementation for <see cref="MoveDirectory"/>, <paramref name="srcPath"/> and <paramref name="destPath"/>
-        /// are guaranteed to be absolute, not equal and different from root `/`, and validated through <see cref="ValidatePath"/>.
-        /// Moves a directory and its contents to a new location.
-        /// </summary>
-        /// <param name="srcPath">The path of the directory to move.</param>
-        /// <param name="destPath">The path to the new location for <paramref name="srcPath"/></param>
-        protected abstract void MoveDirectoryImpl(UPath srcPath, UPath destPath);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Deletes the specified directory and, if indicated, any subdirectories and files in the directory. 
+        /// </summary>
+        /// <param name="path">The path of the directory to remove.</param>
+        /// <param name="isRecursive"><c>true</c> to remove directories, subdirectories, and files in path; otherwise, <c>false</c>.</param>
         public void DeleteDirectory(UPath path, bool isRecursive)
         {
             AssertNotDisposed();
@@ -131,54 +133,45 @@ namespace McMorph.Files
                 throw new UnauthorizedAccessException("Cannot delete root directory `/`");
             }
 
-            DeleteDirectoryImpl(ValidatePath(path), isRecursive);
+            Directory.Delete(ValidatePath(path).FullName, isRecursive);
         }
 
-        /// <summary>
-        /// Implementation for <see cref="DeleteDirectory"/>, <paramref name="path"/> is guaranteed to be absolute and different from root path `/` and validated through <see cref="ValidatePath"/>.
-        /// Deletes the specified directory and, if indicated, any subdirectories and files in the directory. 
-        /// </summary>
-        /// <param name="path">The path of the directory to remove.</param>
-        /// <param name="isRecursive"><c>true</c> to remove directories, subdirectories, and files in path; otherwise, <c>false</c>.</param>
-        protected abstract void DeleteDirectoryImpl(UPath path, bool isRecursive);
 
         // ----------------------------------------------
         // File API
         // ----------------------------------------------
 
-        /// <inheritdoc />
-        public void CopyFile(UPath srcPath, UPath destPath, bool overwrite)
-        {
-            AssertNotDisposed();
-            CopyFileImpl(ValidatePath(srcPath, nameof(srcPath)), ValidatePath(destPath, nameof(destPath)), overwrite);
-        }
-
         /// <summary>
-        /// Implementation for <see cref="CopyFile"/>, <paramref name="srcPath"/> and <paramref name="destPath"/>
-        /// are guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Copies an existing file to a new file. Overwriting a file of the same name is allowed.
         /// </summary>
         /// <param name="srcPath">The path of the file to copy.</param>
         /// <param name="destPath">The path of the destination file. This cannot be a directory.</param>
         /// <param name="overwrite"><c>true</c> if the destination file can be overwritten; otherwise, <c>false</c>.</param>
-        protected abstract void CopyFileImpl(UPath srcPath, UPath destPath, bool overwrite);
-
-        /// <inheritdoc />
-        public long GetFileLength(UPath path)
+        public void CopyFile(UPath srcPath, UPath destPath, bool overwrite)
         {
             AssertNotDisposed();
-            return GetFileLengthImpl(ValidatePath(path));
+            File.Copy(ValidatePath(srcPath, nameof(srcPath)).FullName, ValidatePath(destPath, nameof(destPath)).FullName, overwrite);
         }
 
         /// <summary>
-        /// Implementation for <see cref="GetFileLength"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Gets the size, in bytes, of a file.
         /// </summary>
         /// <param name="path">The path of a file.</param>
         /// <returns>The size, in bytes, of the file</returns>
-        protected abstract long GetFileLengthImpl(UPath path);
+        public long GetFileLength(UPath path)
+        {
+            AssertNotDisposed();
+            return new FileInfo(ValidatePath(path).FullName).Length;
+        }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Determines whether the specified file exists.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns><c>true</c> if the caller has the required permissions and path contains the name of an existing file; 
+        /// otherwise, <c>false</c>. This method also returns false if path is null, an invalid path, or a zero-length string. 
+        /// If the caller does not have sufficient permissions to read the specified file, 
+        /// no exception is thrown and the method returns false regardless of the existence of path.</returns>
         public bool FileExists(UPath path)
         {
             AssertNotDisposed();
@@ -188,60 +181,31 @@ namespace McMorph.Files
             {
                 return false;
             }
-
-            return FileExistsImpl(ValidatePath(path));
+            return File.Exists(ValidatePath(path).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="FileExists"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
-        /// Determines whether the specified file exists.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns><c>true</c> if the caller has the required permissions and path contains the name of an existing file; 
-        /// otherwise, <c>false</c>. This method also returns false if path is null, an invalid path, or a zero-length string. 
-        /// If the caller does not have sufficient permissions to read the specified file, 
-        /// no exception is thrown and the method returns false regardless of the existence of path.</returns>
-        protected abstract bool FileExistsImpl(UPath path);
-
-        /// <inheritdoc />
-        public void MoveFile(UPath srcPath, UPath destPath)
-        {
-            AssertNotDisposed();
-            MoveFileImpl(ValidatePath(srcPath, nameof(srcPath)), ValidatePath(destPath, nameof(destPath)));
-        }
-
-        /// <summary>
-        /// Implementation for <see cref="CopyFile"/>, <paramref name="srcPath"/> and <paramref name="destPath"/>
-        /// are guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Moves a specified file to a new location, providing the option to specify a new file name.
         /// </summary>
         /// <param name="srcPath">The path of the file to move.</param>
         /// <param name="destPath">The new path and name for the file.</param>
-        protected abstract void MoveFileImpl(UPath srcPath, UPath destPath);
-
-        /// <inheritdoc />
-        public void DeleteFile(UPath path)
+        public void MoveFile(UPath srcPath, UPath destPath)
         {
             AssertNotDisposed();
-            DeleteFileImpl(ValidatePath(path));
+            File.Move(ValidatePath(srcPath, nameof(srcPath)).FullName, ValidatePath(destPath, nameof(destPath)).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="FileExists"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Deletes the specified file. 
         /// </summary>
         /// <param name="path">The path of the file to be deleted.</param>
-        protected abstract void DeleteFileImpl(UPath path);
-
-        /// <inheritdoc />
-        public Stream OpenFile(UPath path, FileMode mode, FileAccess access, FileShare share = FileShare.None)
+        public void DeleteFile(UPath path)
         {
             AssertNotDisposed();
-            return OpenFileImpl(ValidatePath(path), mode, access, share);
+            File.Delete(ValidatePath(path).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="OpenFile"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Opens a file <see cref="Stream"/> on the specified path, having the specified mode with read, write, or read/write access and the specified sharing option.
         /// </summary>
         /// <param name="path">The path to the file to open.</param>
@@ -249,146 +213,109 @@ namespace McMorph.Files
         /// <param name="access">A <see cref="FileAccess"/> value that specifies the operations that can be performed on the file.</param>
         /// <param name="share">A <see cref="FileShare"/> value specifying the type of access other threads have to the file.</param>
         /// <returns>A file <see cref="Stream"/> on the specified path, having the specified mode with read, write, or read/write access and the specified sharing option.</returns>
-        protected abstract Stream OpenFileImpl(UPath path, FileMode mode, FileAccess access, FileShare share);
+        public Stream OpenFile(UPath path, FileMode mode, FileAccess access, FileShare share = FileShare.None)
+        {
+            AssertNotDisposed();
+            return File.Open(ValidatePath(path).FullName, mode, access, share);
+        }
 
         // ----------------------------------------------
         // Metadata API
         // ----------------------------------------------
 
-        /// <inheritdoc />
-        public FileAttributes GetAttributes(UPath path)
-        {
-            AssertNotDisposed();
-            return GetAttributesImpl(ValidatePath(path));
-        }
-
         /// <summary>
-        /// Implementation for <see cref="GetAttributes"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Gets the <see cref="FileAttributes"/> of the file or directory on the path.
         /// </summary>
         /// <param name="path">The path to the file or directory.</param>
         /// <returns>The <see cref="FileAttributes"/> of the file or directory on the path.</returns>
-        protected abstract FileAttributes GetAttributesImpl(UPath path);
-
-        /// <inheritdoc />
-        public void SetAttributes(UPath path, FileAttributes attributes)
+        public FileAttributes GetAttributes(UPath path)
         {
             AssertNotDisposed();
-            SetAttributesImpl(ValidatePath(path), attributes);
+            return File.GetAttributes(ValidatePath(path).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="SetAttributes"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Sets the specified <see cref="FileAttributes"/> of the file or directory on the specified path.
         /// </summary>
         /// <param name="path">The path to the file or directory.</param>
         /// <param name="attributes">A bitwise combination of the enumeration values.</param>
-        protected abstract void SetAttributesImpl(UPath path, FileAttributes attributes);
-
-        /// <inheritdoc />
-        public DateTime GetCreationTime(UPath path)
+        public void SetAttributes(UPath path, FileAttributes attributes)
         {
             AssertNotDisposed();
-            return GetCreationTimeImpl(ValidatePath(path));
+            File.SetAttributes(ValidatePath(path).FullName, attributes);
         }
 
         /// <summary>
-        /// Implementation for <see cref="GetCreationTime"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Returns the creation date and time of the specified file or directory.
         /// </summary>
         /// <param name="path">The path to a file or directory for which to obtain creation date and time information.</param>
         /// <returns>A <see cref="DateTime"/> structure set to the creation date and time for the specified file or directory. This value is expressed in local time.</returns>
-        protected abstract DateTime GetCreationTimeImpl(UPath path);
-
-        /// <inheritdoc />
-        public void SetCreationTime(UPath path, DateTime time)
+        public DateTime GetCreationTime(UPath path)
         {
             AssertNotDisposed();
-            SetCreationTimeImpl(ValidatePath(path), time);
+            return File.GetCreationTime(ValidatePath(path).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="SetCreationTime"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Sets the date and time the file was created.
         /// </summary>
         /// <param name="path">The path to a file or directory for which to set the creation date and time.</param>
         /// <param name="time">A <see cref="DateTime"/> containing the value to set for the creation date and time of path. This value is expressed in local time.</param>
-        protected abstract void SetCreationTimeImpl(UPath path, DateTime time);
-
-        /// <inheritdoc />
-        public DateTime GetLastAccessTime(UPath path)
+        public void SetCreationTime(UPath path, DateTime time)
         {
             AssertNotDisposed();
-            return GetLastAccessTimeImpl(ValidatePath(path));
+            File.SetCreationTime(ValidatePath(path).FullName, time);
         }
 
         /// <summary>
-        /// Implementation for <see cref="GetLastAccessTime"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Returns the last access date and time of the specified file or directory.
         /// </summary>
         /// <param name="path">The path to a file or directory for which to obtain creation date and time information.</param>
         /// <returns>A <see cref="DateTime"/> structure set to the last access date and time for the specified file or directory. This value is expressed in local time.</returns>
-        protected abstract DateTime GetLastAccessTimeImpl(UPath path);
-
-        /// <inheritdoc />
-        public void SetLastAccessTime(UPath path, DateTime time)
+        public DateTime GetLastAccessTime(UPath path)
         {
             AssertNotDisposed();
-            SetLastAccessTimeImpl(ValidatePath(path), time);
+            return File.GetLastAccessTime(ValidatePath(path).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="SetLastAccessTime"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Sets the date and time the file was last accessed.
         /// </summary>
         /// <param name="path">The path to a file or directory for which to set the last access date and time.</param>
         /// <param name="time">A <see cref="DateTime"/> containing the value to set for the last access date and time of path. This value is expressed in local time.</param>
-        protected abstract void SetLastAccessTimeImpl(UPath path, DateTime time);
-
-        /// <inheritdoc />
-        public DateTime GetLastWriteTime(UPath path)
+        public void SetLastAccessTime(UPath path, DateTime time)
         {
             AssertNotDisposed();
-            return GetLastWriteTimeImpl(ValidatePath(path));
+            File.SetLastAccessTime(ValidatePath(path).FullName, time);
         }
 
         /// <summary>
-        /// Implementation for <see cref="GetLastWriteTime"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Returns the last write date and time of the specified file or directory.
         /// </summary>
         /// <param name="path">The path to a file or directory for which to obtain creation date and time information.</param>
         /// <returns>A <see cref="DateTime"/> structure set to the last write date and time for the specified file or directory. This value is expressed in local time.</returns>
-        protected abstract DateTime GetLastWriteTimeImpl(UPath path);
-
-        /// <inheritdoc />
-        public void SetLastWriteTime(UPath path, DateTime time)
+        public DateTime GetLastWriteTime(UPath path)
         {
             AssertNotDisposed();
-            SetLastWriteTimeImpl(ValidatePath(path), time);
+            return File.GetLastWriteTime(ValidatePath(path).FullName);
         }
 
         /// <summary>
-        /// Implementation for <see cref="SetLastWriteTime"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Sets the date and time that the specified file was last written to.
         /// </summary>
         /// <param name="path">The path to a file or directory for which to set the last write date and time.</param>
         /// <param name="time">A <see cref="DateTime"/> containing the value to set for the last write date and time of path. This value is expressed in local time.</param>
-        protected abstract void SetLastWriteTimeImpl(UPath path, DateTime time);
+        public void SetLastWriteTime(UPath path, DateTime time)
+        {
+            AssertNotDisposed();
+            File.SetLastWriteTime(ValidatePath(path).FullName, time);
+        }
 
         // ----------------------------------------------
         // Search API
         // ----------------------------------------------
 
-        /// <inheritdoc />
-        public IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget)
-        {
-            AssertNotDisposed();
-            if (searchPattern == null) throw new ArgumentNullException(nameof(searchPattern));
-            return EnumeratePathsImpl(ValidatePath(path), searchPattern, searchOption, searchTarget);
-        }
-
         /// <summary>
-        /// Implementation for <see cref="EnumeratePaths"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Returns an enumerable collection of file names and/or directory names that match a search pattern in a specified path, and optionally searches subdirectories.
         /// </summary>
         /// <param name="path">The path to the directory to search.</param>
@@ -396,97 +323,85 @@ namespace McMorph.Files
         /// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories.</param>
         /// <param name="searchTarget">The search target either <see cref="SearchTarget.Both"/> or only <see cref="SearchTarget.Directory"/> or <see cref="SearchTarget.File"/>.</param>
         /// <returns>An enumerable collection of file-system paths in the directory specified by path and that match the specified search pattern, option and target.</returns>
-        protected abstract IEnumerable<UPath> EnumeratePathsImpl(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget);
-
-        // ----------------------------------------------
-        // Watch API
-        // ----------------------------------------------
-
-        /// <inheritdoc />
-        public bool CanWatch(UPath path)
+        public IEnumerable<UPath> EnumeratePaths(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget)
         {
             AssertNotDisposed();
-            return CanWatchImpl(ValidatePath(path));
-        }
+            Assert.ThrowIfArgumentNull(searchOption, nameof(searchOption));
 
-        /// <summary>
-        /// Implementation for <see cref="CanWatch"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
-        /// Checks if the file system and <paramref name="path"/> can be watched with <see cref="Watch"/>.
-        /// </summary>
-        /// <param name="path">The path to check.</param>
-        /// <returns>True if the the path can be watched on this file system.</returns>
-        protected virtual bool CanWatchImpl(UPath path)
-        {
-            return true;
+            IEnumerable<string> results;
+            switch (searchTarget)
+            {
+                case SearchTarget.File:
+                    results = Directory.EnumerateFiles(ValidatePath(path).FullName, searchPattern, searchOption);
+                    break;
+
+                case SearchTarget.Directory:
+                    results = Directory.EnumerateDirectories(ValidatePath(path).FullName, searchPattern, searchOption);
+                    break;
+
+                case SearchTarget.Both:
+                    results = Directory.EnumerateFileSystemEntries(ValidatePath(path).FullName, searchPattern, searchOption);
+                    break;
+                
+                default:
+                    yield break;
+            }
+
+            foreach (var subPath in results)
+            {
+                yield return ConvertPathFromInternal(subPath);
+            }
+
         }
 
         // ----------------------------------------------
         // Path API
         // ----------------------------------------------
 
-        /// <inheritdoc />
-        public string ConvertPathToInternal(UPath path)
-        {
-            AssertNotDisposed();
-            return ConvertPathToInternalImpl(ValidatePath(path));
-        }
-
         /// <summary>
-        /// Implementation for <see cref="ConvertPathToInternal"/>, <paramref name="path"/> is guaranteed to be absolute and validated through <see cref="ValidatePath"/>.
         /// Converts the specified path to the underlying path used by this <see cref="IFileSystem"/>. In case of a <see cref="McMorph.Files.FileSystems.PhysicalFileSystem"/>, it 
         /// would represent the actual path on the disk.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns>The converted system path according to the specified path.</returns>
-        protected abstract string ConvertPathToInternalImpl(UPath path);
+        public string ConvertPathToInternal(UPath path)
+        {
+            AssertNotDisposed();
+            return ValidatePath(path).FullName;
+        }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Converts the specified system path to a <see cref="IFileSystem"/> path.
+        /// </summary>
+        /// <param name="systemPath">The system path.</param>
+        /// <returns>The converted path according to the system path.</returns>
         public UPath ConvertPathFromInternal(string systemPath)
         {
             AssertNotDisposed();
-            if (systemPath == null) throw new ArgumentNullException(nameof(systemPath));
-            return ValidatePath(ConvertPathFromInternalImpl(systemPath));
-        }
-        /// <summary>
-        /// Implementation for <see cref="ConvertPathToInternal"/>, <paramref name="innerPath"/> is guaranteed to be not null and return path to be validated through <see cref="ValidatePath"/>.
-        /// Converts the specified system path to a <see cref="IFileSystem"/> path.
-        /// </summary>
-        /// <param name="innerPath">The system path.</param>
-        /// <returns>The converted path according to the system path.</returns>
-        protected abstract UPath ConvertPathFromInternalImpl(string innerPath);
-
-        /// <summary>
-        /// User overridable implementation for <see cref="ValidatePath"/> to validate the specified path.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="name">The name.</param>
-        /// <returns>The path validated</returns>
-        /// <exception cref="System.NotSupportedException">The path cannot contain the `:` character</exception>
-        protected virtual UPath ValidatePathImpl(UPath path, string name = "path")
-        {
-            if (path.FullName.IndexOf(':') >= 0)
-            {
-                throw new NotSupportedException($"The path `{path}` cannot contain the `:` character");
-            }
-            return path;
+            Assert.ThrowIfArgumentNull(systemPath, nameof(systemPath));
+            return systemPath;
         }
 
         /// <summary>
         /// Validates the specified path (Check that it is absolute by default)
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="argumentName">The name.</param>
         /// <param name="allowNull">if set to <c>true</c> the path is allowed to be null. <c>false</c> otherwise.</param>  
         /// <returns>The path validated</returns>
-        protected UPath ValidatePath(UPath path, string name = "path", bool allowNull = false)
+        protected UPath ValidatePath(UPath path, string argumentName = "path", bool allowNull = false)
         {
             if (allowNull && path.IsNull)
             {
                 return path;
             }
-            path.AssertAbsolute(name);
+            path.AssertAbsolute(argumentName);
 
-            return ValidatePathImpl(path, name);
+            if (path.FullName.IndexOf(':') >= 0)
+            {
+                throw new NotSupportedException($"The path `{path}` cannot contain the `:` character");
+            }
+            return path;
         }
 
         /// <summary>

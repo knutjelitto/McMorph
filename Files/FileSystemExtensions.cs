@@ -12,7 +12,7 @@ using McMorph.Results;
 namespace McMorph.Files
 {
     /// <summary>
-    ///     Extension methods for <see cref="IFileSystem" />
+    ///     Extension methods for <see cref="FileSystem" />
     /// </summary>
     public static class FileSystemExtensions
     {
@@ -26,7 +26,7 @@ namespace McMorph.Files
         /// <param name="overwrite"><c>true</c> to overwrite an existing destination file</param>
         public static void CopyFileCross(UPath srcPath, UPath destPath, bool overwrite)
         {
-            FileSystem.Implementation.CopyFile(srcPath, destPath, overwrite);
+            FileSystem.Instance.CopyFile(srcPath, destPath, overwrite);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace McMorph.Files
         /// <param name="destPath">The destination path of the file in the destination filesystem</param>
         public static void MoveFileCross(UPath srcPath, UPath destPath)
         {
-            FileSystem.Implementation.MoveFile(srcPath, destPath);
+            FileSystem.Instance.MoveFile(srcPath, destPath);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace McMorph.Files
         public static byte[] ReadAllBytes(UPath path)
         {
             var memstream = new MemoryStream();
-            using (var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var stream = FileSystem.Instance.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 stream.CopyTo(memstream);
             }
@@ -69,7 +69,7 @@ namespace McMorph.Files
         /// </remarks>
         public static string ReadAllText(UPath path)
         {
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -88,7 +88,7 @@ namespace McMorph.Files
         public static string ReadAllText(UPath path, Encoding encoding)
         {
             if (encoding == null) throw new ArgumentNullException(nameof(encoding));
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream, encoding))
                 {
@@ -112,7 +112,7 @@ namespace McMorph.Files
         public static void WriteAllBytes(UPath path, byte[] content)
         {
             Assert.ThrowIfArgumentNull(content, nameof(content));
-            using (var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read))
+            using (var stream = FileSystem.Instance.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 stream.Write(content, 0, content.Length);
             }
@@ -126,7 +126,7 @@ namespace McMorph.Files
         /// <returns>An array of strings containing all lines of the file.</returns>
         public static string[] ReadAllLines(UPath path)
         {
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -155,7 +155,7 @@ namespace McMorph.Files
         public static string[] ReadAllLines(UPath path, Encoding encoding)
         {
             Assert.ThrowIfArgumentNull(encoding, nameof(encoding));
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             {
                 using (var reader = new StreamReader(stream, encoding))
                 {
@@ -187,7 +187,7 @@ namespace McMorph.Files
         public static void WriteAllText(UPath path, string content)
         {
             Assert.ThrowIfArgumentNull(content, nameof(content));
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream))
                 {
@@ -215,7 +215,7 @@ namespace McMorph.Files
         {
             Assert.ThrowIfArgumentNull(content, nameof(content));
             Assert.ThrowIfArgumentNull(encoding, nameof(encoding));
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream, encoding))
                 {
@@ -242,7 +242,7 @@ namespace McMorph.Files
         public static void AppendAllText(UPath path, string content)
         {
             Assert.ThrowIfArgumentNull(content, nameof(content));
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream))
                 {
@@ -270,7 +270,7 @@ namespace McMorph.Files
         {
             Assert.ThrowIfArgumentNull(content, nameof(content));
             Assert.ThrowIfArgumentNull(encoding, nameof(encoding));
-            var stream = FileSystem.Implementation.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
+            var stream = FileSystem.Instance.OpenFile(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             {
                 using (var writer = new StreamWriter(stream, encoding))
                 {
@@ -289,7 +289,7 @@ namespace McMorph.Files
         public static Stream CreateFile(UPath path)
         {
             path.AssertAbsolute();
-            return FileSystem.Implementation.OpenFile(path, FileMode.Create, FileAccess.ReadWrite);
+            return FileSystem.Instance.OpenFile(path, FileMode.Create, FileAccess.ReadWrite);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace McMorph.Files
         {
             Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             Assert.ThrowIfArgumentNull(searchOption, nameof(searchOption));
-            foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Directory))
+            foreach (var subPath in FileSystem.Instance.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Directory))
                 yield return subPath;
         }
 
@@ -375,7 +375,7 @@ namespace McMorph.Files
         public static IEnumerable<UPath> EnumerateFiles(UPath path, string searchPattern, SearchOption searchOption)
         {
             Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
-            foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.File))
+            foreach (var subPath in FileSystem.Instance.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.File))
             {
                 yield return subPath;
             }
@@ -421,7 +421,7 @@ namespace McMorph.Files
         {
             Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
             Assert.ThrowIfArgumentNull(searchOption, nameof(searchOption));
-            return FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Both);
+            return FileSystem.Instance.EnumeratePaths(path, searchPattern, searchOption, SearchTarget.Both);
         }
 
         /// <summary>
@@ -554,7 +554,7 @@ namespace McMorph.Files
         public static IEnumerable<FileSystemEntry> EnumerateFileSystemEntries(UPath path, string searchPattern, SearchOption searchOption, SearchTarget searchTarget = SearchTarget.Both)
         {
             Assert.ThrowIfArgumentNull(searchPattern, nameof(searchPattern));
-            foreach (var subPath in FileSystem.Implementation.EnumeratePaths(path, searchPattern, searchOption, searchTarget))
+            foreach (var subPath in FileSystem.Instance.EnumeratePaths(path, searchPattern, searchOption, searchTarget))
             {
                 yield return subPath.DirectoryExists() ? (FileSystemEntry) new DirectoryEntry(subPath) : new FileEntry(subPath);
             }
@@ -568,12 +568,12 @@ namespace McMorph.Files
         /// <returns>A new <see cref="FileSystemEntry"/> from the specified path.</returns>
         public static FileSystemEntry GetFileSystemEntry(UPath path)
         {
-            var fileExists = FileSystem.Implementation.FileExists(path);
+            var fileExists = FileSystem.Instance.FileExists(path);
             if (fileExists)
             {
                 return new FileEntry(path);
             }
-            var directoryExists = FileSystem.Implementation.DirectoryExists(path);
+            var directoryExists = FileSystem.Instance.DirectoryExists(path);
             if (directoryExists)
             {
                 return new DirectoryEntry(path);
@@ -590,12 +590,12 @@ namespace McMorph.Files
         /// <returns>A new <see cref="FileSystemEntry"/> from the specified path.</returns>
         public static FileSystemEntry TryGetFileSystemEntry(UPath path)
         {
-            var fileExists = FileSystem.Implementation.FileExists(path);
+            var fileExists = FileSystem.Instance.FileExists(path);
             if (fileExists)
             {
                 return new FileEntry(path);
             }
-            var directoryExists = FileSystem.Implementation.DirectoryExists(path);
+            var directoryExists = FileSystem.Instance.DirectoryExists(path);
             if (directoryExists)
             {
                 return new DirectoryEntry(path);
@@ -612,7 +612,7 @@ namespace McMorph.Files
         /// <returns>A new <see cref="FileEntry"/> from the specified path.</returns>
         public static FileEntry GetFileEntry(UPath filePath)
         {
-            if (!FileSystem.Implementation.FileExists(filePath))
+            if (!FileSystem.Instance.FileExists(filePath))
             {
                 throw Error.NewFileNotFoundException(filePath);
             }
@@ -627,7 +627,7 @@ namespace McMorph.Files
         /// <returns>A new <see cref="DirectoryEntry"/> from the specified path.</returns>
         public static DirectoryEntry GetDirectoryEntry(UPath directoryPath)
         {
-            if (!FileSystem.Implementation.DirectoryExists(directoryPath))
+            if (!FileSystem.Instance.DirectoryExists(directoryPath))
             {
                 throw Error.NewDirectoryNotFoundException(directoryPath);
             }

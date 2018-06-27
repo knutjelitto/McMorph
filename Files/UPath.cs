@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Alexandre Mutel. All rights reserved.
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -59,6 +60,8 @@ namespace McMorph.Files
             {
                 FullName = ValidateAndNormalize(path);
             }
+            this.lazyFile = null;
+            this.lazyDirectory = null;
         }
 
         /// <summary>
@@ -237,6 +240,10 @@ namespace McMorph.Files
 
         private static string ValidateAndNormalize(string path)
         {
+            if (path == null)
+            {
+                return string.Empty;
+            }
             if (IOPath.IsPathRooted(path))
             {
                 return IOPath.GetFullPath(path);
@@ -272,18 +279,20 @@ namespace McMorph.Files
 
         public bool FileExists()
         {
-            return FileSystem.Implementation.FileExists(this);
+            return FileSystem.Instance.FileExists(this);
         }
 
         public bool DirectoryExists()
         {
-            return FileSystem.Implementation.DirectoryExists(this);
+            return FileSystem.Instance.DirectoryExists(this);
         }
 
-        public bool Exists => FileSystem.Implementation.FileExists(this) || FileSystem.Implementation.DirectoryExists(this);
+        public bool Exists => FileSystem.Instance.FileExists(this) || FileSystem.Instance.DirectoryExists(this);
 
-        public FileEntry AsFile => new FileEntry(this);
+        public FileEntry AsFile => this.lazyFile ?? (this.lazyFile = new FileEntry(this));
+        public DirectoryEntry AsDirectory => this.lazyDirectory ?? (this.lazyDirectory = new DirectoryEntry(this));
 
-        public DirectoryEntry AsDirectory => new DirectoryEntry(this);
+        private FileEntry lazyFile;
+        private DirectoryEntry lazyDirectory;
     }
 }

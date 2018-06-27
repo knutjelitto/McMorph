@@ -34,7 +34,7 @@ namespace McMorph.Morphs
                 if (file.Name.StartsWith("."))
                     continue;
 
-                var recipe = Recipes.RecipeParser.Parse(file.FullName);
+                var recipe = Recipes.RecipeParser.Parse(file.Path.FullName);
                 var morph = new Morph(pogo, recipe);
                 morphs.Add(morph);
                 Terminal.ClearLine();
