@@ -184,7 +184,7 @@ namespace McMorph.Files
         ///     If it is necessary to include a UTF-8 identifier, such as a byte order mark, at the beginning of a file,
         ///     use the <see cref="WriteAllText(Zio.IFileSystem,Zio.UPath,string, Encoding)" /> method overload with UTF8 encoding.
         /// </remarks>
-        public static void WriteAllText(UPath path, string content)
+        public static void WriteAllText(this UPath path, string content)
         {
             Assert.ThrowIfArgumentNull(content, nameof(content));
             var stream = FileSystem.Instance.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.Read);

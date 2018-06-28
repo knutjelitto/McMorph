@@ -113,6 +113,8 @@ namespace McMorph.Downloads
                 if (disposing)
                 {
                     progress.Done();
+                    Terminal.ClearLine();
+                    Terminal.Write(this.prefix);
                 }
                 disposed = true;
             }

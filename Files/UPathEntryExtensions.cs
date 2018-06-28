@@ -23,5 +23,10 @@ namespace McMorph.Files
         {
             FileSystem.Instance.CreateSymbolicLink(link, value, force);
         }
+
+        public static void SetText(this UPath link, string text)
+        {
+            link.WriteAllText(text);
+        }
     }
 }

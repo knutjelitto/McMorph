@@ -29,7 +29,7 @@ namespace McMorph.Downloads
                 dp.Dispose();
 
                 Terminal.ClearLine();
-                Terminal.WriteLine("downloaded ", basename);
+                Terminal.WriteLine("download OK: ", basename);
 
                 return bytes;
             }

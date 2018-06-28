@@ -26,7 +26,7 @@ namespace McMorph.Morphs
             Prepare(force);
             Terminal.ClearLine();
 
-            var mounter = new BashMounter(this);
+            var mounter = new Mounter(this);
 
             Terminal.Write("mounting ... ");
             mounter.MountOverlay();
@@ -43,7 +43,7 @@ namespace McMorph.Morphs
 
             Self.Exec();
 
-            Terminal.Write("unmounting ... ");
+            Terminal.Write("un-mounting ... ");
             mounter.UnMount(this);
         }
 
@@ -113,6 +113,9 @@ namespace McMorph.Morphs
             // links
             (Base / "bin/sh").SymbolicLinkTo("bash", true);
             (Base / "root/Pogo/Data").SymbolicLinkTo("/Data", true);
+
+            // files with content
+            (Base / "root" / ".chroot-exec").WriteAllText("exit 12");
         }
     }
 }

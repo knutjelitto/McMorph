@@ -1,50 +1,3 @@
-ll /
-umount /Pogo/Data/box/Root/
-mount -l
-mount 
-man mount
-man findmnt 
-findmnt -l
-findmnt --help
-findmnt -l -o TARGET
-findmnt --list -o TARGET
-findmnt --list --option TARGET
-findmnt --list --output TARGET
-man findmnt
-findmnt --list --output TARGET --noheadings /dev
-findmnt --list --output TARGET --noheadings /sys
-findmnt --list --output TARGET --noheadings /sys/*
-findmnt --list --output TARGET --noheadings '/sys/*'
-findmnt --list --output TARGET --noheadings
-findmnt --list --output TARGET --noheadings | grep /Pogo
-findmnt --list --output TARGET --noheadings | grep /Pogo/
-ls -l /Pogo/
-ls -l /Pogo/Data/
-rm -rv /Pogo/Data/box/
-findmnt --list --output TARGET --noheadingsx
-clear
-findmnt --list --output TARGET --noheadings
-findmnt --list --output TARGET --noheadings | grep /Pogo
-findmnt --list --output TARGET --noheadings | grep /Pogo/
-ls -l /Pogo/
-ls -l /Pogo/Data/
-rm -rv /Pogo/Data/box/
-findmnt --list --output TARGET --noheadingsx
-clear
-rm -rv /Pogo/Data/Archives/*
-clear
-rm -rv /Pogo/Data/Archives/*
-clear
-rm -rv /Pogo/Data/Archives/*
-remo
-dotnet
-dotnet --help
-dotnet run --help
-morph chroot
-morph inchroot
-echo $?
-dotnet file:///root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
-(cd /root/McMorph; dotnet  /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll)
 remorph chroot
 dotnet  /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
 dotnet /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
@@ -498,3 +451,50 @@ mount
 findmnt
 morph
 remorph 
+tree
+remorph
+morph
+cd info/
+cd man
+cd man1/
+man cmp
+cd ..
+cd bin
+./diff
+ldd diff
+cd
+ll
+less /etc/nsswitch.conf 
+less /etc/gai.conf 
+less /usr/bin/localedef 
+mount
+findmnt
+tree
+remorph
+rm -rv Pogo/Data/Box/
+rm -rv Pogo/Data/Sources/
+rm -rv Pogo/Data/Archives
+clear
+remorph 
+morph
+morhp
+morph 
+morph
+cls
+cls xxx
+man clear
+man clear
+remorph 
+morph
+echo $?
+morph
+echo $?
+remorph 
+morph 
+c ls
+cls
+morph; morph;morph;
+morph;morph;morph;
+findmnt
+remorph
+morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;

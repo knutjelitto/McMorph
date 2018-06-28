@@ -11,6 +11,8 @@ RUN apt-get update -y && apt-get install -y \
     bzr \
     lzip \
     autoconf \
+    gawk \
+    attr \
     build-essential \
  && apt-get -q -y autoremove  && rm -rvf /var/lib/apt/lists/*
 

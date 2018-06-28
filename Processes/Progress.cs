@@ -22,14 +22,14 @@ namespace McMorph.Processes
             if (newState != this.state)
             {
                 Terminal.SetPosition(this.pos.Value);
-                Terminal.Write("[", MakeIndefinite(this.state, width - 2), "]");
+                Terminal.Write("┋", MakeIndefinite(this.state, width - 2), "┋");
                 this.state = newState;
             }
         }
 
         public string MakeIndefinite(int step, int width)
         {
-            const string pattern = "―•―     ";
+            const string pattern = "┄━┄  ";
             var builder = new StringBuilder();
             builder.Append(pattern.Substring((pattern.Length - step) % pattern.Length));
             while (builder.Length < width)

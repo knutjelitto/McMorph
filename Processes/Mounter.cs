@@ -6,13 +6,13 @@ using McMorph.Files;
 
 namespace McMorph.Processes
 {
-    public class BashMounter : IDisposable
+    public class Mounter : IDisposable
     {
         private readonly ChrootBox box;
         private Progress progress;
         private Stack<MountPoint> mountPoints = new Stack<MountPoint>();
 
-        public BashMounter(ChrootBox box)
+        public Mounter(ChrootBox box)
         {
             this.box = box;
             this.progress = new Progress();
@@ -114,7 +114,7 @@ namespace McMorph.Processes
 
         private Bash MountRun(string command)
         {
-            System.Threading.Tasks.Task.Delay(50).Wait();
+            //System.Threading.Tasks.Task.Delay(30).Wait();
 
             return new Bash()
                 .Command(command)
@@ -122,13 +122,25 @@ namespace McMorph.Processes
                 .Run();
         }
 
-       public void Dispose()
+        public void Dispose()
         {
             if (this.progress != null)
             {
                 this.progress.Dispose();
                 this.progress = null;
             }
+        }
+
+        private class MountPoint
+        {
+            public MountPoint(UPath path, bool recursive)
+            {
+                Path = path;
+                Recursive = recursive;
+            }
+
+            public UPath Path { get; }
+            public bool Recursive { get; }
         }
     }
 }
