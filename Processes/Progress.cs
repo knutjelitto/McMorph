@@ -41,6 +41,11 @@ namespace McMorph.Processes
             return builder.ToString();
         }
 
+        public void Done()
+        {
+            Dispose();
+        }
+
         public void Dispose()
         {
             Terminal.GotoLineHome();

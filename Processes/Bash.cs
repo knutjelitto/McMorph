@@ -44,9 +44,9 @@ namespace McMorph.Processes
             return this;
         }
 
-        public Bash WithProgress()
+        public Bash WithProgress(Progress progress = null)
         {
-            this.progress = new Progress();
+            this.progress = progress ?? new Progress();
             return this;
         }
 
@@ -195,7 +195,7 @@ namespace McMorph.Processes
             this.progress?.Advance();
         }
         
-        private static void ThrowOnError(Bash bash)
+        public static void ThrowOnError(Bash bash)
         {
             if (!bash.Ok)
             {

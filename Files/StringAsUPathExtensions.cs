@@ -14,6 +14,11 @@ namespace McMorph.Files
             FileSystem.Instance.CreateDirectory(path);
         }
 
+        public static void CopyTo(this string source, UPath destination)
+        {
+            FileSystem.Instance.CopyFile(source, destination, true);
+        }
+
         public static void Touch(this string path)
         {
             var file = path.AsPath().AsFile;

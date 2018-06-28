@@ -14,3 +14,9 @@ higher-level functionality such as string manipulation or command-line argument 
 
 [Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.gz
 [Deps]      headers
+
+[Build.Bash]
+
+[.Configure]
+[.Make]
+[.Install]

@@ -1,282 +1,3 @@
-morph
-cd /
-#cd Morph/
-cd Morph/
-rm McMorph
-cd Pogo/
-cd McMorph/
-cd Data/Archives/
-du -sh *
-cd root/
-cd .local/
-cd share/
-löl
-cd powershell/
-cd /Pogo/
-rm -rv *
-du
-cd ..
-ls -la
-cd
-rm bash-4.4.18.tar.gz* gcc-8.1.0.tar.xz* patch-2.7.6.tar.gz* xxx
-cd coreutils-8.29.tar.xz*
-rm coreutils-8.29.tar.xz*
-ll
-cd /
-ll
-morph
-ll
-rm bash-4.4.18.tar.gz* gcc-8.1.0.tar.xz* patch-2.7.6.tar.gz* xxx
-cd coreutils-8.29.tar.xz*
-rm coreutils-8.29.tar.xz*
-morph
-cd /
-cd Pogo/
-cd ..
-ll
-morph
-rm bash-4.4.18.tar.gz* gcc-8.1.0.tar.xz* patch-2.7.6.tar.gz* xxx
-cd coreutils-8.29.tar.xz*
-rm coreutils-8.29.tar.xz*
-cd /
-cd Pogo/
-dotnet dev-certs https --trust
-morph
-cd /etc
-cd ca-certificates
-dir
-cd update.d/
-ll
-cd /usr/share/
-cd ca-certificates/
-cdmo
-cd mozilla/
-ls -la
-ls -la | less
-cd ..
-cd update.d/
-cd /usr/share/
-cd ca-certificates/
-cdmo
-cd mozilla/
-ls -la
-ls -la | less
-dotnet
-dotnet --info
-cd ./McMorph/
-dotnet restore
-cd /etc/apt/
-less sources.list
-cd sources.list.d/
-cd trusted.gpg.d/
-cd ..
-cd 
-apt-get update
-apt-get upgrade
-morph
-/usr/lib/ssl/
-cd /usr/lib/ssl/
-cd certs
-ll | less
-cd /usr/share/ca-certificates/mozilla/
-ll
-find / -name ssltest
-cd
-find /usr -name ssltest
-ssltest
-cd ca-certificates/
-cdmo
-cd mozilla/
-ls -la | less
-cd update.d/
-cd /usr/share/
-cd ca-certificates/
-cdmo
-cd mozilla/
-ls -la | less
-dotnet
-dotnet --info
-cd ./McMorph/
-dotnet restore
-cd /etc/apt/
-less sources.list
-cd sources.list.d/
-cd trusted.gpg.d/
-cd 
-apt-get update
-apt-get upgrade
-/usr/lib/ssl/
-cd /usr/lib/ssl/
-cd certs
-ll | less
-cd /usr/share/ca-certificates/mozilla/
-find / -name ssltest
-find /usr -name ssltest
-ssltest
-pwd
-which pwd
-d /Pogo/Data/Sources/less-530.tmp/
-cd /Pogo/Data/Sources/less-530.tmp/
-ls -lka
-ls -la
-ls -lA
-man tra
-man tar
-du
-du -sh *
-man rm
-cd /Pogo/Data/Sources/
-cd which-2.21.tmp/
-rm -rv *
-cd -
-cd autoconf-2.69/
-cd tests/
-mount
-cd ..
-ll
-cd
-which env
-morph
-cd tests/
-mount
-cd ..
-cd
-which env
-cd ./McMorph/
-dotnet bin/Debug/netcoreapp2.0/McMorph.dll
-runmorph 
-morph
-remorph 
-cd /Pogo/Data/
-ll
-rm -rv *
-morph 
-remorph
-cd /Pogo/Data/
-rm -rv *
-morph 
-time morph
-morph
-remorph
-mount
-cd /Pogo/Data/box/R
-cd /Pogo/Data/box/Root/
-ll
-ll /
-cd ./McMorph/
-dotnet bin/Debug/netcoreapp2.0/McMorph.dll
-runmorph 
-remorph 
-cd /Pogo/Data/
-ll
-rm -rv *
-morph 
-cd /Pogo/Data/
-rm -rv *
-morph 
-time morph
-cd /Pogo/Data/box/R
-cd /Pogo/Data/box/Root/
-ll
-ll /
-umount /Pogo/Data/box/Root/
-mount
-mount -l
-mount 
-man mount
-findmnt 
-man findmnt 
-findmnt -l
-findmnt --help
-findmnt -l -o TARGET
-findmnt --list -o TARGET
-findmnt --list --option TARGET
-findmnt --list --output TARGET
-man findmnt
-findmnt --list --output TARGET --noheadings /dev
-findmnt --list --output TARGET --noheadings /sys
-findmnt --list --output TARGET --noheadings /sys/*
-findmnt --list --output TARGET --noheadings '/sys/*'
-findmnt --list --output TARGET --noheadings
-findmnt --list --output TARGET --noheadings | grep /Pogo
-findmnt --list --output TARGET --noheadings | grep /Pogo/
-ls -l /Pogo/
-ls -l /Pogo/Data/
-rm -rv /Pogo/Data/box/
-findmnt --list --output TARGET --noheadingsx
-clear
-morph
-remorph
-findmnt --list --output TARGET --noheadings
-findmnt --list --output TARGET --noheadings | grep /Pogo
-findmnt --list --output TARGET --noheadings | grep /Pogo/
-ls -l /Pogo/
-ls -l /Pogo/Data/
-rm -rv /Pogo/Data/box/
-findmnt --list --output TARGET --noheadingsx
-clear
-rm -rv /Pogo/Data/Archives/*
-remorph
-morph
-clear
-rm -rv /Pogo/Data/Archives/*
-morph
-remorph
-clear
-rm -rv /Pogo/Data/Archives/*
-remo
-remorph 
-remorph
-morph
-/usr/lib/ssl/
-cd /usr/lib/ssl/
-cd certs
-ll | less
-cd /usr/share/ca-certificates/mozilla/
-find / -name ssltest
-find /usr -name ssltest
-ssltest
-pwd
-which pwd
-d /Pogo/Data/Sources/less-530.tmp/
-cd /Pogo/Data/Sources/less-530.tmp/
-ls -lka
-ls -lA
-man tra
-man tar
-man rm
-cd /Pogo/Data/Sources/
-cd which-2.21.tmp/
-rm -rv *
-cd -
-cd autoconf-2.69/
-cd tests/
-which env
-cd tests/
-which env
-dotnet bin/Debug/netcoreapp2.0/McMorph.dll
-runmorph 
-cd /Pogo/Data/
-rm -rv *
-morph 
-cd /Pogo/Data/
-rm -rv *
-morph 
-time morph
-cd /Pogo/Data/box/R
-cd /Pogo/Data/box/Root/
-ll /
-dotnet bin/Debug/netcoreapp2.0/McMorph.dll
-runmorph 
-cd /Pogo/Data/
-rm -rv *
-morph 
-cd /Pogo/Data/
-rm -rv *
-morph 
-time morph
-cd /Pogo/Data/box/R
-cd /Pogo/Data/box/Root/
 ll /
 umount /Pogo/Data/box/Root/
 mount -l
@@ -498,3 +219,282 @@ findmnt
 remorph 
 findmnt
 morph
+remorph 
+findmnt
+morph
+cd Pogo/
+cd Data/Box/
+cd Merged/
+cd usr/
+ll
+rm -rv include/
+cd Merged/
+rm -rv include/
+cd Pogo/Data/Box/Merged/
+cd usr/
+mkdir include
+cd include/
+ll
+touch xxx
+man mount
+which docker
+docker
+which dotnet
+findmnt
+findmnt
+remorph 
+morph 
+cd Pogo/Data/Box/
+cd Changes/
+cd
+morph
+cd Pogo/Data/Box/Changes/
+cd usr/
+cd include/
+ll
+cd ..
+apt-get update
+which docker
+docker
+which dotnet
+findmnt
+findmnt
+remorph 
+morph 
+cd Pogo/Data/Box/Changes/
+apt-get update
+apt-get upgrade
+apt-get install attr
+cd Pogo/Data/Box/
+cd Changes/
+cd usr/
+getfattr 
+getfattr --help
+getfattr -d include/
+getfattr -d include
+cd include/
+cd ..
+rm -rv usr/
+cd
+morph
+env
+cd -
+ll
+ls -la
+cd ..
+ll
+cd
+findmnt
+cd
+env
+cd -
+ll
+cd LiFo/
+cd ..
+rmdir LiFo/
+rmdir Morph/
+morph
+cd /etc/
+less passwd
+ls -la
+ll
+cat .bashrc 
+ll
+ls -la
+cat .bashrc 
+cd Pogo/Data/Box/
+cd Base/
+cd root/
+ll
+cd ..
+cd ..
+cd Pogo/Data/Box/Merged/
+cd root/
+ll
+var .profile 
+cat .profile 
+findmnt
+less passwd
+ls -la
+remorph 
+morph 
+remorph
+morph
+ll
+cat .profile 
+which docker
+docker
+which dotnet
+remorph 
+morph 
+cd Pogo/Data/Box/Changes/
+cd include/
+apt-get update
+which docker
+docker
+which dotnet
+remorph 
+morph 
+cd Pogo/Data/Box/Changes/
+apt-get update
+apt-get upgrade
+apt-get install attr
+getfattr 
+getfattr --help
+getfattr -d include/
+getfattr -d include
+cd include/
+rm -rv usr/
+env
+cd -
+env
+cd -
+cd LiFo/
+rmdir LiFo/
+rmdir Morph/
+cd /etc/
+less passwd
+cat .bashrc 
+cat .bashrc 
+cd Pogo/Data/Box/Merged/
+var .profile 
+cat .profile 
+less passwd
+remorph 
+morph 
+cat .profile 
+remorph
+cd Pogo/Data/Box/
+cd Changes/
+cd tmp/
+cd ba
+cd root/
+cd Merged/
+cat /etc/bash.bashrc 
+cd Base/
+cd bin/
+ls -la
+cd /
+cd home/
+cd opt/
+cd srv
+cd usr/
+cd lib/
+cd gcc
+cd ..
+cd ssl/
+cd misc/
+less CA.pl 
+cd
+ll
+morph
+findmnt
+morph
+remorph
+cd usr/
+cd lib/
+cd gcc
+cd ssl/
+cd misc/
+less CA.pl 
+findmnt
+remorph
+morph
+cd Pogo/Data/Box/Changes/
+cd root/
+cd tmp/
+ls -la
+cd
+cd -
+d ..
+cd Changes/
+cd ..
+cd Base/
+ll
+du
+findmnt
+cd Pogo/Data/Box/Changes/
+cd root/
+cd tmp/
+cd
+cd -
+d ..
+cd Changes/
+cd ..
+cd Base/
+ll
+du
+ls -la
+remorph
+rm -rv Pogo/Data/Sources/*
+morph 
+remorph 
+morph
+cls
+clear
+cd srv
+cd lib/
+cd gcc
+cd ssl/
+cd misc/
+less CA.pl 
+remorph
+cd lib/
+cd gcc
+cd ssl/
+cd misc/
+less CA.pl 
+remorph
+cd Pogo/Data/Box/Changes/
+cd root/
+cd tmp/
+cd -
+d ..
+cd Base/
+du
+cd Pogo/Data/Box/Changes/
+cd root/
+cd tmp/
+cd -
+d ..
+cd Base/
+du
+remorph
+rm -rv Pogo/Data/Sources/*
+morph 
+cls
+clear
+cd /
+cd Pogo/
+cd Box/
+cd Data/
+cd Sources/
+cd coreutils-8.29/
+cd hello-2.10/
+less config.log 
+apt-get
+apt-get update
+apt-get install gawk
+cd Pogo/Data/Box/
+cd Changes/
+cd usr/
+cd bin/
+ls -la
+cd share/
+cd info/
+cd man
+cd man1/
+man cmp
+cd ..
+cd bin
+./diff
+ldd diff
+cd
+ll
+less /etc/nsswitch.conf 
+less /etc/gai.conf 
+less /usr/bin/localedef 
+mount
+findmnt
+morph
+remorph 

@@ -24,52 +24,35 @@ namespace McMorph
 
         static int Main(string[] args)
         {
+            Pogo = new Pogo();
+
             foreach (var arg in args)
             {
-                Terminal.WriteLine("argument: ", arg);
                 if (arg == "--do-the-chroot--")
                 {
-                    Terminal.WriteLine("DO-THE-CHROOT");
-                    Bash.DoTheBash();
+                    Bash.DoTheChrootBash(Pogo);
                     return 127;
-                }
-                if (arg == "chroot")
-                {
-                    Self.Exec();
-                    return 1;
-                }
-                if (arg == "touch")
-                {
-                    "/root/XXXX".Touch();
-                    return 1;
                 }
             }
 
-            Pogo = new Pogo();
-
+            Terminal.Write("reading recipes ... ");
             var morphs = MorphCollection.Populate(
                 Pogo, 
                 IsLinux
                     ? "/root/McMorph/Repository"
                     : Environment.CurrentDirectory.AsPath() / "Repository");
             Terminal.ClearLine();
-            Terminal.WriteLine("reading OK");
             
             morphs.Download(false);
             morphs.Extract(false);
 
-            Pogo.Box.Prepare(true);
-            Pogo.Box.Mount();
+            Pogo.Box.Mount(true);
+
 #if false
-
-            //Bash.MountOverlay(Pogo.Box);
-            //Bash.UnMountAll(Pogo.Box);
-
             //Console.Write("any key ...");
             //Console.ReadKey(true);
             //Console.WriteLine();
 #endif
-
             return 0;
         }
     }

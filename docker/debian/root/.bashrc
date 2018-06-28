@@ -1,10 +1,14 @@
 #!/bin/bash
+#echo "sourcing ~/.bashrc"
 
 shopt -s checkwinsize
 umask 022
 export HISTCONTROL=ignorespace:ignoredups:erasedups
 
 export POGO_ENV="pogo.net"
+if [[ -f ~/.chroot ]]; then
+    POGO_ENV="pogo.net.chroot"
+fi
 export USER=root
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/McMorph/tools
 export TERM=xterm

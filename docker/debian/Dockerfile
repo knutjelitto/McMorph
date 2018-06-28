@@ -17,6 +17,7 @@ RUN apt-get update -y && apt-get install -y \
 ENV TERM=xterm
 ENV PATH=/sbin:/bin:/usr/sbin:/usr/bin:/root/LiFo/bin
 
+RUN rm -rf /root/.[a-z]*
 WORKDIR /root
 
 CMD [ "bash",  "-l" ]

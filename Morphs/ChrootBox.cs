@@ -20,7 +20,34 @@ namespace McMorph.Morphs
         public UPath Base => Root / "Base";
         public UPath Merged => Root / "Merged";
 
-        public void Prepare(bool force)
+        public void Mount(bool force)
+        {
+            Terminal.Write("preparing ... ");
+            Prepare(force);
+            Terminal.ClearLine();
+
+            var mounter = new BashMounter(this);
+
+            Terminal.Write("mounting ... ");
+            mounter.MountOverlay();
+            //mounter.BindMount("/root/Pogo", Merged / "root/Pogo");
+            mounter.BindMount("/root/McMorph", Merged / "root/McMorph");
+            mounter.RecursiveBindMount("/dev", Merged / "dev");
+            mounter.SysfsMount(Merged / "sys");
+            //mounter.RecursiveBindMount("/proc", Merged / "proc");
+            mounter.ProcfsMount(Merged / "proc");
+            mounter.BindMount("/etc/hostname", Merged / "etc/hostname");
+            mounter.BindMount("/etc/hosts", Merged / "etc/hosts");
+            mounter.BindMount("/etc/resolv.conf", Merged / "etc/resolv.conf");
+            mounter.MountDone();
+
+            Self.Exec();
+
+            Terminal.Write("unmounting ... ");
+            mounter.UnMount(this);
+        }
+
+        private void Prepare(bool force)
         {
             if (force)
             {
@@ -79,37 +106,13 @@ namespace McMorph.Morphs
             (Base / "etc/hosts").TouchFile();
             (Base / "etc/resolv.conf").TouchFile();
 
+            (Base / "root" / ".chroot").TouchFile();
+            "/root/.profile".CopyTo(Base / "root/.profile");
+            "/root/.bashrc".CopyTo(Base / "root/.bashrc");
+
             // links
             (Base / "bin/sh").SymbolicLinkTo("bash", true);
-        }
-
-        public void Mount()
-        {
-            var mountPoints = new Stack<MountPoint>();
-
-            MountOverlay(mountPoints);
-            MountCommons(mountPoints);
-            Self.Exec();    
-
-            Bash.UnMountAll(this, mountPoints);
-        }
-
-        private void MountOverlay(Stack<MountPoint> mountPoints)
-        {
-            Bash.MountOverlay(this, mountPoints);
-        }
-
-        private void MountCommons(Stack<MountPoint> mountPoints)
-        {
-            Bash.BindMount("/root/Pogo", Merged / "root/Pogo", mountPoints);
-            Bash.BindMount("/root/McMorph", Merged / "root/McMorph", mountPoints);
-            Bash.RecursiveBindMount("/dev", Merged / "dev", mountPoints);
-            Bash.SysfsMount(Merged / "sys", mountPoints);
-            //Bash.RecursiveBindMount("/proc", Merged / "proc", mountPoints);
-            Bash.ProcfsMount(Merged / "proc", mountPoints);
-            Bash.BindMount("/etc/hostname", Merged / "etc/hostname", mountPoints);
-            Bash.BindMount("/etc/hosts", Merged / "etc/hosts", mountPoints);
-            Bash.BindMount("/etc/resolv.conf", Merged / "etc/resolv.conf", mountPoints);
+            (Base / "root/Pogo/Data").SymbolicLinkTo("/Data", true);
         }
     }
 }

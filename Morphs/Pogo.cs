@@ -20,7 +20,7 @@ namespace McMorph.Morphs
             LazyBox = new Lazy<ChrootBox>(() => new ChrootBox(this, Data / "Box"));
         }
 
-        private UPath Root { get; }
+        public UPath Root { get; }
 
         public UPath Data => Root / "Data";
         public UPath Compile => Data / "Compile";

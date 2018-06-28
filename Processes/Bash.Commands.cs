@@ -31,16 +31,15 @@ namespace McMorph.Processes
             return bash.Run();
         }
 
-        public static void DoTheBash()
+        public static void DoTheChrootBash(Pogo pogo)
         {
+            Mono.Unix.Native.Syscall.chroot(pogo.Box.Merged.FullName);
+
             var bash = new Bash()
                 .Command($"bash")
                 .Directory("/root")
                 .Interactive()
-                .Run()
-                ;
-
-            ThrowOnError(bash);
+                .Run();
         }
     }
 }

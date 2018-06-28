@@ -36,8 +36,6 @@ namespace McMorph.Morphs
                 var recipe = Recipes.RecipeParser.Parse(file.Path.FullName);
                 var morph = new Morph(pogo, recipe);
                 morphs.Add(morph);
-                Terminal.ClearLine();
-                Terminal.Write("reading OK: ", morph.Tag);
             }
 
             return morphs;

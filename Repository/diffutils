@@ -13,4 +13,14 @@ merge two files.
 [Version]   3.6
 
 [Upstream]  https://ftpmirror.gnu.org/gnu/@[Name]/@[Name]-@[Version].tar.xz
-[Deps]      
+[Deps]
+
+[Build.Bash]
+[.Configure]
+    ./configure \
+        --prefix=/usr   \
+        --disable-nls
+[.Make]
+    make
+[.Install]
+    make install
