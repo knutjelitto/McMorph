@@ -1,166 +1,3 @@
-dotnet /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
-dotnet publish
-dotnet publish --help
-remorph touch
-echo "XXXX" > XXXX
-date
-morph touch
-cd /usr/include/
-cd Pogo/
-cd Archives/
-cd McMorph/
-mkdir Tests
-cd Tests
-dotnet new --help
-dotnet new xunit
-dotnet --force new xunit
-dotnet new xunit --force
-dotnet restore
-less Tests.csproj 
-make tests
-dotnet test
-rm -rv Tests
-cd /
-fintmnt
-mount
-findmnt 
-mkdir xxx
-touch xxx
-rm -rv XXXX xxx
-du
-du -h
-du -h *
-cd LiFo/
-cd tools/
-rm GoboLinux-016.01-x86_64.iso 
-du -sh *
-tree
-ls -l /bin/sh
-cd /Pogo/
-cd Data/
-cd Box/
-cd Bed/
-cd bin/
-cd var
-cd bin
-remorph
-cd /Pogo/Data/Box/Bed/bin/
-ls -la
-find / -name "sh'"
-find / -name "sh"
-cd /bin/
-ls -l sh
-find . -name bash
-cd ./McMorph/
-rm bash
-man symlink
-cd Bed/bin/
-rm sh
-morph
-cd ..
-cd /Pogo/Data/Box/
-find
-rm -rv Bed/
-find /usr -type d -ls
-cd /usr/share/
-cd dco
-cd doc
-cd tree
-ll
-cd
-remorph 
-cd /Pogo/Data/Box/Base/
-find . -ls
-remorph 
-cd /Pogo/Data/Box/
-ll
-cd Base/
-find . -ls
-find . -type f -ls
-cd /
-ls -la
-rm -rv Bed/
-find /usr -type d -ls
-cd /usr/share/
-cd dco
-cd doc
-cd tree
-cd /Pogo/Data/Box/Base/
-cd /Pogo/Data/Box/
-cd Base/
-find . -type f -ls
-ls -la
-remorph 
-cd Pogo/Data/Box/
-find . -ls
-cd ..
-rm -rv Data/
-morph
-cd /
-cd
-ll
-remorph 
-cd Pogo/
-ll
-cd Data/Box/
-find . -ls
-cd
-findmnt
-clear
-clear
-set
-env
-set
-env
-pwd
-cd LiFo/
-cd ..
-rmdir LiFo/
-ll
-remorph 
-ll
-env
-set
-env
-pwd
-cd LiFo/
-cd ..
-rmdir LiFo/
-cd
-cd McMorph/
-dotnet add package CommandLineParser --version 2.2.1
-ll
-cat McMorph.csproj 
-dotnet restore
-morph 
-mount
-mount | wc -l
-remorph 
-findmnt
-morph 
-mount
-mount | wc -l
-remorph 
-cd
-cd Pogo/Data/Box/Base/
-ll
-cd ..
-cd Merged/
-find
-findmnt
-remorph 
-findmnt
-remorph 
-findmnt
-mount
-mount | wc -l
-cd
-cd Pogo/Data/Box/Base/
-ll
-cd ..
-cd Merged/
-find
-man mount
 which docker
 docker
 which dotnet
@@ -498,3 +335,166 @@ remorph
 morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;
 pwd
 ls -la
+remorph
+cd info/
+cd man
+cd man1/
+man cmp
+cd bin
+./diff
+ldd diff
+cd
+less /etc/nsswitch.conf 
+less /etc/gai.conf 
+less /usr/bin/localedef 
+mount
+findmnt
+tree
+remorph
+rm -rv Pogo/Data/Box/
+rm -rv Pogo/Data/Sources/
+rm -rv Pogo/Data/Archives
+clear
+remorph 
+morhp
+morph 
+cls
+cls xxx
+man clear
+man clear
+remorph 
+echo $?
+echo $?
+remorph 
+morph 
+c ls
+cls
+morph; morph;morph;
+morph;morph;morph;
+findmnt
+remorph
+morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;
+pwd
+cd Pogo/Data/Box/Changes/
+rm -rv *
+cd usr/local/musl/
+cat musl-gcc 
+l
+less musl-gcc.specs 
+cd include/
+cd sys
+cd 
+cd -
+cd usr/
+cd local/
+cd bin/
+ldd bash
+./bash
+cd lib/
+cd pkgconfig/
+less bash.pc 
+ls -la
+cd ..
+ll
+cd bash/
+ls -l
+ldd basename 
+apt-get install ncurses
+apt-get install curses
+apt-get install terminfo
+apt-get install libncurses
+apt-get install libncursesw
+apt-get update
+apt-get install libncursesw6
+apt-get install libncursesw5
+apt-get install libncursesw5-dev
+morph
+ls -l
+ldd basename 
+apt-get install ncurses
+apt-get install curses
+apt-get install terminfo
+apt-get install libncurses
+apt-get install libncursesw
+apt-get update
+apt-get install libncursesw6
+apt-get install libncursesw5
+apt-get install libncursesw5-dev
+got
+git
+cd Pogo/
+cd Data/
+git clone https://github.com/sabotage-linux/sabotage.git
+cd Box/
+rm -rv Changes/
+cd Base/
+cd Merged/
+ll
+cd Work/
+cd ..
+cd
+morph
+remorph
+apt-get install ncurses
+apt-get install curses
+apt-get install terminfo
+apt-get install libncurses
+apt-get install libncursesw
+apt-get update
+apt-get install libncursesw6
+apt-get install libncursesw5
+apt-get install libncursesw5-dev
+ldd basename 
+apt-get install ncurses
+apt-get install curses
+apt-get install terminfo
+apt-get install libncurses
+apt-get install libncursesw
+apt-get update
+apt-get install libncursesw6
+apt-get install libncursesw5
+apt-get install libncursesw5-dev
+got
+git
+cd Pogo/
+cd Data/
+git clone https://github.com/sabotage-linux/sabotage.git
+cd Box/
+rm -rv Changes/
+cd Base/
+cd Merged/
+cd Work/
+remorph
+morph
+cd Pogo/Data/
+rm r-v sabotage
+rm -rv sabotage
+mv ~/McMorph/sabotage-1.1.19-x86_64-rootfs-stage2-e0b6285a.tar.xz .
+tar tvf sabotage-1.1.19-x86_64-rootfs-stage2-e0b6285a.tar.xz 
+mkdir sabotage
+ls -l
+cd sabotage
+tar xvf ../sabotage
+tar xvf ../sabotage-1.1.19-x86_64-rootfs-stage2-e0b6285a.tar.xz 
+du -sh
+cd 9base/
+./look
+cd bin
+./wget
+cd opt/
+cd busybox/
+cd bin/
+ldd busybox 
+./busybox 
+./busybox ls
+cat xy
+cat xz
+ls -la
+wget
+cd share/
+cd man
+cd man1
+cd ..
+cd ca-certificates/
+ll
+cd

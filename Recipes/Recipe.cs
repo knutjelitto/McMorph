@@ -5,7 +5,7 @@ using System.Text;
 
 namespace McMorph.Recipes
 {
-    public class Recipe : Base, IRecipe
+    public class Recipe : Base, IRecipeData
     {
         public string Title { get; set; }
 
@@ -17,7 +17,7 @@ namespace McMorph.Recipes
 
         public string Version { get; set; }
 
-        public Uri Upstream { get; set; }
+        public string Upstream { get; set; }
 
         public List<string> Assets { get; } = new List<string>();
 
@@ -25,7 +25,7 @@ namespace McMorph.Recipes
 
         public RecipeClass Class { get; set; } = RecipeClass.None;
         
-        public IBuild Build { get; set; }
+        public IBuildData Build { get; set; }
 
         public override void Dump(TextWriter writer)
         {

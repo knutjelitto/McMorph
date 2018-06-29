@@ -16,10 +16,10 @@ namespace McMorph.Morphs
         private readonly Morph morph;
         private readonly Uri uri;
 
-        public Upstream(Morph morph, Uri uri)
+        public Upstream(Morph morph, string uri)
         {
             this.morph = morph;
-            this.uri = uri;
+            this.uri = new Uri(uri);
         }
 
         public Pogo Pogo => this.Morph.Pogo;

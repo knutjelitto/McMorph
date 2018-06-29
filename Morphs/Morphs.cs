@@ -1,32 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using McMorph.Files;
 
 namespace McMorph.Morphs
 {
-    public class MorphCollection : IReadOnlyList<Morph>, IReadOnlyDictionary<string, Morph>
+    public class Morphs : IReadOnlyList<Morph>, IReadOnlyDictionary<string, Morph>
     {
         private readonly Pogo pogo;
         private readonly List<Morph> list = new List<Morph>();
         private readonly Dictionary<string, Morph> lookup = new Dictionary<string, Morph>();
 
-        public MorphCollection(Pogo pogo)
+        public Morphs(Pogo pogo)
         {
             this.pogo = pogo;
         }
 
-        public void Add(Morph morph)
+        public static Morphs Populate(Pogo pogo, UPath dataDir)
         {
-            this.lookup.Add(morph.Name, morph);
-            this.list.Add(morph);
-        }
-
-        public static MorphCollection Populate(Pogo pogo, UPath dataDir)
-        {
-            var morphs = new MorphCollection(pogo);
+            var morphs = new Morphs(pogo);
 
             foreach (var file in dataDir.AsDirectory.EnumerateFiles("*"))
             {
@@ -41,13 +36,33 @@ namespace McMorph.Morphs
             return morphs;
         }
 
+        protected void Add(Morph morph)
+        {
+            this.lookup.Add(morph.Name, morph);
+            this.list.Add(morph);
+        }
+
         public IEnumerable<Upstream> Upstreams
         {
             get
             {
                 foreach (var morph in this)
                 {
-                        yield return morph.Upstream;
+                    yield return morph.Upstream;
+                }
+            }
+        }
+
+        public IEnumerable<Asset> Assets
+        {
+            get
+            {
+                foreach (var morph in this)
+                {
+                    foreach (var asset in morph.Assets)
+                    {
+                        yield return asset;
+                    }
                 }
             }
         }

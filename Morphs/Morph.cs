@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using McMorph.Recipes;
@@ -22,5 +23,16 @@ namespace McMorph.Morphs
         public string Tag => this.Name + "-" + this.Version;
 
         public Upstream Upstream => new Upstream(this, this.Recipe.Upstream);
+
+        public IEnumerable<Asset> Assets
+        {
+            get
+            {
+                foreach (var assetUri in this.Recipe.Assets)
+                {
+                    yield return new Asset(this, assetUri);
+                }
+            }
+        }
     }
 }

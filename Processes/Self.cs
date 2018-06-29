@@ -13,7 +13,7 @@ namespace McMorph.Processes
             var startInfo = new ProcessStartInfo()
             {
                 FileName = "/usr/bin/dotnet",
-                Arguments = $"{assembly.Location} --do-the-chroot--",
+                Arguments = $"{assembly.Location} {Program.ChrootIntro}",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
                 UseShellExecute = false,

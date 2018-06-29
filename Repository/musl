@@ -1,0 +1,14 @@
+[Title]     musl libc
+
+[Description]
+A new standard library to power a new generation of Linux-based devices. musl is lightweight, fast,
+simple, free, and strives to be correct in the sense of standards-conformance and safety.
+
+[Home]      http://www.musl-libc.org/
+
+[Class]     Core
+[Name]      musl
+[Version]   1.1.19
+
+[Upstream]  http://www.musl-libc.org/releases/@[Name]-@[Version].tar.gz
+[Deps]

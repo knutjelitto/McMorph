@@ -45,7 +45,7 @@ namespace McMorph.Recipes
                             {
                                 throw new ArgumentException("already set", nameof(recipe.Upstream));
                             }
-                            recipe.Upstream = new Uri(value);
+                            recipe.Upstream = value;
                         };
                         break;
                     case  "assets":
@@ -84,6 +84,9 @@ namespace McMorph.Recipes
                 var text = tag.ToString().ToLowerInvariant();
                 switch (text)
                 {
+                    case  ".settings":
+                        setter = value => recipe.Build.Settings.Add(value);
+                        break;
                     case  ".configure":
                         setter = value => recipe.Build.Configure.Add(value);
                         break;
@@ -122,7 +125,7 @@ namespace McMorph.Recipes
                 }
             }
 
-            recipe.Upstream = new Uri(recipe.Upstream.ToString().Replace("@[Name]", recipe.Name).Replace("@[Version]", recipe.Version));
+            recipe.Upstream = recipe.Upstream.Replace("@[Name]", recipe.Name).Replace("@[Version]", recipe.Version);
 
             return recipe;
         }

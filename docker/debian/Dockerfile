@@ -13,6 +13,7 @@ RUN apt-get update -y && apt-get install -y \
     autoconf \
     gawk \
     attr \
+    nano \
     build-essential \
  && apt-get -q -y autoremove  && rm -rvf /var/lib/apt/lists/*
 

@@ -30,11 +30,9 @@ namespace McMorph.Morphs
 
             Terminal.Write("mounting ... ");
             mounter.MountOverlay();
-            //mounter.BindMount("/root/Pogo", Merged / "root/Pogo");
             mounter.BindMount("/root/McMorph", Merged / "root/McMorph");
             mounter.RecursiveBindMount("/dev", Merged / "dev");
             mounter.SysfsMount(Merged / "sys");
-            //mounter.RecursiveBindMount("/proc", Merged / "proc");
             mounter.ProcfsMount(Merged / "proc");
             mounter.BindMount("/etc/hostname", Merged / "etc/hostname");
             mounter.BindMount("/etc/hosts", Merged / "etc/hosts");
@@ -115,7 +113,7 @@ namespace McMorph.Morphs
             (Base / "root/Pogo/Data").SymbolicLinkTo("/Data", true);
 
             // files with content
-            (Base / "root" / ".chroot-exec").WriteAllText("exit 12");
+            //(Base / "root" / ".chroot-exec").WriteAllText("exit 12");
         }
     }
 }
