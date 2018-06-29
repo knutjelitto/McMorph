@@ -1,7 +1,7 @@
 [Title]     Linux Headers
 
 [Description]
-The Linux headers for combinations with the glibc headers.
+The Linux headers for combination with the glibc headers.
 
 [Home]      https://www.kernel.org/
 
@@ -11,3 +11,11 @@ The Linux headers for combinations with the glibc headers.
 
 [Upstream]  https://www.kernel.org/pub/linux/kernel/v4.x/linux-@[Version].tar.xz
 [Deps]
+
+[Build.Bash]
+[.Make]
+    make mrproper
+[.Install]
+    make INSTALL_HDR_PATH=dest headers_install
+    find dest/include \( -name .install -o -name ..install.cmd \) -delete
+    cp -rv dest/include/* /usr/include

@@ -1,5 +1,3 @@
-remorph chroot
-dotnet  /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
 dotnet /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
 dotnet publish
 dotnet publish --help
@@ -498,3 +496,5 @@ morph;morph;morph;
 findmnt
 remorph
 morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;
+pwd
+ls -la
