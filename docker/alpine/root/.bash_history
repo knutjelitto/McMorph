@@ -306,3 +306,22 @@ dotnet restore
 dotnet --info
 morph
 remorph
+morph
+cd /McMo
+cd ./McMorph/
+dotnet restore
+dotnet --info
+morph
+apk add doc
+apk add build-base
+man man
+man ls
+apk add docs
+cd /
+remorph
+cd root/
+ls -la
+cd McMorph/
+cd tools/
+ll
+bash

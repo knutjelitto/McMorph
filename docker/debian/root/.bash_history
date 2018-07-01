@@ -1,169 +1,3 @@
-dotnet /root/McMorph/bin/Debug/netcoreapp2.0/McMorph.dll
-dotnet publish
-dotnet publish --help
-remorph touch
-echo "XXXX" > XXXX
-date
-morph touch
-cd /usr/include/
-cd Pogo/
-cd Archives/
-cd McMorph/
-mkdir Tests
-cd Tests
-dotnet new --help
-dotnet new xunit
-dotnet --force new xunit
-dotnet new xunit --force
-dotnet restore
-less Tests.csproj 
-make tests
-dotnet test
-rm -rv Tests
-cd /
-fintmnt
-mount
-findmnt 
-mkdir xxx
-touch xxx
-rm -rv XXXX xxx
-du
-du -h
-du -h *
-cd LiFo/
-cd tools/
-rm GoboLinux-016.01-x86_64.iso 
-du -sh *
-tree
-ls -l /bin/sh
-cd /Pogo/
-cd Data/
-cd Box/
-cd Bed/
-cd bin/
-cd var
-cd bin
-remorph
-cd /Pogo/Data/Box/Bed/bin/
-ls -la
-find / -name "sh'"
-find / -name "sh"
-cd /bin/
-ls -l sh
-find . -name bash
-cd ./McMorph/
-rm bash
-man symlink
-cd Bed/bin/
-rm sh
-morph
-cd ..
-cd /Pogo/Data/Box/
-find
-rm -rv Bed/
-find /usr -type d -ls
-cd /usr/share/
-cd dco
-cd doc
-cd tree
-ll
-cd
-remorph 
-cd /Pogo/Data/Box/Base/
-find . -ls
-remorph 
-cd /Pogo/Data/Box/
-ll
-cd Base/
-find . -ls
-find . -type f -ls
-cd /
-ls -la
-rm -rv Bed/
-find /usr -type d -ls
-cd /usr/share/
-cd dco
-cd doc
-cd tree
-cd /Pogo/Data/Box/Base/
-cd /Pogo/Data/Box/
-cd Base/
-find . -type f -ls
-ls -la
-remorph 
-cd Pogo/Data/Box/
-find . -ls
-cd ..
-rm -rv Data/
-morph
-cd /
-cd
-ll
-remorph 
-cd Pogo/
-ll
-cd Data/Box/
-find . -ls
-cd
-findmnt
-clear
-clear
-set
-env
-set
-env
-pwd
-cd LiFo/
-cd ..
-rmdir LiFo/
-ll
-remorph 
-ll
-env
-set
-env
-pwd
-cd LiFo/
-cd ..
-rmdir LiFo/
-cd
-cd McMorph/
-dotnet add package CommandLineParser --version 2.2.1
-ll
-cat McMorph.csproj 
-dotnet restore
-morph 
-mount
-mount | wc -l
-remorph 
-findmnt
-morph 
-mount
-mount | wc -l
-remorph 
-cd
-cd Pogo/Data/Box/Base/
-ll
-cd ..
-cd Merged/
-find
-findmnt
-remorph 
-findmnt
-remorph 
-findmnt
-mount
-mount | wc -l
-cd
-cd Pogo/Data/Box/Base/
-ll
-cd ..
-cd Merged/
-find
-man mount
-which docker
-docker
-which dotnet
 morph
 remorph 
 findmnt
@@ -498,3 +332,169 @@ remorph
 morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;
 pwd
 ls -la
+cd tmp/
+d ..
+cd Base/
+cd Pogo/Data/Box/Changes/
+cd root/
+cd tmp/
+d ..
+cd Base/
+remorph
+rm -rv Pogo/Data/Sources/*
+morph 
+cls
+clear
+cd /
+cd Box/
+cd Data/
+cd Sources/
+cd coreutils-8.29/
+cd hello-2.10/
+less config.log 
+apt-get
+apt-get install gawk
+cd Pogo/Data/Box/
+cd Changes/
+cd usr/
+ls -la
+cd info/
+cd man
+cd man1/
+man cmp
+./diff
+ldd diff
+cd
+less /etc/nsswitch.conf 
+less /etc/gai.conf 
+less /usr/bin/localedef 
+mount
+findmnt
+morph
+remorph 
+tree
+remorph
+morph
+cd info/
+cd man
+cd man1/
+man cmp
+./diff
+ldd diff
+cd
+less /etc/nsswitch.conf 
+less /etc/gai.conf 
+less /usr/bin/localedef 
+mount
+findmnt
+tree
+remorph
+rm -rv Pogo/Data/Box/
+rm -rv Pogo/Data/Sources/
+rm -rv Pogo/Data/Archives
+clear
+remorph 
+morph
+morhp
+morph 
+morph
+cls
+cls xxx
+man clear
+man clear
+remorph 
+morph
+echo $?
+morph
+echo $?
+remorph 
+morph 
+c ls
+cls
+morph; morph;morph;
+morph;morph;morph;
+findmnt
+remorph
+morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;morph;
+pwd
+ls -la
+rm -rv musl-cross-make/
+git clone https://github.com/richfelker/musl-cross-make.git
+mv CROSS Pogo/
+cd Pogo/
+cd CROSS/
+cd musl-cross-make/
+apt-get update
+apt-get install nano
+mv config.mak.dist config.mak
+cd patches/
+nano config.mak.dist 
+nano config.mak 
+file
+apt-get install file
+make clean
+make
+make install
+cd output/
+ldd ar
+ldd x86_64-linux-musl-gcc
+l
+cd gcc/
+cd 7.2.0/
+cd /lib
+cd -
+cd  lib
+cd clibe
+cd share/
+cd man/man1/
+cat libcc1.la 
+ldd libcc1.so.0.0.0 
+./x86_64-linux-musl-size
+./x86_64-linux-musl-size x86_64-linux-musl-size 
+cd x86_64-linux-musl/
+cd lib/
+cd include/
+du
+cd bin/
+size strip
+ldd strip
+cd ,,
+cd cd..
+cd bin
+cd lib
+cd libexec/
+cd gcc/x86_64-linux-musl/7.2.0/
+cd ..
+ll
+cd bin/
+size strip
+ldd strip
+cd ,,
+cd cd..
+cd bin
+cd lib
+cd libexec/
+cd gcc/x86_64-linux-musl/7.2.0/
+ping www.google.de
+remorph
+morph
+man bind
+which bind
+bind
+man 1 bind
+man mount
+cat /etc/fstab 
+cd Pogo/
+cd CROSS/
+cd musl-cross-make/
+make
+make install
+cd output/
+cd x86_64-linux-musl/include/
+cd linux/
+less utime.h 
+less vfio.h 
+ls -la
+cd ..
+cd McMorph/
+ll
