@@ -306,3 +306,11 @@ dotnet restore
 dotnet --info
 morph
 remorph
+remorph
+cd McMorph/
+ll
+cd McMorph.Morph/
+dotnet info
+dotnet --info
+dotnet build
+dotnet restore

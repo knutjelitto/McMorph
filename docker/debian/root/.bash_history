@@ -1,24 +1,3 @@
-apt-get update
-which docker
-docker
-which dotnet
-findmnt
-findmnt
-remorph 
-morph 
-cd Pogo/Data/Box/Changes/
-apt-get update
-apt-get upgrade
-apt-get install attr
-cd Pogo/Data/Box/
-cd Changes/
-cd usr/
-getfattr 
-getfattr --help
-getfattr -d include/
-getfattr -d include
-cd include/
-cd ..
 rm -rv usr/
 cd
 morph
@@ -498,3 +477,24 @@ dotnet add package System.Threading.Tasks.Dataflow --version 4.9.0
 cd McMorph/McMorph.Tools/
 dotnet add package System.Threading.Tasks.Dataflow --version 4.9.0
 remorph
+dotnet add package System.Threading.Tasks.Dataflow --version 4.9.0
+remorph
+morph
+cd McMorph/McMorph.Files.Tests/
+dotnet test
+cd McMorph/
+dotnet build
+dotnet info
+dotnet --info
+dotnet --info
+cd McMorph/
+apt-get update
+apt-get upgrade
+dotnet build
+apt-get upgrade
+remorph
+cd McMorph/
+dotnet run
+cd McMorph.Morph/
+dotnet build
+remorph 
