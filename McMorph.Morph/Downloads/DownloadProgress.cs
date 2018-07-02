@@ -1,6 +1,7 @@
 using System;
 
-using McMorph.Actors;
+using McMorph.Tools;
+using McMorph.Tools.Actors;
 
 namespace McMorph.Downloads
 {

@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Text;
 
-using McMorph.Results;
+using McMorph.Tools;
 
 namespace McMorph.Files
 {

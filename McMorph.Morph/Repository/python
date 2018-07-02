@@ -1,0 +1,14 @@
+[Title]     Python
+
+[Description]
+Python is a programming language that lets you work more quickly and integrate your systems more
+effectively.
+
+[Home]      https://www.python.org/
+
+[Class]     Core
+[Name]      python
+[Version]   3.7.0
+
+[Upstream]  https://www.python.org/ftp/@[Name]/@[Version]/Python-@[Version].tar.xz
+[Deps]      

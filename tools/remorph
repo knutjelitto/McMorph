@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /root/McMorph
+cd /root/McMorph/McMorph.Morph
 dotnet run -- "$@"

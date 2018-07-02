@@ -1,5 +1,4 @@
-using McMorph.Processes;
-using McMorph.Results;
+using McMorph.Tools;
 
 namespace McMorph.Files
 {
@@ -22,9 +21,9 @@ namespace McMorph.Files
             {
                 if (directory.Exists)
                 {
-                    throw Error.NewExistsButIsNotDirectory(directory);
+                    throw FilesError.NewExistsButIsNotDirectory(directory);
                 }
-                throw Error.NewDirectoryNotFoundException(directory);
+                throw FilesError.NewDirectoryNotFoundException(directory);
             }
 
             using (var progress = new Progress())

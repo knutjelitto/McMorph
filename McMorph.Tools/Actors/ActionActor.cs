@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-namespace McMorph.Actors
+namespace McMorph.Tools.Actors
 {
     public class ActionActor : Actor<Action>
     {

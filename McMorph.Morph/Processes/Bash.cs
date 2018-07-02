@@ -5,8 +5,8 @@ using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 
+using McMorph.Tools;
 using McMorph.Files;
-using McMorph.Results;
 
 namespace McMorph.Processes
 {
@@ -199,7 +199,7 @@ namespace McMorph.Processes
         {
             if (!bash.Ok)
             {
-                throw Error.NewProcessError(bash.command, bash.ErrLines.Take(1).ToList(), bash.ExitCode);
+                throw Errors.NewProcessError(bash.command, bash.ErrLines.Take(1).ToList(), bash.ExitCode);
             }
         }
     }

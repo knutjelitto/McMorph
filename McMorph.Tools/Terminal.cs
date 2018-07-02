@@ -1,8 +1,8 @@
 using System;
 
-using McMorph.Actors;
+using McMorph.Tools.Actors;
 
-namespace McMorph
+namespace McMorph.Tools
 {
     public static class Terminal
     {

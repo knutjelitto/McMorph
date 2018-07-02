@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/McMorph.csproj"
+                "${workspaceFolder}/McMorph.Morph/McMorph.Morph.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using McMorph.Tools;
+using McMorph.Files;
+
 using McMorph.Downloads;
 using McMorph.Recipes;
-using McMorph.Files;
 using McMorph.Processes;
-using McMorph.Results;
 
 namespace McMorph.Morphs
 {
@@ -34,9 +35,9 @@ namespace McMorph.Morphs
             {
                 if (!archivePath.AsFile.Exists)
                 {
-                    throw Error.NewFileNotFoundException(archivePath);
+                    throw FilesError.NewFileNotFoundException(archivePath);
                 }
-                throw Error.NewExistsButIsNotFile(archivePath);
+                throw FilesError.NewExistsButIsNotFile(archivePath);
             }
             if (extractPath.AsDirectory.Exists)
             {
@@ -50,7 +51,7 @@ namespace McMorph.Morphs
             }
             if (extractPath.Exists)
             {
-                throw Error.NewExistsButIsNotDirectory(extractPath);
+                throw FilesError.NewExistsButIsNotDirectory(extractPath);
             }
             var extractPathTmp = (UPath)(extractPath.FullName + ".tmp");
 
@@ -62,7 +63,7 @@ namespace McMorph.Morphs
             }
             if (extractPathTmp.Exists)
             {
-                throw Error.NewExistsButIsNotDirectory(extractPathTmp);
+                throw FilesError.NewExistsButIsNotDirectory(extractPathTmp);
             }
 
             extractPathTmp.CreateDirectory();
@@ -112,7 +113,7 @@ namespace McMorph.Morphs
 
             if (filepath.Exists && !file.Exists)
             {
-                throw Error.NewExistsButIsNotFile(filepath);
+                throw FilesError.NewExistsButIsNotFile(filepath);
             }
 
             if (!file.Exists)

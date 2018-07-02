@@ -12,7 +12,14 @@ namespace McMorph.Files
 
         internal McPath(string path, bool validated)
         {
-            this.uri = new Uri(path);
+            if (path.StartsWith("./") || path.StartsWith("../"))
+            {
+                this.uri = new Uri(path, UriKind.Relative);
+            }
+            else
+            {
+                this.uri = null;
+            }
         }
     }
 }

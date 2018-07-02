@@ -13,8 +13,8 @@ docker/*/root/.cache
 docker/*/root/.local
 docker/*/root/.dotnet
 docker/*/root/.templateengine
-/bin
-/obj
+**/bin
+**/obj
 
 # NuGet Packages
 *.nupkg

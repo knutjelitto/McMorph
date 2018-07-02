@@ -2,7 +2,8 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
-using McMorph.Actors;
+using McMorph.Tools;
+using McMorph.Tools.Actors;
 using McMorph.Files;
 
 namespace McMorph.Downloads

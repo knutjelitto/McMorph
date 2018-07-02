@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using McMorph.Results;
+using McMorph.Tools;
 
 namespace McMorph.Files
 {
@@ -309,7 +309,7 @@ namespace McMorph.Files
                 return new DirectoryEntry(path);
             }
 
-            throw Error.NewEntryDoesntExists(path);
+            throw FilesError.NewEntryDoesntExists(path);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace McMorph.Files
         {
             if (!FileSystem.Instance.FileExists(filePath))
             {
-                throw Error.NewFileNotFoundException(filePath);
+                throw FilesError.NewFileNotFoundException(filePath);
             }
             return new FileEntry(filePath);
         }
@@ -359,7 +359,7 @@ namespace McMorph.Files
         {
             if (!FileSystem.Instance.DirectoryExists(directoryPath))
             {
-                throw Error.NewDirectoryNotFoundException(directoryPath);
+                throw FilesError.NewDirectoryNotFoundException(directoryPath);
             }
             return new DirectoryEntry(directoryPath);
         }

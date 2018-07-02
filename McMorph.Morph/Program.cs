@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-using McMorph.Results;
+using McMorph.Tools;
+using McMorph.Files;
+
 using McMorph.Recipes;
 using McMorph.Downloads;
 using McMorph.Processes;
 using McMorph.Morphs;
-using McMorph.Files;
 
 using Mono.Unix;
 using Mono.Unix.Native;
@@ -45,7 +46,7 @@ namespace McMorph
             var morphs = Morphs.Morphs.Populate(
                 Pogo,
                 IsLinux
-                    ? "/root/McMorph/Repository"
+                    ? "/root/McMorph/McMorph.Morph/Repository"
                     : Environment.CurrentDirectory.AsPath() / "Repository");
             Terminal.ClearLine();
             

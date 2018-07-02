@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace McMorph.Processes
+namespace McMorph.Tools
 {
     public class Progress : IDisposable
     {

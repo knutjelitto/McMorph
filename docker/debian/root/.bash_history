@@ -1,46 +1,3 @@
-which docker
-docker
-which dotnet
-morph
-remorph 
-findmnt
-remorph 
-findmnt
-morph
-remorph 
-findmnt
-morph
-cd Pogo/
-cd Data/Box/
-cd Merged/
-cd usr/
-ll
-rm -rv include/
-cd Merged/
-rm -rv include/
-cd Pogo/Data/Box/Merged/
-cd usr/
-mkdir include
-cd include/
-ll
-touch xxx
-man mount
-which docker
-docker
-which dotnet
-findmnt
-findmnt
-remorph 
-morph 
-cd Pogo/Data/Box/
-cd Changes/
-cd
-morph
-cd Pogo/Data/Box/Changes/
-cd usr/
-cd include/
-ll
-cd ..
 apt-get update
 which docker
 docker
@@ -498,3 +455,46 @@ cd ..
 cd ca-certificates/
 ll
 cd
+./wget
+cd opt/
+cd busybox/
+cd bin/
+ldd busybox 
+./busybox 
+./busybox ls
+cat xy
+cat xz
+wget
+cd share/
+cd man
+cd man1
+cd ca-certificates/
+cd
+remorph
+cd McMorph/
+dontnet sln --help
+dotnet sln --help
+dotnet new sln McMorph.sln
+dotnet new sln
+rm McMorph.Files/
+rm McMorph.code-workspace 
+cd McMorph.
+dotnet add
+ls -la
+dotnet new --help
+cd -
+cd McMorph.Morph/
+dotnet add reference ../McMorph.Files/McMorph.Files.csproj 
+dotnet build
+dotnet new classlib
+cd McMorph.fi
+cd McMorph.Files/
+dotnet add reference ../McMorph.Tools/McMorph.Tools.csproj 
+cd ..
+cd McMorph.Tools/
+ll
+>  dotnet add package System.Threading.Tasks.Dataflow --version 4.9.0
+dotnet add package System.Threading.Tasks.Dataflow --version 4.9.0
+cd McMorph/McMorph.Tools/
+dotnet add package System.Threading.Tasks.Dataflow --version 4.9.0
+remorph

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using McMorph.Results;
+using McMorph.Tools;
 using McMorph.Files;
 
 namespace McMorph.Recipes
@@ -74,7 +74,7 @@ namespace McMorph.Recipes
                         break;
                     }
                     default:
-                        Error.Throw($"{filepath}({tag.LineNo}): unknown tag [{tag}]");
+                        Errors.Throw($"{filepath}({tag.LineNo}): unknown tag [{tag}]");
                         break;
                 }
             }
@@ -99,7 +99,7 @@ namespace McMorph.Recipes
                     default:
                         if (text.StartsWith("."))
                         {
-                            Error.Throw($"{filepath}({tag.LineNo}): unknown tag [{tag}]");
+                            Errors.Throw($"{filepath}({tag.LineNo}): unknown tag [{tag}]");
                         }
                         context = RootContext;
                         RootContext(tag);
@@ -121,7 +121,7 @@ namespace McMorph.Recipes
                 {
                     var err = (ErrTok)token;
 
-                    Error.Throw($"{filepath}({token.LineNo}): {err.Message}");
+                    Errors.Throw($"{filepath}({token.LineNo}): {err.Message}");
                 }
             }
 
