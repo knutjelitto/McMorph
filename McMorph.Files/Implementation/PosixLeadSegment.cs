@@ -19,6 +19,10 @@ namespace McMorph.Files.Implementation
 
         public override string Separator => separator;
 
+        public override bool IsAbsolute => this.root;
+
+        public override bool IsAnchored => this.root;
+
         public override string ToString()
         {
             return this.root ? Separator : string.Empty;

@@ -5,6 +5,9 @@ namespace McMorph.Files.Implementation
 {
     internal class PosixScanner : PathScanner
     {
+        public PosixScanner(string path) : base(path)
+        {}
+
         protected override bool CurrentIsSep()
         {
             return CurrentIs('/');

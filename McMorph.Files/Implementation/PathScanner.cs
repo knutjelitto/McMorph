@@ -9,11 +9,14 @@ namespace McMorph.Files.Implementation
         protected string path;
         protected int current;
 
-        public (LeadSegment, List<Segment>) Scan(string path)
+        public PathScanner(string path)
         {
             this.path = path ?? string.Empty;
             this.current = 0;
+        }
 
+        public (LeadSegment, List<Segment>) Scan()
+        {
             var lead = First();
             var rest = new List<Segment>(8);
             Segment next;

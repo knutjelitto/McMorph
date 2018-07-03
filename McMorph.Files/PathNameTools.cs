@@ -2,7 +2,7 @@ using McMorph.Tools;
 
 namespace McMorph.Files
 {
-    public class FileSystemTools
+    public class PathNameTools
     {
         public static void RemoveDirectory(PathName directory)
         {
@@ -10,9 +10,9 @@ namespace McMorph.Files
             {
                 if (directory.ExistsFile())
                 {
-                    throw FilesError.NewExistsButIsNotDirectory(directory);
+                    throw PathNameErrors.EntityExistsButIsNotDirectory(directory);
                 }
-                throw FilesError.NewDirectoryNotFoundException(directory);
+                throw PathNameErrors.DirectoryNotFoundException(directory);
             }
 
             using (var progress = new Progress())

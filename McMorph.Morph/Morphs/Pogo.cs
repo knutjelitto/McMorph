@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 using McMorph.Tools;
@@ -10,7 +11,11 @@ namespace McMorph.Morphs
 {
     public class Pogo
     {
-        public Pogo() : this("/root/Pogo")
+        public Pogo() : this(
+            RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                ? "/root/Pogo"
+                : @"D:\Temp\Pogo"
+            )
         {
         }
 

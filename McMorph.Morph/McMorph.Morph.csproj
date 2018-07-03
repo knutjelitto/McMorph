@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\McMorph.Tools\McMorph.Tools.csproj" />
     <ProjectReference Include="..\McMorph.Files\McMorph.Files.csproj" />
+    <ProjectReference Include="..\McMorph.Files.Tests\McMorph.Files.Tests.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using McMorph.Files;
 
 namespace McMorph.Files.Tests
 {
-    public class McPathTests
+    public class PosixPathNameTests
     {
         [Theory]
         [InlineData("",       null)]

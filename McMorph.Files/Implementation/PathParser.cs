@@ -6,19 +6,19 @@ namespace McMorph.Files.Implementation
 {
     internal class PathParser
     {
-        private readonly PathScanner scanner;
-        private readonly Func<LeadSegment, IEnumerable<Segment>, PathName> create;
+        private readonly Func<LeadSegment, IEnumerable<Segment>, PathName> createPathName;
+        private readonly Func<string, PathScanner> createScanner;
 
-        public PathParser(PathScanner scanner, Func<LeadSegment, IEnumerable<Segment>, PathName> create)
+        public PathParser(Func<string, PathScanner> createScanner, Func<LeadSegment, IEnumerable<Segment>, PathName> createPathName)
         {
-            this.scanner = scanner;
-            this.create = create;
+            this.createScanner = createScanner;
+            this.createPathName = createPathName;
         }
 
         public PathName Parse(string path)
         {
-            var (lead, rest) = this.scanner.Scan(path);
-            return this.create(lead, Reduce(rest));
+            var (lead, rest) = this.createScanner(path).Scan();
+            return this.createPathName(lead, Reduce(rest));
         }
 
         private IEnumerable<Segment> Reduce(List<Segment> segments)

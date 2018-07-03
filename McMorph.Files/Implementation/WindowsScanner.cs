@@ -4,6 +4,9 @@ namespace McMorph.Files.Implementation
 {
     internal class WindowsScanner : PathScanner
     {
+        public WindowsScanner(string path) : base(path)
+        {}
+        
         protected override bool CurrentIsSep()
         {
             return CurrentIs('/') || CurrentIs('\\');

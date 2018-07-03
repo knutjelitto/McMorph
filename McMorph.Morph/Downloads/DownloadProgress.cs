@@ -31,8 +31,10 @@ namespace McMorph.Downloads
 
         private string DBar(long received, long total, int width)
         {
-            const char line = '━';
-            const char knob = '┄';
+            //const char line = '━';
+            //const char knob = '┄';
+            const char line = ':';
+            const char knob = '~';
 
             int chars = (int)(width * received / total);
 
@@ -54,12 +56,14 @@ namespace McMorph.Downloads
 
         private string Start()
         {
-            return "download " + this.prefix + ": ┣";
+            //return "download " + this.prefix + ": ┣";
+            return "download " + this.prefix + ": [";
         }
 
         private string End()
         {
-            return "┤";
+            //return "┤";
+            return "]";
         }
 
         private int Inner(string start, string end)

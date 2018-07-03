@@ -33,7 +33,7 @@ namespace McMorph.Morphs
             var extractPath = Pogo.SourcePath(this.uri);
             if (!archivePath.ExistsFile())
             {
-                throw FilesError.FileNotFoundException(archivePath);
+                throw PathNameErrors.FileNotFoundException(archivePath);
             }
             if (extractPath.ExistsDirectory())
             {
@@ -42,24 +42,24 @@ namespace McMorph.Morphs
                     return true;
                 }
                 Terminal.Write("clean ", extractPath.Name, ": ");
-                FileSystemTools.RemoveDirectory(extractPath);
+                PathNameTools.RemoveDirectory(extractPath);
                 Terminal.ClearLine();
             }
             if (extractPath.ExistsFile())
             {
-                throw FilesError.NewExistsButIsNotDirectory(extractPath);
+                throw PathNameErrors.EntityExistsButIsNotDirectory(extractPath);
             }
             PathName extractPathTmp = extractPath.Full + ".tmp";
 
             if (extractPathTmp.ExistsDirectory())
             {
                 Terminal.Write("clean ", extractPathTmp.Name, ": ");
-                FileSystemTools.RemoveDirectory(extractPathTmp);
+                PathNameTools.RemoveDirectory(extractPathTmp);
                 Terminal.ClearLine();
             }
             if (extractPathTmp.ExistsFile())
             {
-                throw FilesError.NewExistsButIsNotDirectory(extractPathTmp);
+                throw PathNameErrors.EntityExistsButIsNotDirectory(extractPathTmp);
             }
 
             extractPathTmp.CreateDirectory();
@@ -101,13 +101,13 @@ namespace McMorph.Morphs
                 }
                 else if (filepath.ExistsDirectory())
                 {
-                    FileSystemTools.RemoveDirectory(filepath);
+                    PathNameTools.RemoveDirectory(filepath);
                 }
             }
 
             if (filepath.ExistsDirectory())
             {
-                throw FilesError.NewExistsButIsNotFile(filepath);
+                throw PathNameErrors.EntityExistsButIsNotFile(filepath);
             }
 
             if (!filepath.ExistsFile())

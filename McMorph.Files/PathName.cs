@@ -10,15 +10,15 @@ namespace McMorph.Files
 {
     public abstract class PathName
     {
-        [ThreadStatic] static readonly PathParser posixParser;
-        [ThreadStatic] static readonly PathParser windowsParser;
-        [ThreadStatic] static readonly PathParser defaultParser;
+        static readonly PathParser posixParser;
+        static readonly PathParser windowsParser;
+        static readonly PathParser defaultParser;
         public static readonly ISpecialOperations Operations;
 
         static PathName()
         {
-            posixParser = new PathParser(new PosixScanner(), (lead, rest) => new PosixPathName(lead, rest));
-            windowsParser = new PathParser(new WindowsScanner(), (lead, rest) => new WindowsPathName(lead, rest));
+            posixParser = new PathParser(path => new PosixScanner(path), (lead, rest) => new PosixPathName(lead, rest));
+            windowsParser = new PathParser(path => new WindowsScanner(path), (lead, rest) => new WindowsPathName(lead, rest));
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 defaultParser = windowsParser;
@@ -46,8 +46,8 @@ namespace McMorph.Files
             return (WindowsPathName)windowsParser.Parse(path);
         }
 
-        private readonly LeadSegment lead;
-        private readonly List<Segment> segments;
+        internal readonly LeadSegment lead;
+        protected readonly List<Segment> segments;
 
         internal PathName(LeadSegment lead, IEnumerable<Segment> segments)
         {
@@ -67,9 +67,15 @@ namespace McMorph.Files
                 }
                 return this.segments.LastOrDefault()?.ToString() ?? string.Empty;
             }
-        }
+        }        
 
         public PathName Parent => this.lead.Create(this.segments.Take(this.segments.Count - 1));
+
+        public bool IsAbsolute => this.lead.IsAbsolute;
+
+        public bool IsAnchored => this.lead.IsAnchored;
+
+        internal abstract PathName Join(PathName other);
 
         public static implicit operator PathName(string path)
         {
@@ -78,7 +84,28 @@ namespace McMorph.Files
 
         public static PathName operator/(PathName left, PathName right)
         {
-            throw new NotImplementedException();
+            if (left != null)
+            {
+                if (right != null) // left != null && right != null;
+                {
+                    return left.Join(right);
+                }
+                else // left != null &&  right == null
+                {
+                    return left;
+                }
+            }
+            else // left == null
+            {
+                if (right != null) // left == null && right != null
+                {
+                    return right;
+                }
+                else // left == null && right == null
+                {
+                    return PathName.Path(null);
+                }
+            }
         }
 
         public override string ToString()
