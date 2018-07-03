@@ -39,7 +39,7 @@ namespace McMorph.Processes
             Bash.ThrowOnError(mount);
         }
 
-        public void SysfsMount(UPath target)
+        public void SysfsMount(PathName target)
         {
             var bind = MountRun($"mount --verbose --types sysfs sysfs {target}");
 
@@ -48,7 +48,7 @@ namespace McMorph.Processes
             Bash.ThrowOnError(bind);
         }
 
-        public void ProcfsMount(UPath target)
+        public void ProcfsMount(PathName target)
         {
             var bind = MountRun($"mount --verbose --types proc proc {target}");
 
@@ -57,7 +57,7 @@ namespace McMorph.Processes
             Bash.ThrowOnError(bind);
         }
 
-        public void BindMount(UPath source, UPath target)
+        public void BindMount(PathName source, PathName target)
         {
             var bind = MountRun($"mount --verbose --bind {source} {target}");
 
@@ -66,7 +66,7 @@ namespace McMorph.Processes
             Bash.ThrowOnError(bind);
         }
 
-        public void RecursiveBindMount(UPath source, UPath target)
+        public void RecursiveBindMount(PathName source, PathName target)
         {
             var bind = MountRun($"mount --verbose --rbind {source} {target}");
 
@@ -135,13 +135,13 @@ namespace McMorph.Processes
 
         private class MountPoint
         {
-            public MountPoint(UPath path, bool recursive)
+            public MountPoint(PathName path, bool recursive)
             {
                 Path = path;
                 Recursive = recursive;
             }
 
-            public UPath Path { get; }
+            public PathName Path { get; }
             public bool Recursive { get; }
         }
     }

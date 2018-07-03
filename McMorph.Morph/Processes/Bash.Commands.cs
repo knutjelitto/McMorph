@@ -9,7 +9,7 @@ namespace McMorph.Processes
 {
     public partial class Bash
     {
-        public static Bash RemoveDirectory(UPath directory)
+        public static Bash RemoveDirectory(PathName directory)
         {
             var bash = new Bash()
                 .Command($"rm --recursive --force --verbose \"{directory}\"")
@@ -19,7 +19,7 @@ namespace McMorph.Processes
             return bash.Run();
         }
 
-        public static Bash TarExtract(UPath archivePath, UPath extractPath)
+        public static Bash TarExtract(PathName archivePath, PathName extractPath)
         {
             var bash = new Bash()
                 .Command($"tar --extract --verbose --owner=0 --group=0 --file \"{archivePath}\"")
@@ -32,7 +32,7 @@ namespace McMorph.Processes
 
         public static void DoTheChrootBash(Pogo pogo)
         {
-            Mono.Unix.Native.Syscall.chroot(pogo.Box.Merged.FullName);
+            Mono.Unix.Native.Syscall.chroot(pogo.Box.Merged.Full);
 
             var bash = new Bash()
                 .Command($"bash")

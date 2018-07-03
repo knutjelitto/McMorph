@@ -8,18 +8,18 @@ namespace McMorph.Morphs
 {
     public class ChrootBox
     {
-        public ChrootBox(Pogo pogo, UPath boxRoot)
+        public ChrootBox(Pogo pogo, PathName boxRoot)
         {
             Pogo = pogo;
             Root = boxRoot;
         }
 
         public Pogo Pogo { get; }
-        public UPath Root { get; }
-        public UPath Changes => Root / "Changes";
-        public UPath Work => Root / "Work";
-        public UPath Base => Root / "Base";
-        public UPath Merged => Root / "Merged";
+        public PathName Root { get; }
+        public PathName Changes => Root / "Changes";
+        public PathName Work => Root / "Work";
+        public PathName Base => Root / "Base";
+        public PathName Merged => Root / "Merged";
 
         public void Mount(bool force)
         {
@@ -50,10 +50,9 @@ namespace McMorph.Morphs
         {
             if (force)
             {
-                var directory = Base.AsDirectory;
-                if (directory.Exists)
+                if (Base.ExistsDirectory())
                 {
-                    Base.AsDirectory.Delete(true);
+                    Base.DeleteDirectory(true);
                 }
             }
 
@@ -106,12 +105,12 @@ namespace McMorph.Morphs
             (Base / "etc/resolv.conf").TouchFile();
 
             (Base / "root" / ".chroot").TouchFile();
-            "/root/.profile".CopyTo(Base / "root/.profile");
-            "/root/.bashrc".CopyTo(Base / "root/.bashrc");
+            (Base / "root/.profile").CopyFileFrom("/root/.profile");
+            (Base / "root/.bashrc").CopyFileFrom("/root/.bashrc");
 
             // links
-            (Base / "bin/sh").SymbolicLinkTo("bash", true);
-            (Base / "root/Pogo/Data").SymbolicLinkTo("/Data", true);
+            (Base / "bin/sh").SymlinkTo("bash", true);
+            (Base / "root/Pogo/Data").SymlinkTo("/Data", true);
 
             // files with content
             //(Base / "root" / ".chroot-exec").WriteAllText("exit 12");

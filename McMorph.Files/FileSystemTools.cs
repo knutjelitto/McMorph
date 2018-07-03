@@ -4,11 +4,11 @@ namespace McMorph.Files
 {
     public class FileSystemTools
     {
-        public static void RemoveDirectory(UPath directory)
+        public static void RemoveDirectory(PathName directory)
         {
-            if (!directory.AsDirectory.Exists)
+            if (!directory.ExistsDirectory())
             {
-                if (directory.Exists)
+                if (directory.ExistsFile())
                 {
                     throw FilesError.NewExistsButIsNotDirectory(directory);
                 }
@@ -21,20 +21,20 @@ namespace McMorph.Files
             }
         }
 
-        private static void RemoveDirectory(UPath directory, Progress progress)
+        private static void RemoveDirectory(PathName directory, Progress progress)
         {
-            foreach (var file in directory.AsDirectory.EnumerateFiles())
+            foreach (var file in directory.EnumerateFiles())
             {
-                file.Delete();
+                file.DeleteFile();
                 progress.Advance();
             }
 
-            foreach (var child in directory.AsDirectory.EnumerateDirectories())
+            foreach (var child in directory.EnumerateDirectories())
             {
-                RemoveDirectory(child.Path, progress);
+                RemoveDirectory(child, progress);
             }
 
-            directory.AsDirectory.Delete(false);
+            directory.DeleteDirectory();
             progress.Advance();
         }
     }

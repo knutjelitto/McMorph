@@ -2,11 +2,10 @@ using System;
 
 namespace McMorph.Files.Implementation
 {
-    public class DotDotSegment : Segment
+    public class DotDotSegment : NameSegment
     {
-        public override string ToString()
+        public DotDotSegment() : base("..")
         {
-            return "..";
         }
     }
 }

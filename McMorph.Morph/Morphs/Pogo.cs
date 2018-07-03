@@ -14,26 +14,25 @@ namespace McMorph.Morphs
         {
         }
 
-        public Pogo(UPath root)
+        public Pogo(PathName root)
         {
-            root.AssertAbsolute();
             Root = root;
 
             LazyBox = new Lazy<ChrootBox>(() => new ChrootBox(this, Data / "Box"));
         }
 
-        public UPath Root { get; }
+        public PathName Root { get; }
 
-        public UPath Data => Root / "Data";
-        public UPath Compile => Data / "Compile";
-        public UPath Archives => Data / "Archives";
-        public UPath Sources => Data / "Sources";
+        public PathName Data => Root / "Data";
+        public PathName Compile => Data / "Compile";
+        public PathName Archives => Data / "Archives";
+        public PathName Sources => Data / "Sources";
 
         private Lazy<ChrootBox> LazyBox;
         public ChrootBox Box => this.LazyBox.Value;
 
-        public UPath System => Root / "System";
-        public UPath Index => System / "Index";
+        public PathName System => Root / "System";
+        public PathName Index => System / "Index";
 
         public void Dump()
         {
@@ -46,12 +45,12 @@ namespace McMorph.Morphs
             Terminal.WriteLine("Pogo", ".Index:", Index);
         }
 
-        public UPath ArchivePath(Uri uri)
+        public PathName ArchivePath(Uri uri)
         {
             return Archives / (uri.Host + uri.LocalPath);
         }
         
-        public UPath SourcePath(Uri uri)
+        public PathName SourcePath(Uri uri)
         {
             if (TryGetArchiveStem(uri, out var stem))
             {
@@ -68,7 +67,7 @@ namespace McMorph.Morphs
 
         private bool TryGetArchiveStem(Uri uri, out string stem)
         {
-            var name = ((UPath)uri.LocalPath).GetName();
+            var name = ((PathName)uri.LocalPath).Name;
             var match = archiveRegex.Match(name);
             if (match.Success)
             {

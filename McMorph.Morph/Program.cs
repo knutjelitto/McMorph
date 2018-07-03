@@ -47,7 +47,7 @@ namespace McMorph
                 Pogo,
                 IsLinux
                     ? "/root/McMorph/McMorph.Morph/Repository"
-                    : Environment.CurrentDirectory.AsPath() / "Repository");
+                    : ((PathName)Environment.CurrentDirectory) / "Repository");
             Terminal.ClearLine();
             
             morphs.Download(false);

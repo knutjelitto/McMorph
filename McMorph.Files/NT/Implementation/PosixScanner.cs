@@ -5,54 +5,23 @@ namespace McMorph.Files.Implementation
 {
     internal class PosixScanner : PathScanner
     {
-        public IEnumerable<Segment> Parse(string path)
+        protected override bool CurrentIsSep()
         {
-            Setup(path);
-
-            while (Have)
-            {
-                yield return Next();
-            }
+            return CurrentIs('/');
         }
 
-        private Segment Next()
+        protected override LeadSegment First()
         {
-            if (CurrentIs('/'))
+            if (CurrentIsSep())
             {
                 Advance();
-                return new SeparatorSegment();
-            }
-            
-            var start = this.current;
-            
-            if (CurrentIs('.'))
-            {
-
-                Advance();
-                if (CurrentIs('.'))
+                while (CurrentIsSep())
                 {
                     Advance();
-                    if (CurrentIs('/'))
-                    {
-                        return new DotDotSegment();
-                    }
-                    if (DontHave)
-                    {
-                        return new DotDotSegment();
-                    }
-                } 
-                else if (DontHave || CurrentIs('/'))
-                {
-                    return new DotSegment();
                 }
+                return new PosixLeadSegment(true);
             }
-            
-            while (Have && !CurrentIs('/'))
-            {
-                Advance();
-            }
-
-            return new NameSegment(this.path.Substring(start, this.current - start));
+            return new PosixLeadSegment(false);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace McMorph.Recipes
 {
     public class RecipeParser
     {
-        public static Recipe Parse(UPath filepath)
+        public static Recipe Parse(PathName filepath)
         {
-            var lines = new Lines(filepath.AsFile.ReadAllLines());
+            var lines = new Lines(filepath.ReadAllLines());
 
             var recipe = new Recipe();
 

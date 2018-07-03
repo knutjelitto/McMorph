@@ -4,59 +4,31 @@ using System.Diagnostics;
 
 namespace McMorph.Files.Implementation
 {
-    public class PathParser
+    internal class PathParser
     {
-        private enum State
+        private readonly PathScanner scanner;
+        private readonly Func<LeadSegment, IEnumerable<Segment>, PathName> create;
+
+        public PathParser(PathScanner scanner, Func<LeadSegment, IEnumerable<Segment>, PathName> create)
         {
-            Intro,
-            Content,
+            this.scanner = scanner;
+            this.create = create;
         }
 
-        public IEnumerable<Segment> Reduce(IEnumerable<Segment> segments)
+        public PathName Parse(string path)
         {
-            var state = State.Intro;
-            var yielded = false;
+            var (lead, rest) = this.scanner.Scan(path);
+            return this.create(lead, Reduce(rest));
+        }
 
+        private IEnumerable<Segment> Reduce(List<Segment> segments)
+        {
             foreach (var segment in segments)
             {
-                switch (state)
+                if (segment is NameSegment) // name or '..'
                 {
-                    case State.Intro:
-                        if (segment is SeparatorSegment)
-                        {
-                            if (!yielded)
-                            {
-                                yield return new SeparatorSegment();
-                                yielded = true;
-                            }
-                            break;
-                        }
-                        else
-                        {
-                            state = State.Content;
-                            goto case State.Content;
-                        }
-                    case State.Content:
-                        if (segment is DotDotSegment || segment is NameSegment)
-                        {
-                            yield return segment;
-                            yielded = true;
-                        }
-                        else if (segment is DotSegment || segment is SeparatorSegment)
-                        {
-                            // nop
-                        }
-                        else
-                        {
-                            Debug.Assert(false);
-                        }
-                        break;
+                    yield return segment;
                 }
-            }
-
-            if (!yielded)
-            {
-                yield return new DotSegment();
             }
         }
     }

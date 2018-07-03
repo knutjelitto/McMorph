@@ -4,27 +4,95 @@ using System.Diagnostics;
 
 namespace McMorph.Files.Implementation
 {
-    internal class PathScanner
+    internal abstract class PathScanner
     {
         protected string path;
         protected int current;
-        protected List<Segment> segments = new List<Segment>(10);
 
-        protected void Setup(string path)
+        public (LeadSegment, List<Segment>) Scan(string path)
         {
             this.path = path ?? string.Empty;
             this.current = 0;
-            this.segments.Clear();
+
+            var lead = First();
+            var rest = new List<Segment>(8);
+            Segment next;
+            while ((next = Next()) != null)
+            {
+                rest.Add(next);
+            }
+
+            return (lead, rest);
+        }
+
+        protected abstract bool CurrentIsSep();
+
+        protected abstract LeadSegment First();
+
+        protected bool SkipSeparators()
+        {
+            var skipped = false;
+            while (CurrentIsSep())
+            {
+                skipped = true;
+                Advance();
+            }
+            return skipped;
+        }
+
+        private Segment Next()
+        {
+            while (Have)
+            {
+                var start = this.current;
+
+                if (CurrentIs('.'))
+                {
+                    Advance();
+                    if (CurrentIs('.'))
+                    {
+                        Advance();
+                        if (CurrentIsSep())
+                        {
+                            Advance();
+                            while (CurrentIsSep())
+                            {
+                                Advance();
+                            }
+                            return new DotDotSegment();
+                        }
+                        if (!Have)
+                        {
+                            return new DotDotSegment();
+                        }
+                    }
+                    else
+                    {
+                        if (SkipSeparators() || !Have)
+                        {
+                            continue;
+                        }
+                    }
+                }
+                
+                while (Have && !CurrentIsSep())
+                {
+                    Advance();
+                }
+
+                var segment = new NameSegment(this.path.Substring(start, this.current - start));
+
+                SkipSeparators();
+
+                return segment;
+            }
+
+            return null;
         }
 
         protected bool Have => this.current < this.path.Length;
 
         protected bool DontHave => this.current >= this.path.Length;
-
-        protected void Add(Segment segment)
-        {
-            this.segments.Add(segment);
-        }
 
         protected bool Advance()
         {

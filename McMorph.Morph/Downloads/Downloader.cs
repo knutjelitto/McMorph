@@ -14,7 +14,7 @@ namespace McMorph.Downloads
         {
             var client = new WebClient();
 
-            var basename = ((UPath)uri.LocalPath).GetName();
+            var basename = ((PathName)uri.LocalPath).Name;
 
             using (var dp = new DownloadProgress(basename))
             {

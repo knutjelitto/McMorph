@@ -31,62 +31,58 @@ namespace McMorph.Morphs
         {
             var archivePath = Pogo.ArchivePath(this.uri);
             var extractPath = Pogo.SourcePath(this.uri);
-            if (!archivePath.Exists)
+            if (!archivePath.ExistsFile())
             {
-                if (!archivePath.AsFile.Exists)
-                {
-                    throw FilesError.NewFileNotFoundException(archivePath);
-                }
-                throw FilesError.NewExistsButIsNotFile(archivePath);
+                throw FilesError.FileNotFoundException(archivePath);
             }
-            if (extractPath.AsDirectory.Exists)
+            if (extractPath.ExistsDirectory())
             {
                 if (!force)
                 {
                     return true;
                 }
-                Terminal.Write("clean ", extractPath.GetName(), ": ");
+                Terminal.Write("clean ", extractPath.Name, ": ");
                 FileSystemTools.RemoveDirectory(extractPath);
                 Terminal.ClearLine();
             }
-            if (extractPath.Exists)
+            if (extractPath.ExistsFile())
             {
                 throw FilesError.NewExistsButIsNotDirectory(extractPath);
             }
-            var extractPathTmp = (UPath)(extractPath.FullName + ".tmp");
+            PathName extractPathTmp = extractPath.Full + ".tmp";
 
-            if (extractPathTmp.AsDirectory.Exists)
+            if (extractPathTmp.ExistsDirectory())
             {
-                Terminal.Write("clean ", extractPathTmp.GetName(), ": ");
+                Terminal.Write("clean ", extractPathTmp.Name, ": ");
                 FileSystemTools.RemoveDirectory(extractPathTmp);
                 Terminal.ClearLine();
             }
-            if (extractPathTmp.Exists)
+            if (extractPathTmp.ExistsFile())
             {
                 throw FilesError.NewExistsButIsNotDirectory(extractPathTmp);
             }
 
             extractPathTmp.CreateDirectory();
 
-            Terminal.Write("extract ", archivePath.GetName(), ": ");
+            Terminal.Write("extract ", archivePath.Name, ": ");
 
             var xtract = Bash.TarExtract(archivePath, extractPathTmp);
 
             Terminal.ClearLine();
 
-            var dirs = extractPathTmp.AsDirectory.EnumerateDirectories().ToList();
-            var files = extractPathTmp.AsDirectory.EnumerateFiles().ToList();
+            var dirs = extractPathTmp.EnumerateDirectories().ToList();
+            var files = extractPathTmp.EnumerateFiles().ToList();
             if (dirs.Count == 1 && files.Count == 0)
             {
-                dirs.First().MoveTo(extractPath);
-                extractPathTmp.AsDirectory.Delete();
+                dirs.First().MoveDirectory(extractPath);
+                extractPathTmp.DeleteDirectory();
             }
             else
             {
-                extractPathTmp.AsDirectory.MoveTo(extractPath);
+                extractPathTmp.MoveDirectory(extractPath);
             }
 
-            Terminal.WriteLine("extract ", xtract.Ok ? "OK: " : "FAIL: ",  archivePath.GetName());
+            Terminal.WriteLine("extract ", xtract.Ok ? "OK: " : "FAIL: ",  archivePath.Name);
 
             return xtract.Ok;
         }
@@ -97,33 +93,31 @@ namespace McMorph.Morphs
 
             var filepath = this.Pogo.ArchivePath(this.uri);
 
-            var file = filepath.AsFile;
-
             if (force)
             {
-                if (file.Exists)
+                if (filepath.ExistsFile())
                 {
-                    file.Delete();
+                    filepath.DeleteFile();
                 }
-                else if (filepath.AsDirectory.Exists)
+                else if (filepath.ExistsDirectory())
                 {
                     FileSystemTools.RemoveDirectory(filepath);
                 }
             }
 
-            if (filepath.Exists && !file.Exists)
+            if (filepath.ExistsDirectory())
             {
                 throw FilesError.NewExistsButIsNotFile(filepath);
             }
 
-            if (!file.Exists)
+            if (!filepath.ExistsFile())
             {
                 var bytes = downloader.GetBytes(this.uri);
 
                 if (bytes != null)
                 {
-                    file.Parent.Create();
-                    file.WriteAllBytes(bytes);
+                    filepath.Parent.CreateDirectory();
+                    filepath.WriteAllBytes(bytes);
                 }
             }
         }

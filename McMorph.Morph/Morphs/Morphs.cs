@@ -19,16 +19,16 @@ namespace McMorph.Morphs
             this.pogo = pogo;
         }
 
-        public static Morphs Populate(Pogo pogo, UPath dataDir)
+        public static Morphs Populate(Pogo pogo, PathName dataDir)
         {
             var morphs = new Morphs(pogo);
 
-            foreach (var file in dataDir.AsDirectory.EnumerateFiles("*"))
+            foreach (var file in dataDir.EnumerateFiles())
             {
                 if (file.Name.StartsWith("."))
                     continue;
 
-                var recipe = Recipes.RecipeParser.Parse(file.Path.FullName);
+                var recipe = Recipes.RecipeParser.Parse(file.Full);
                 var morph = new Morph(pogo, recipe);
                 morphs.Add(morph);
             }

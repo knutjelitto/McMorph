@@ -9,23 +9,23 @@ namespace McMorph.Files.Tests
     public class McPathTests
     {
         [Theory]
-        [InlineData(".",       null)]
-        [InlineData(".",       "")]
-        [InlineData(".",       ".")]
-        [InlineData(".",       "./.")]
-        [InlineData(".",       "././.")]
-        [InlineData(".",       "./")]
-        [InlineData(".",       "././")]
-        [InlineData(".",       "./././")]
+        [InlineData("",       null)]
+        [InlineData("",       "")]
+        [InlineData("",       ".")]
+        [InlineData("",       "./.")]
+        [InlineData("",       "././.")]
+        [InlineData("",       "./")]
+        [InlineData("",       "././")]
+        [InlineData("",       "./././")]
         [InlineData("x",       "x")]
         [InlineData("../x",     "../x")]
         [InlineData("../x",     ".././x")]
         [InlineData("../x",     "../x/.")]
         [InlineData("../../x",  "../.././x")]
         [InlineData("x/y",     "x/y")]
-        public void PurePosixPathRelative(string expected, string trialMaterial)
+        public void PosixPathNameRelative(string expected, string trialMaterial)
         {
-            Assert.Equal(expected, McPath.PurePosixPath(trialMaterial).ToString());
+            Assert.Equal(expected, PathName.PosixPath(trialMaterial).ToString());
         }
 
 
@@ -44,9 +44,9 @@ namespace McMorph.Files.Tests
         [InlineData("/x","/x//./")]
         [InlineData("/x","/x//.//")]
         [InlineData("/x","/x/././.")]
-        public void PurePosixPathAbsolute(string expected, string trialMaterial)
+        public void PosixPathNameAbsolute(string expected, string trialMaterial)
         {
-            Assert.Equal(expected, McPath.PurePosixPath(trialMaterial).ToString());
+            Assert.Equal(expected, PathName.PosixPath(trialMaterial).ToString());
         }
     }
 }

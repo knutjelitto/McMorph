@@ -15,7 +15,7 @@ namespace McMorph.Processes
         private Process process;
         private List<Output> output;
         private string command = null;
-        private UPath directory;
+        private PathName directory;
         private IReadOnlyDictionary<string, string> environment;
         private Action<IDictionary<string, string>> environmentSetup;
         private bool newEnvironment;
@@ -38,7 +38,7 @@ namespace McMorph.Processes
             return this;
         }
 
-        public Bash Directory(UPath directory)
+        public Bash Directory(PathName directory)
         {
             this.directory = directory;
             return this;
@@ -113,7 +113,7 @@ namespace McMorph.Processes
             
             if (this.directory != null)
             {
-                startInfo.WorkingDirectory = (string)this.directory;
+                startInfo.WorkingDirectory = this.directory.Full;
             }
 
             if (this.environment != null)

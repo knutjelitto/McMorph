@@ -1,8 +1,3 @@
-rm -rv usr/
-cd
-morph
-env
-cd -
 ll
 ls -la
 cd ..
@@ -498,3 +493,8 @@ dotnet run
 cd McMorph.Morph/
 dotnet build
 remorph 
+cd McMorph/McMorph.Files.Tests/
+ll
+dotnet test
+cd McMorph/McMorph.Files.Tests/
+dotnet test
