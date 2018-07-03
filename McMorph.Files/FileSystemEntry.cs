@@ -42,57 +42,12 @@ namespace McMorph.Files
         /// </summary>
         public string Name => Path.GetName();
 
-        /// <summary>
-        /// Gets the name of the file or directory without its extension.
-        /// </summary>
-        public string NameWithoutExtension => Path.GetNameWithoutExtension();
-
-        /// <summary>
-        /// Gets the extension with a leading dot.
-        /// </summary>
-        public string ExtensionWithDot => Path.GetExtensionWithDot();
-
-        /// <summary>
-        /// Gets or sets the attributes for the current file or directory
-        /// </summary>
-        public FileAttributes Attributes
-        {
-            get => FS.GetAttributes(Path);
-            set => FS.SetAttributes(Path, value);
-        }
 
         /// <summary>
         /// Gets a value indicating whether this file or directory exists.
         /// </summary>
         /// <value><c>true</c> if this file or directory exists; otherwise, <c>false</c>.</value>
         public abstract bool Exists { get; }
-
-        /// <summary>
-        /// Gets or sets the creation time of the current file or directory.
-        /// </summary>
-        public DateTime CreationTime
-        {
-            get => FS.GetCreationTime(Path);
-            set => FS.SetCreationTime(Path, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the last access time of the current file or directory.
-        /// </summary>
-        public DateTime LastAccessTime
-        {
-            get => FS.GetLastAccessTime(Path);
-            set => FS.SetLastAccessTime(Path, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the last write time of the current file or directory.
-        /// </summary>
-        public DateTime LastWriteTime
-        {
-            get => FS.GetLastWriteTime(Path);
-            set => FS.SetLastWriteTime(Path, value);
-        }
 
         /// <summary>Gets an instance of the parent directory.</summary>
         /// <returns>A <see cref="DirectoryEntry" /> object representing the parent directory of this file.</returns>

@@ -12,11 +12,18 @@ namespace McMorph.Files
     {
         [ThreadStatic] static PosixScanner scanner = new PosixScanner();
         [ThreadStatic] static PosixParser parser = new PosixParser();
-        private readonly IEnumerable<Segment> segments;
+        private readonly IReadOnlyList<Segment> segments;
+        private readonly bool isRooted;
 
         internal PurePosixPath(IEnumerable<Segment> segments)
+            : base(PathFlawor.Posix)
         {
-            this.segments = segments;
+            this.segments = segments.ToList();
+            this.isRooted = this.segments.Count > 0 && this.segments[0] is SeparatorSegment;
+            if (this.isRooted)
+            {
+                this.segments = this.segments.Skip(1).ToList();
+            }
         }
 
         public static PurePosixPath Parse(string path)
@@ -26,27 +33,7 @@ namespace McMorph.Files
 
         public override string ToString()
         {
-#if false
-            return string.Join('/', this.segments);
-#else
-            var xxx = new StringBuilder();
-            foreach (var segment in this.segments)
-            {
-                if (segment is DotSegment)
-                {
-                    xxx.Append("<.>");
-                }
-                else if (segment is NameSegment nameSegment)
-                {
-                    xxx.Append($"<name:{nameSegment.Name}");
-                }
-                else
-                {
-                    xxx.Append("<?>");
-                }
-            }
-            return xxx.ToString();
-#endif
+            return (this.isRooted ? "/" : string.Empty) + string.Join('/', this.segments);
         }
     }
 }

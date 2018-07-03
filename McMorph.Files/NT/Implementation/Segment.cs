@@ -1,7 +1,6 @@
 namespace McMorph.Files.Implementation
 {
-    public class Segment
+    public abstract class Segment
     {
-        
     }
 }

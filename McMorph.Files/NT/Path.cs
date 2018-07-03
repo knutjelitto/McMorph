@@ -1,6 +1,9 @@
 namespace McMorph.Files.NT
 {
-    public class Path : PurePath, IPath
-    {        
+    public abstract class Path : PurePath, IPath
+    {
+        public Path(PathFlawor flawor) : base(flawor)
+        {
+        }
     }
 }

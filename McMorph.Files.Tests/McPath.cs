@@ -8,16 +8,45 @@ namespace McMorph.Files.Tests
 {
     public class McPathTests
     {
-        [Fact]
-        public void PurePosixPath()
+        [Theory]
+        [InlineData(".",       null)]
+        [InlineData(".",       "")]
+        [InlineData(".",       ".")]
+        [InlineData(".",       "./.")]
+        [InlineData(".",       "././.")]
+        [InlineData(".",       "./")]
+        [InlineData(".",       "././")]
+        [InlineData(".",       "./././")]
+        [InlineData("x",       "x")]
+        [InlineData("../x",     "../x")]
+        [InlineData("../x",     ".././x")]
+        [InlineData("../x",     "../x/.")]
+        [InlineData("../../x",  "../.././x")]
+        [InlineData("x/y",     "x/y")]
+        public void PurePosixPathRelative(string expected, string trialMaterial)
         {
-            Assert.Equal(".",       McPath.PurePosixPath("././.").ToString());
-            Assert.Equal("x",       McPath.PurePosixPath("x").ToString());
-            Assert.Equal("x/y",     McPath.PurePosixPath("x/y").ToString());
-            Assert.Equal("../x",    McPath.PurePosixPath("../x").ToString());
-            Assert.Equal(".",       McPath.PurePosixPath("./").ToString());
-            Assert.Equal(".",       McPath.PurePosixPath("./.").ToString());
-            Assert.Equal(".",       McPath.PurePosixPath("././").ToString());
+            Assert.Equal(expected, McPath.PurePosixPath(trialMaterial).ToString());
+        }
+
+
+        [Theory]
+        [InlineData("/", "/")]
+        [InlineData("/", "//")]
+        [InlineData("/", "/./")]
+        [InlineData("/", "/.//")]
+        [InlineData("/", "//./")]
+        [InlineData("/", "//.//")]
+        [InlineData("/", "/././.")]
+        [InlineData("/x","/x/")]
+        [InlineData("/x","/x//")]
+        [InlineData("/x","/x/./")]
+        [InlineData("/x","/x/.//")]
+        [InlineData("/x","/x//./")]
+        [InlineData("/x","/x//.//")]
+        [InlineData("/x","/x/././.")]
+        public void PurePosixPathAbsolute(string expected, string trialMaterial)
+        {
+            Assert.Equal(expected, McPath.PurePosixPath(trialMaterial).ToString());
         }
     }
 }

@@ -4,17 +4,6 @@ namespace McMorph.Files
 {
     public class FileSystemTools
     {
-        public static void ForceRemove(UPath path)
-        {
-            if (path.AsFile.Exists)
-            {
-                path.AsFile.Delete();
-            }
-            else
-            {
-                RemoveDirectory(path);
-            }
-        }
         public static void RemoveDirectory(UPath directory)
         {
             if (!directory.AsDirectory.Exists)

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using McMorph.Files.Implementation;
 
-namespace McMorph.Files.NT
+namespace McMorph.Files
 {
     public class PosixPath : PurePosixPath, IPath
     {

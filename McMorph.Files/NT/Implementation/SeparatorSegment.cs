@@ -2,17 +2,13 @@ namespace McMorph.Files.Implementation
 {
     public class SeparatorSegment : Segment
     {
-        private readonly char separator;
-
-        public SeparatorSegment(char separator)
+        public SeparatorSegment()
         {
-            this.separator = separator;
         }
-
 
         public override string ToString()
         {
-            return this.separator.ToString();
+            return string.Empty;
         }
     }
 }

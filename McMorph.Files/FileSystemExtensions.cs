@@ -17,31 +17,6 @@ namespace McMorph.Files
     public static class FileSystemExtensions
     {
         /// <summary>
-        ///     Copies a file between two filesystems.
-        /// </summary>
-        /// <param name="fs">The source filesystem</param>
-        /// <param name="destFileSystem">The destination filesystem</param>
-        /// <param name="srcPath">The source path of the file to copy from the source filesystem</param>
-        /// <param name="destPath">The destination path of the file in the destination filesystem</param>
-        /// <param name="overwrite"><c>true</c> to overwrite an existing destination file</param>
-        public static void CopyFileCross(UPath srcPath, UPath destPath, bool overwrite)
-        {
-            FileSystem.Instance.CopyFile(srcPath, destPath, overwrite);
-        }
-
-        /// <summary>
-        ///     Moves a file between two filesystems.
-        /// </summary>
-        /// <param name="fs">The source filesystem</param>
-        /// <param name="destFileSystem">The destination filesystem</param>
-        /// <param name="srcPath">The source path of the file to move from the source filesystem</param>
-        /// <param name="destPath">The destination path of the file in the destination filesystem</param>
-        public static void MoveFileCross(UPath srcPath, UPath destPath)
-        {
-            FileSystem.Instance.MoveFile(srcPath, destPath);
-        }
-
-        /// <summary>
         ///     Opens a binary file, reads the contents of the file into a byte array, and then closes the file.
         /// </summary>
         /// <param name="fs">The filesystem.</param>

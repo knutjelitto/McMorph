@@ -12,14 +12,14 @@ namespace McMorph.Files.Implementation
 
         protected void Setup(string path)
         {
-            this.path = path;
+            this.path = path ?? string.Empty;
             this.current = 0;
             this.segments.Clear();
         }
 
         protected bool Have => this.current < this.path.Length;
 
-        protected bool NoNext => this.current + 1 >= this.path.Length;
+        protected bool DontHave => this.current >= this.path.Length;
 
         protected void Add(Segment segment)
         {

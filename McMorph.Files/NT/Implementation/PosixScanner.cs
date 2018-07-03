@@ -20,7 +20,7 @@ namespace McMorph.Files.Implementation
             if (CurrentIs('/'))
             {
                 Advance();
-                return new SeparatorSegment('/');
+                return new SeparatorSegment();
             }
             
             var start = this.current;
@@ -29,12 +29,19 @@ namespace McMorph.Files.Implementation
             {
 
                 Advance();
-                if (CurrentIs('.') && (NextIs('/') || NoNext))
+                if (CurrentIs('.'))
                 {
                     Advance();
-                    return new DotDotSegment();
-                }
-                if (NextIs('/') || NoNext)
+                    if (CurrentIs('/'))
+                    {
+                        return new DotDotSegment();
+                    }
+                    if (DontHave)
+                    {
+                        return new DotDotSegment();
+                    }
+                } 
+                else if (DontHave || CurrentIs('/'))
                 {
                     return new DotSegment();
                 }
@@ -44,6 +51,7 @@ namespace McMorph.Files.Implementation
             {
                 Advance();
             }
+
             return new NameSegment(this.path.Substring(start, this.current - start));
         }
     }

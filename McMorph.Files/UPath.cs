@@ -28,11 +28,6 @@ namespace McMorph.Files
         public static readonly UPath Root = new UPath("/", true);
 
         /// <summary>
-        /// The directory separator `/`
-        /// </summary>
-        public const char DirectorySeparator = '/';
-
-        /// <summary>
         /// The default comparer for a <see cref="UPath"/> that is case sensitive.
         /// </summary>
         public static readonly IComparer<UPath> DefaultComparer = new ComparerCaseSensitive();
@@ -60,8 +55,6 @@ namespace McMorph.Files
             {
                 FullName = ValidateAndNormalize(path);
             }
-            this.lazyFile = null;
-            this.lazyDirectory = null;
         }
 
         /// <summary>
@@ -277,22 +270,9 @@ namespace McMorph.Files
             }
         }
 
-        public bool FileExists()
-        {
-            return FileSystem.Instance.FileExists(this);
-        }
-
-        public bool DirectoryExists()
-        {
-            return FileSystem.Instance.DirectoryExists(this);
-        }
-
         public bool Exists => FileSystem.Instance.FileExists(this) || FileSystem.Instance.DirectoryExists(this);
 
-        public FileEntry AsFile => this.lazyFile ?? (this.lazyFile = new FileEntry(this));
-        public DirectoryEntry AsDirectory => this.lazyDirectory ?? (this.lazyDirectory = new DirectoryEntry(this));
-
-        private FileEntry lazyFile;
-        private DirectoryEntry lazyDirectory;
+        public FileEntry AsFile => new FileEntry(this);
+        public DirectoryEntry AsDirectory => new DirectoryEntry(this);
     }
 }

@@ -29,32 +29,6 @@ namespace McMorph.Files
             FS.CreateDirectory(Path);
         }
 
-        /// <summary>Creates a subdirectory or subdirectories on the specified path. The specified path can be relative to this instance of the <see cref="T:System.IO.DirectoryInfo" /> class.</summary>
-        /// <returns>The last directory specified in <paramref name="path" />.</returns>
-        /// <param name="path">The specified path. This cannot be a different disk volume or Universal Naming Convention (UNC) name. </param>
-        /// <exception cref="T:System.ArgumentException">
-        /// <paramref name="path" /> does not specify a valid file path or contains invalid DirectoryInfo characters. </exception>
-        /// <exception cref="T:System.ArgumentNullException">
-        /// <paramref name="path" /> is null. </exception>
-        /// <exception cref="T:System.IO.DirectoryNotFoundException">The specified path is invalid, such as being on an unmapped drive. </exception>
-        /// <exception cref="T:System.IO.IOException">The subdirectory cannot be created.-or- A file or directory already has the name specified by <paramref name="path" />. </exception>
-        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters. The specified path, file name, or both are too long.</exception>
-        /// <exception cref="T:System.Security.SecurityException">The caller does not have code access permission to create the directory.-or-The caller does not have code access permission to read the directory described by the returned <see cref="T:System.IO.DirectoryInfo" /> object.  This can occur when the <paramref name="path" /> parameter describes an existing directory.</exception>
-        /// <exception cref="T:System.NotSupportedException">
-        /// <paramref name="path" /> contains a colon character (:) that is not part of a drive label ("C:\").</exception>
-        public DirectoryEntry CreateSubdirectory(UPath path)
-        {
-            if (!path.IsRelative)
-            {
-                throw new ArgumentException("The path must be relative", nameof(path));
-            }
-
-            // Check that path is not null and relative
-            var subDirectory = new DirectoryEntry(Path / path);
-            subDirectory.Create();
-            return subDirectory;
-        }
-
         /// <summary>Deletes this instance of a <see cref="T:System.IO.DirectoryInfo" />, specifying whether to delete subdirectories and files.</summary>
         /// <param name="recursive">true to delete this directory, its subdirectories, and all files; otherwise, false. </param>
         /// <exception cref="T:System.UnauthorizedAccessException">The directory contains a read-only file.</exception>
@@ -92,21 +66,6 @@ namespace McMorph.Files
         public IEnumerable<FileEntry> EnumerateFiles(string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             return Path.EnumerateFileEntries(searchPattern, searchOption);
-        }
-
-        /// <summary>
-        /// Returns an enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.
-        /// </summary>
-        /// <param name="searchPattern">The search string to match against the names of directories in path. This parameter can contain a combination 
-        /// of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions.</param>
-        /// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory 
-        /// or should include all subdirectories.
-        /// The default value is TopDirectoryOnly.</param>
-        /// <param name="searchTarget">The search target either <see cref="SearchTarget.Both"/> or only <see cref="SearchTarget.Directory"/> or <see cref="SearchTarget.File"/>.</param>
-        /// <returns>An enumerable collection of <see cref="FileSystemEntry"/> that match a search pattern in a specified path.</returns>
-        public IEnumerable<FileSystemEntry> EnumerateEntries(string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly, SearchTarget searchTarget = SearchTarget.Both)
-        {
-            return Path.EnumerateFileSystemEntries(searchPattern, searchOption, searchTarget);
         }
 
         /// <summary>Moves a <see cref="T:System.IO.DirectoryInfo" /> instance and its contents to a new path.</summary>

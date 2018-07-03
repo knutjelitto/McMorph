@@ -1,4 +1,4 @@
-namespace McMorph.Files.NT
+namespace McMorph.Files
 {
     public class WindowsPath : PureWindowsPath, IPath
     {

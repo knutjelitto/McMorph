@@ -26,7 +26,7 @@ namespace McMorph.Files.Implementation
                         {
                             if (!yielded)
                             {
-                                yield return new RootSegment();
+                                yield return new SeparatorSegment();
                                 yielded = true;
                             }
                             break;
@@ -60,4 +60,4 @@ namespace McMorph.Files.Implementation
             }
         }
     }
-}
+}   
