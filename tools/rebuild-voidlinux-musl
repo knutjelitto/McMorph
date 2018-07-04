@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Docker-Image: https://hub.docker.com/r/voidlinux/voidlinux-musl/
+
+mkdir docker-void
+XBPS_ARCH=x86_64-musl xbps-install -y -r $PWD/docker-void --repository=http://muslrepo.voidlinux.eu/current -S base-voidstrap
+#tar -pC docker-void -c . | docker import - <REPOSITORY NAME>
+#rm -rf docker-void

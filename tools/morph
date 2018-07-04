@@ -2,3 +2,4 @@
 
 cd /root/McMorph/McMorph.Morph
 dotnet bin/Debug/netcoreapp2.0/McMorph.Morph.dll "$@"
+
