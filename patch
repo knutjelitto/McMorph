@@ -1,0 +1,64 @@
+diff --git a/common/build-style/gnu-configure.sh b/common/build-style/gnu-configure.sh
+index 177dd22c4d..4e607bd2af 100644
+--- a/common/build-style/gnu-configure.sh
++++ b/common/build-style/gnu-configure.sh
+@@ -4,7 +4,7 @@
+ do_configure() {
+ 	: ${configure_script:=./configure}
+ 
+-	${configure_script} ${configure_args}
++	FORCE_UNSAFE_CONFIGURE=1 ${configure_script} ${configure_args}
+ }
+ 
+ do_build() {
+diff --git a/srcpkgs/coreutils/template b/srcpkgs/coreutils/template
+index 900cc17077..0a53f7817c 100644
+--- a/srcpkgs/coreutils/template
++++ b/srcpkgs/coreutils/template
+@@ -50,7 +50,7 @@ do_configure() {
+ 	# Do not install kill: provided by util-linux.
+ 	# Do not install uptime: provided by procps-ng.
+ 	#
+-	./configure ${configure_args} \
++	FORCE_UNSAFE_CONFIGURE=1 ./configure ${configure_args} \
+ 		--enable-install-program=arch,hostname \
+ 		--enable-no-install-program=kill,uptime \
+ 		--disable-rpath
+diff --git a/srcpkgs/docbook-xml/template b/srcpkgs/docbook-xml/template
+index 360d6b5c92..c656ed20ce 100644
+--- a/srcpkgs/docbook-xml/template
++++ b/srcpkgs/docbook-xml/template
+@@ -46,7 +46,7 @@ do_install() {
+ 		dir=${DESTDIR}/usr/share/xml/docbook/${ver}
+ 		install -d -m755 ${dir}
+ 		bsdtar xf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/${pkgname}-${ver}.zip \
+-			-C ${dir} && mv ${dir}/catalog.xml ${dir}/catalog
++		       --uid 0 --gid 0 -C ${dir} && mv ${dir}/catalog.xml ${dir}/catalog
+ 	done
+ 	dir=${DESTDIR}/usr/share/xml/docbook/4.2
+ 	sed -e 's|V4.2|V4.1.2|g' < ${dir}/catalog > ${dir}/catalog-4.1.2
+diff --git a/srcpkgs/docker-small/template b/srcpkgs/docker-small/template
+new file mode 100644
+index 0000000000..90293f43c8
+--- /dev/null
++++ b/srcpkgs/docker-small/template
+@@ -0,0 +1,19 @@
++# Template file for 'docker-small'
++pkgname=docker-small
++version=0.1
++revision=1
++build_style=meta
++homepage="http://www.voidlinux.eu/"
++short_desc="Small Void Linux base system meta package for docker usage"
++maintainer="Knut <knut.jelitto@live.com>"
++license="Public domain"
++
++depends="
++ base-files ncurses coreutils findutils diffutils bash grep gzip file sed gawk
++ less util-linux which tar man-pages mdocml>=1.13.3
++ psmisc procps-ng tzdata iana-etc xbps sudo traceroute"
++
++case "$XBPS_TARGET_MACHINE" in
++	*-musl) depends+=" musl";;
++	*) depends+=" glibc-locales";;
++esac

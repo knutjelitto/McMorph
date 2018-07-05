@@ -10,6 +10,7 @@ export TERM=xterm
 export LANG=C.UTF-8
 export LANGUAGE=C.UTF-8
 export LC_ALL=C.UTF-8
+export FORCE_UNSAFE_CONFIGURE=1
 export USER=root
 
 export PAGER=less
