@@ -250,3 +250,100 @@ ll
 ./xbps-src bootstrap
 cd /tmp/
 ll
+cd
+ls -la
+cat .bash_history 
+cls
+. .bashrc 
+
+git
+xbps-install -Su
+git
+xbps-install -Su
+xbps-install -S
+xbps-install -u
+man xbps-install
+xbps-install -Su
+xbps-install -Su
+git
+file
+tree
+xbps-query -l
+xbps-query -L
+xbps-query -R
+cls
+xbps-query -R -l
+xbps-query -R -l '*build*'
+xbps-query -R -s '*build*'
+make
+gcc
+sh
+cd /usr/bin/
+ls -ld sh*
+man ls
+man ln
+sh
+sh
+cd /tmp/
+cd void-packages/
+ll
+./xbps-src 
+./xbps-src -a x86_64-musl bootstrap
+gcc
+cd /tmp/void-packages/
+ll
+./xbps-src -a x86_64-musl bootstrap
+sh
+xbps-alternatives 
+xbps-alternatives  -l
+which sh
+cd /sbin/
+ls -l sh
+sh
+cd
+ls -la
+cd mnt
+ls -la
+ll
+sh
+cd
+cd mnt
+cd run
+cd lock
+ls -la
+cd ..
+cd var
+cd cache/
+cd xbps/
+ll
+ll
+cd opt
+ls -la
+cd ..
+cd opt
+cd ..
+cd dev
+ls -la
+lll
+mount
+findmnt 
+cd /
+ll
+cd /
+xbps-query
+xbps-query -l
+cd /tmp/
+ll
+cd void-packages/
+./xbps-src binary-bootstrap
+./xbps-src -a x86_64-musl pkg base-chroot-musl
+cd /tmp/void-packages/
+ll
+./xbps-src bootstrap
+cd /tmp/void-packages/
+./xbps-src bootstrap
+./xbps-src bootstrap
+cd /tmp/void-packages/
+ll
+./xbps-src binary-bootstrap
+./xbps-src -N pkg base-system
