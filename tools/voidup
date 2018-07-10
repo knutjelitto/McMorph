@@ -1,0 +1,13 @@
+#!/bin/bash
+
+xbps-install --yes --sync \
+        autoconf automake bc binutils bison ed flex gcc gettext groff libtool m4 make \
+        patch pkg-config texinfo unzip xz git cmake clang nano \
+        lldb lldb-devel \
+        libunwind libunwind-devel \
+        icu icu-devel \
+        lttng-ust lttng-ust-devel \
+        curl libcurl libcurl-devel \
+        libressl libressl-devel \
+        mit-krb5 mit-krb5-devel
+

@@ -1,251 +1,3 @@
-xbps-query -R krb5
-find . -name "*krb*"
-ls -ld *krb5*
-cd mit-krb5
-cd files
-ls -la
-find . -name "*intl*"
-xbps-install -Su
-xbps-install bison
-xbps-install flex
-xbps-install libtool
-xbps-install pkg-config
-xbps-install gcc
-xbps-install perl
-xbps-install pgit
-xbps-install git
-xbps-install automake
-./xbps-src -?
-du
-du -h
-mkfifo
-cd masterdir/builddir/.xbps-xz/
-lcess xbps-src 
-less xbps-src 
-git
-got checkout
-rm -rv C* M* R* common etc hostdir masterdir srcpkgs xbps-src 
-git checkout
-rm -rv void-packages/
-cd
-got clone https://github.com/void-linux/void-packages.git
-git clone https://github.com/void-linux/void-packages.git
-./xbps-src bootstram
-ls -l /etc
-xbps-install make
-xbps-install msgformat makeinfo xz patch
-xbps-install msgfmt makeinfo xz patch
-xbps-install makeinfo xz patch
-xbps-install xz patch
-xbps-install texinfo
-xbps-install gettext
-mktemp 
-ls -l /tmp
-cd common/
-man mktmp
-man mktemp
-./xbps-src zap
-cd /tmp
-ls -l
-rm -rv *
-cd -
-cd etc
-less defaults.conf 
-less xbps.conf 
-cd ..
-mv -v void-packages /tmp
-cd /tmp/
-cd void-packages/
-ll
-./xbps-src bootstrap
-cd /tmp/
-ll
-cd
-ls -la
-cat .bash_history 
-cls
-. .bashrc 
-
-git
-xbps-install -Su
-git
-xbps-install -Su
-xbps-install -S
-xbps-install -u
-man xbps-install
-xbps-install -Su
-xbps-install -Su
-git
-file
-tree
-xbps-query -l
-xbps-query -L
-xbps-query -R
-cls
-xbps-query -R -l
-xbps-query -R -l '*build*'
-xbps-query -R -s '*build*'
-make
-gcc
-sh
-cd /usr/bin/
-ls -ld sh*
-man ls
-man ln
-sh
-sh
-cd /tmp/
-cd void-packages/
-ll
-./xbps-src 
-./xbps-src -a x86_64-musl bootstrap
-gcc
-cd /tmp/void-packages/
-ll
-./xbps-src -a x86_64-musl bootstrap
-sh
-xbps-alternatives 
-xbps-alternatives  -l
-which sh
-cd /sbin/
-ls -l sh
-sh
-cd
-ls -la
-cd mnt
-ls -la
-ll
-sh
-cd
-cd mnt
-cd run
-cd lock
-ls -la
-cd ..
-cd var
-cd cache/
-cd xbps/
-ll
-ll
-cd opt
-ls -la
-cd ..
-cd opt
-cd ..
-cd dev
-ls -la
-lll
-mount
-findmnt 
-cd /
-ll
-cd /
-xbps-query
-xbps-query -l
-cd /tmp/
-ll
-cd void-packages/
-./xbps-src binary-bootstrap
-./xbps-src -a x86_64-musl pkg base-chroot-musl
-cd /tmp/void-packages/
-ll
-./xbps-src bootstrap
-cd /tmp/void-packages/
-./xbps-src bootstrap
-./xbps-src bootstrap
-cd /tmp/void-packages/
-ll
-./xbps-src binary-bootstrap
-./xbps-src -N pkg base-system
-./xbps-src bootstrap
-./xbps-src -N pkg base-system
-cd /tmp/void-packages/
-./xbps-src bootstrap binary
-./xbps-src bootstrap-binary
-./xbps-src binary-bootstrap
-cd srcpkgs/
-find . -name 'base'
-find . -name '*base*'
-cd base-devel
-ll
-less template 
-xbps-install -Suv
-xbps-install base-devel
-cd ..
-cd -
-cat template 
-cd /tmp/
-ll
-cd void-packages/
-cd srcpkgs/
-man find
-nano
-cd ..
-./xbps-src binary-bootstrap
-cd /
-cd /
-xbps-query
-xbps-query -l
-cd /tmp/
-cd void-packages/
-./xbps-src -a x86_64-musl pkg base-chroot-musl
-./xbps-src bootstrap
-./xbps-src bootstrap
-./xbps-src bootstrap
-./xbps-src -N pkg base-system
-./xbps-src bootstrap
-./xbps-src -N pkg base-system
-./xbps-src bootstrap binary
-./xbps-src bootstrap-binary
-find . -name 'base'
-find . -name '*base*'
-cd base-devel
-xbps-install -Suv
-xbps-install base-devel
-cd -
-cat template 
-cd /tmp/
-cd void-packages/
-nano
-cd /tmp/void-packages/
-./xbps-src binary-bootstrap
-cd srcpkgs/
-cd base-voidstrap/
-pwd
-nano template
-ls -ld musl*
-cd mus
-cd musl
-cd patches/
-less bigstack-option.patch 
-cd files
-less template
-man find
-find . -maxdepth 1
-cd 9base/
-cd files/
-less plan9.sh 
-ls -la
-find . -maxdepth 1 -name '*base*'
-ls -ld base*
-cd base-chroot-musl/
-ll
-cls
-less template 
-cd ..
-./xbps-src pkg base-chroot-musl
-./xbps-src
-exnv
-env
-./xbps-src bootstrap
-./xbps-src -N pkg base-system
-./xbps-src bootstrap binary
-./xbps-src bootstrap-binary
-find . -name 'base'
-find . -name '*base*'
-cd base-devel
-xbps-install -Suv
-xbps-install base-devel
 cd -
 cat template 
 cd /tmp/
@@ -498,3 +250,251 @@ less rdeps
 lll
 cd ..
 ll
+cd docker-small-0.1/
+cd rdeps 
+car rdeps 
+cat rdeps 
+lll
+cd /tmp/void-packages/
+patch
+patch -p1 ~/McMorph/patch 
+man patch
+patch --help
+q
+patch -p1 <~/McMorph/patch 
+./xbps-src pkg docker-small
+./xbps-src install docker-small
+cd ..
+./xbps-src install bash
+cd masterdir/destdir/
+cd bash-4.4.019/
+du
+du -h
+less INSTALL 
+ll
+less shlib-requires 
+less rdeps 
+du
+du -h
+less INSTALL 
+less shlib-requires 
+less rdeps 
+ls /bin/sh 
+ls -l /bin/sh 
+wget 
+http://repo.voidlinux.eu/static/xbps-static-latest.x86_64-musl.tar.xz
+rm xbps-static-latest.x86_64-musl.tar.xz 
+cat xbps-static-latest.x86_64-musl.tar.xz 
+ls -la
+wget http://repo.voidlinux.eu/static/xbps-static-latest.x86_64-musl.tar.xz
+apk update
+apk upgrade
+apk install docs
+apk add docs
+man
+man wget
+ll
+apk add xz
+tar tvf xbps-static-latest.x86_64-musl.tar.xz 
+ls -la
+rm xbps-static-latest.x86_64-musl.tar.xz 
+cat xbps-static-latest.x86_64-musl.tar.xz 
+ls -la
+wget http://repo.voidlinux.eu/static/xbps-static-latest.x86_64-musl.tar.xz
+apk update
+apk upgrade
+apk install docs
+apk add docs
+man
+man wget
+apk add xz
+tar tvf xbps-static-latest.x86_64-musl.tar.xz 
+ls -la
+ls -la 
+./xpbs-install
+./xbps-install
+./xbps-install -Su
+./xbps-install --help
+./xbps-install -S
+cd usr/bin/
+cd ..
+tar xvf /tmp/xbps-static-latest.x86_64-musl.tar.xz 
+xbps-install -Su
+xbps-install mkdir /tmp/repo
+mkdir /tmp/repo
+xbps-query -R texinfo
+env
+xbps-query --help
+cd /tmp/
+rm -rv *
+v0list 
+cd root/
+ll
+cd /usr/bin/
+ll
+cd ..
+du
+du | less
+man wget
+cd /tmp/
+ls -la
+cd /tmp/
+ls -la
+cd /tmp/root
+ll
+du
+du -h
+du -h
+findmnt 
+ll
+ls -la
+ls -la
+cd /etc/profile.d/
+ll
+ls -la
+cd /etc/profile.d/
+man
+makewhatis 
+man xbps
+man xbps-install
+cd /var/cache/xbps/
+ll
+du
+cd
+ls -la
+xbps-alternatives 
+cd /usr/bin/
+ls -l sh
+xbps-install -Su
+cd /var/cache/xbps/
+xbps-alternatives 
+cd /usr/bin/
+ls -l sh
+xbps-install -Su
+du -x
+du
+cd Pogo/
+rm -rv CROSS
+du -h
+cd Data/
+ls .la
+rm -rv *
+cd
+du -h /
+du -h / | less
+findmnt 
+ll
+rm xbps-static-latest.x86_64-musl.tar.xz 
+ls -la
+xbps-install 
+xbps-install 
+cd /tmp/
+cd rootfs/
+ll
+du -h
+cd
+cd
+du
+du -s
+ll
+du /usr
+du -h /usr
+xbps-install 
+xbps-install 
+du -h /usr/
+ls -la
+ls -la
+du -h /usr/
+git
+cd
+cd Pogo/
+git clone https://github.com/void-linux/void-packages.git
+cd void-packages/
+cd srcpkgs/
+cd base-voidstrap/
+ll
+less template 
+ll
+less template 
+man man
+makewhatis 
+man git
+date
+du -h /usr
+find /
+findmnt 
+find / | less
+find / ! -path /sys | less
+find / ! -path '/sys/*' | less
+find / ! -path '/sys/*' -and| less
+find / ! -path '/sys/*' -and ! -path '/proc/*' | less
+find / ! -path '/sys/*' -and -path '/proc/*' | less
+find / ! -path '/sys/*' ! -path '/proc/*' | less
+find / ! -path '/sys/*' ! -path '/proc/*' ! -path '/dev/*' | less
+find / ! -path '/sys/*' ! -path '/proc/*' ! -path '/dev/*' ! -path '/root/*' | less
+xbps-query uuid
+xbps-query uuidd
+xbps-query -l uuidd
+xbps-query -s uuidd
+xbps-query -S uuidd
+xbps-query -S awk
+xbps-query -S fawk
+xbps-query -S gawk
+xbps-query -S pam
+man xbps-query
+xbps-query -X pam
+xbps-query -x pam
+man xbps-query
+xbps-query -X pam
+xbps-query -x pam
+du -h /usr/
+xbps-query -l
+xbps-query -x pam-libs
+xbps-query -X pam-libs
+man ls
+cd usr/share/
+cd locale/
+ll
+du -h
+rm -rv *
+ls -la
+man man
+du -h /usr
+du -h /usr | less
+du -h /usr | less
+xbps-install -Su
+xbps-install cmake
+xbps-install make
+cd
+cd Pogo/void-packages/srcpkgs/
+cd base-
+cd base-devel/
+ls -la
+less template 
+xbps-query -X musl
+xbps-query -x musl
+which git
+ll
+cat tm
+cat template 
+xbps-install clang
+cd ..
+find . -maxdepth 1
+find . -maxdepth 1 -name '*unw*'
+car libunwind-devel/template 
+cat libunwind-devel/template 
+du -h /usr/
+xbps-query -X kbd
+xbps-query -x kbd
+xbps-remove 
+xbps-query -l
+xbps-remove kbd
+xbps-query -x bash
+xbps-query -X bash
+xbps-query -x coreutils
+xbps-query -x libcap
+xbps-query -x acl
+xbps-query -x gmp
+xbps-query -x findutils
+xbps-query -x diffutils
+xbps-query -x xbps
